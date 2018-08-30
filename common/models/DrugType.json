@@ -17,21 +17,20 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.DrugType",
-      "required": false,
-      "description": "The class identifier for this type"
+      "required": true,
+      "description": "The class identifier for this type",
+      "default": "io.mefy.pharmacy.DrugType"
     },
     "typeId": {
       "type": "string",
-      "id": true,
-      "description": "The instance identifier for this type",
-      "required": true
+      "required": false,
+      "description": "Identifier for this record"
     },
-    "type": {
+    "description": {
       "type": "string",
       "required": true
     },
-    "description": {
+    "type": {
       "type": "string",
       "required": true
     }
@@ -39,5 +38,5 @@
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

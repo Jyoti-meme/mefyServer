@@ -16,9 +16,9 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.Address",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.pharmacy.Address"
     },
     "street": {
       "type": "string",
@@ -40,5 +40,5 @@
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

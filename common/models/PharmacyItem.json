@@ -1,8 +1,8 @@
 {
   "name": "PharmacyItem",
+  "base": "PersistedModel",
   "description": "An asset named PharmacyItem",
   "plural": "PharmacyItem",
-  "base": "PersistedModel",
   "idInjection": false,
   "options": {
     "validateUpsert": true,
@@ -14,53 +14,71 @@
       "abstract": false
     }
   },
+
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.PharmacyItem",
-      "required": false,
-      "description": "The class identifier for this type"
+      "required": true,
+      "description": "The class identifier for this type",
+      "default": "io.mefy.pharmacy.PharmacyItem"
     },
-    "itemId": {
+    "itemId": {                                                    
       "type": "string",
+      "required": false,
       "id": true,
-      "description": "The instance identifier for this type",
-      "required": true
+      "description": "The instance identifier for this type"
     },
     "safetyStock": {
       "type": "string",
       "required": false
-    },
-    "minMax": {
+     },
+     "minMax": {
       "type": "string",
       "required": false
-    },
-    "leadTime": {
+     },
+     "leadTime": {
       "type": "string",
       "required": false
-    },
-    "binId": {
+     },
+     "binId": {
       "type": "string",
       "required": false
+     },
+     "pharmacyId": {
+      "type": "string",
+      "required": true,
+      "description": "The identification of the pharmacy"
+     },
+     "medicineId": {
+      "type": "string",
+      "required": true,
+      "description": "The identification of the medicine master"
+     },
+     "supplier": {
+      "type": "string",
+      "required": true,
+      "description": "The identification of the vendor"
+     }
     },
+  "validations": [],
+  "relations": {
     "pharmacyId": {
-      "type": "any",
-      "description": "The identifier of an instance of pharmacyId",
-      "required": true
+      "type": "belongsTo",
+      "model": "Pharmacy",
+      "foreignKey": "pharmacyId"
     },
     "medicineId": {
-      "type": "any",
-      "description": "The identifier of an instance of medicineId",
-      "required": true
+      "type": "belongsTo",
+      "model": "MedicineMaster",
+      "foreignKey": "medicineId"
     },
     "supplier": {
-      "type": "any",
-      "description": "The identifier of an instance of supplier",
-      "required": true
+      "type": "belongsTo",
+      "model": "Vendor",
+      "foreignKey": "supplier"
     }
+
   },
-  "validations": [],
-  "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

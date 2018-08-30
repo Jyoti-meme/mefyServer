@@ -17,15 +17,15 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.MedicineMaster",
-      "required": false,
-      "description": "The class identifier for this type"
+      "required": true,
+      "description": "The class identifier for this type",
+      "default": "io.mefy.pharmacy.MedicineMaster"
     },
     "medicineId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
-      "required": true
+      "required": false,
+      "description": "The instance identifier for this type"
     },
     "name": {
       "type": "string",
@@ -45,13 +45,13 @@
     },
     "manufacturer": {
       "type": "any",
-      "description": "The identifier of an instance of manufacturer",
-      "required": true
+      "required": true,
+      "description": "The identification of the manufacturer"
     },
     "drugtype": {
       "type": "any",
-      "description": "The identifier of an instance of drugtype",
-      "required": true
+      "required": true,
+      "description": "The identifier of an instance of drugtype"
     },
     "condition": {
       "type": "string",
@@ -79,9 +79,8 @@
     },
     "substitute": {
       "type": [
-        "any"
+        "string"
       ],
-      "description": "The identifier of an instance of substitute",
       "required": false
     },
     "gstrate": {
@@ -90,7 +89,23 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "drugtype": {
+      "type": "belongsTo",
+      "model": "DrugType",
+      "foreignKey": "drugtype"
+    },
+    "manufacturer": {
+      "type": "belongsTo",
+      "model": "Manufacturer",
+      "foreignKey": "manufacturer"
+    },
+    "substitute": {
+      "type": "belongsTo",
+      "model": "Medicinemaster",
+      "foreignKey": "Medicinemaster"
+    }
+  },
   "acls": [],
-  "methods": []
+  "methods": {}
 }

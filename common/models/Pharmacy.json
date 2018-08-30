@@ -17,15 +17,15 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.Pharmacy",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.pharmacy.Pharmacy"
     },
     "tradeLicenseId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
-      "required": true
+      "required": true,
+      "description": "The instance identifier for this type"
     },
     "address": {
       "type": "Address",
@@ -62,20 +62,10 @@
     "tradeLicense": {
       "type": "string",
       "required": true
-    },
-    "validity": {
-      "type": "string",
-      "enum": [
-        "pending",
-        "active",
-        "inactive",
-        "expired"
-      ],
-      "required": true
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

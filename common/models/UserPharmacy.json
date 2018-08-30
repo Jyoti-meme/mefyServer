@@ -1,6 +1,6 @@
 {
   "name": "UserPharmacy",
-  "description": "An asset named UserPharmacy",
+  "description": "A asset named UserPharmacy",
   "plural": "UserPharmacy",
   "base": "PersistedModel",
   "idInjection": false,
@@ -17,38 +17,48 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.UserPharmacy",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.pharmacy.UserPharmacy"
     },
     "recordId": {
       "type": "string",
-      "id": true,
-      "description": "The instance identifier for this type",
-      "required": true
-    },
-    "user": {
-      "type": "any",
-      "description": "The identifier of an instance of user",
-      "required": true
+      "required": false,
+      "description": "Identifier for this record"
     },
     "pharmacy": {
       "type": "any",
-      "description": "The identifier of an instance of pharmacy",
-      "required": true
+      "required": true,
+      "description": "The identifier of an instance of pharmacyId"
+    },
+    "user": {
+      "type": "any",
+      "required": true,
+      "description": "User of the pharmacy"
     },
     "role": {
       "type": "string",
+      "required": true,
       "enum": [
         "admin",
         "accountant",
         "assistant"
-      ],
-      "required": true
+      ]
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "User",
+      "foreignKey": "user"
+    },
+    "pharmacy": {
+      "type": "belongsTo",
+      "model": "Pharmacy",
+      "foreignKey": "pharmacy"
+    }
+  },
   "acls": [],
-  "methods": []
+  "methods": {}
 }
