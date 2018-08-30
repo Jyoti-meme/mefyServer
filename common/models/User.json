@@ -8,27 +8,65 @@
     "validateUpsert": true,
     "composer": {
       "type": "participant",
-      "namespace": "io.mefy.pharmacy",
+      "namespace": "io.mefy.commonModel",
       "name": "User",
-      "fqn": "io.mefy.pharmacy.User",
+      "fqn": "io.mefy.commonModel.User",
       "abstract": false
     }
   },
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.User",
+      "default": "io.mefy.commonModel.User",
       "required": false,
       "description": "The class identifier for this type"
     },
-    "name": {
-      "type": "string",
-      "required": true
-    },
-    "phoneNumber": {
+    "userId": {
       "type": "string",
       "id": true,
       "description": "The instance identifier for this type",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "phoneNumber": {
+      "type": "string",
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "otp": {
+      "type": "number",
+      "required": false
+    },
+    "otpExpiresIn": {
+      "type": "number",
+      "required": false
+    },
+    "role": {
+      "type": "string",
+      "required": true
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
       "required": true
     }
   },
