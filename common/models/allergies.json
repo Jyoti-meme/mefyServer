@@ -1,0 +1,89 @@
+{
+  "name": "allergies",
+  "description": "An asset named allergies",
+  "plural": "allergies",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "allergies",
+      "fqn": "io.mefy.individual.allergies",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.allergies",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "allergyId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "individualId": {
+      "type": "string",
+      "required": false
+    },
+    "medicineId": {
+      "type": "any",
+      "description": "The identifier of an instance of medicineId",
+      "required": false
+    },
+    "startDate": {
+      "type": "string",
+      "required": false
+    },
+    "allergyCondition": {
+      "type": "string",
+      "required": false
+    },
+    "healthRecordType": {
+      "type": "string",
+      "default": "Allergies",
+      "required": true
+    },
+    "severity": {
+      "type": "string",
+      "required": false
+    },
+    "treatmentTaken": {
+      "type": [
+        "TreatmentTaken"
+      ],
+      "default": [],
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

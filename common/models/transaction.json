@@ -1,0 +1,92 @@
+{
+  "name": "transaction",
+  "description": "An asset named transaction",
+  "plural": "transaction",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.commonModel",
+      "name": "transaction",
+      "fqn": "io.mefy.commonModel.transaction",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.transaction",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "transactionId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "transactionType": {
+      "type": "string",
+      "required": false
+    },
+    "performedBy": {
+      "type": "string",
+      "required": false
+    },
+    "accountHead": {
+      "type": "string",
+      "required": false
+    },
+    "performedByRole": {
+      "type": "string",
+      "required": false
+    },
+    "reference": {
+      "type": "string",
+      "required": false
+    },
+    "paymentAmount": {
+      "type": "string",
+      "required": false
+    },
+    "paymentType": {
+      "type": "string",
+      "required": false
+    },
+    "CrDr": {
+      "type": "string",
+      "required": false
+    },
+    "status": {
+      "type": "string",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

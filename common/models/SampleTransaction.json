@@ -1,0 +1,41 @@
+{
+  "name": "SampleTransaction",
+  "description": "A transaction named SampleTransaction",
+  "plural": "SampleTransaction",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "transaction",
+      "namespace": "io.mefy.pharmacy",
+      "name": "SampleTransaction",
+      "fqn": "io.mefy.pharmacy.SampleTransaction",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.SampleTransaction",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "transactionId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": false,
+      "generated": true
+    },
+    "timestamp": {
+      "type": "date",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": [],
+  "forceId": true
+}

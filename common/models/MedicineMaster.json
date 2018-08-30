@@ -1,0 +1,96 @@
+{
+  "name": "MedicineMaster",
+  "description": "An asset named MedicineMaster",
+  "plural": "MedicineMaster",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.pharmacy",
+      "name": "MedicineMaster",
+      "fqn": "io.mefy.pharmacy.MedicineMaster",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.MedicineMaster",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "medicineId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "form": {
+      "type": "string",
+      "required": true
+    },
+    "rxname": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "manufacturer": {
+      "type": "any",
+      "description": "The identifier of an instance of manufacturer",
+      "required": true
+    },
+    "drugtype": {
+      "type": "any",
+      "description": "The identifier of an instance of drugtype",
+      "required": true
+    },
+    "condition": {
+      "type": "string",
+      "required": true
+    },
+    "precaution": {
+      "type": "string",
+      "required": true
+    },
+    "direction": {
+      "type": "string",
+      "required": true
+    },
+    "strength": {
+      "type": "string",
+      "required": true
+    },
+    "unit": {
+      "type": "string",
+      "required": true
+    },
+    "quantity": {
+      "type": "string",
+      "required": true
+    },
+    "substitute": {
+      "type": [
+        "any"
+      ],
+      "description": "The identifier of an instance of substitute",
+      "required": false
+    },
+    "gstrate": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

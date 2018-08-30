@@ -1,0 +1,118 @@
+{
+  "name": "appointment",
+  "description": "An asset named appointment",
+  "plural": "appointment",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.commonModel",
+      "name": "appointment",
+      "fqn": "io.mefy.commonModel.appointment",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.appointment",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "appointmentId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "eConsultId": {
+      "type": "any",
+      "description": "The identifier of an instance of eConsultId",
+      "required": false
+    },
+    "doctorId": {
+      "type": "any",
+      "description": "The identifier of an instance of doctorId",
+      "required": false
+    },
+    "individualId": {
+      "type": "any",
+      "description": "The identifier of an instance of individualId",
+      "required": false
+    },
+    "clinicName": {
+      "type": "string",
+      "required": false
+    },
+    "clinicId": {
+      "type": "any",
+      "description": "The identifier of an instance of clinicId",
+      "required": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "New",
+        "Conformed",
+        "Tentative",
+        "Cancelled"
+      ],
+      "required": false
+    },
+    "patientName": {
+      "type": "string",
+      "required": false
+    },
+    "eventName": {
+      "type": "string",
+      "required": false
+    },
+    "eventDescription": {
+      "type": "string",
+      "required": false
+    },
+    "appointmentType": {
+      "type": "string",
+      "required": false
+    },
+    "appointmentTimeFrom": {
+      "type": "string",
+      "required": false
+    },
+    "appointmentTimeTo": {
+      "type": "string",
+      "required": false
+    },
+    "appointmentDate": {
+      "type": "date",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

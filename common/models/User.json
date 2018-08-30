@@ -1,0 +1,39 @@
+{
+  "name": "User",
+  "description": "A participant named User",
+  "plural": "User",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "participant",
+      "namespace": "io.mefy.pharmacy",
+      "name": "User",
+      "fqn": "io.mefy.pharmacy.User",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.User",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "phoneNumber": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

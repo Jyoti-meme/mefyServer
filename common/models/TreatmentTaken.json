@@ -1,0 +1,40 @@
+{
+  "name": "TreatmentTaken",
+  "description": "A concept named TreatmentTaken",
+  "plural": "TreatmentTaken",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.individual",
+      "name": "TreatmentTaken",
+      "fqn": "io.mefy.individual.TreatmentTaken",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.TreatmentTaken",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

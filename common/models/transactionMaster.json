@@ -1,0 +1,48 @@
+{
+  "name": "transactionMaster",
+  "description": "An asset named transactionMaster",
+  "plural": "transactionMaster",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.commonModel",
+      "name": "transactionMaster",
+      "fqn": "io.mefy.commonModel.transactionMaster",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.transactionMaster",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "transactionMasterId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "transactionType": {
+      "type": "string",
+      "required": false
+    },
+    "items": {
+      "type": "Items",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

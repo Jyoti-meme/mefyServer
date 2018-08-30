@@ -1,0 +1,45 @@
+{
+  "name": "QOptions",
+  "description": "A concept named QOptions",
+  "plural": "QOptions",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.extra",
+      "name": "QOptions",
+      "fqn": "io.mefy.extra.QOptions",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.extra.QOptions",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "weightage": {
+      "type": "string",
+      "required": true
+    },
+    "answerType": {
+      "type": "string",
+      "required": true
+    },
+    "nextQuestion": {
+      "type": "any",
+      "description": "The identifier of an instance of nextQuestion",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

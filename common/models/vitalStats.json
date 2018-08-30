@@ -1,0 +1,78 @@
+{
+  "name": "vitalStats",
+  "description": "An asset named vitalStats",
+  "plural": "vitalStats",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "vitalStats",
+      "fqn": "io.mefy.individual.vitalStats",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.vitalStats",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "vitalId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "loginTime": {
+      "type": "date",
+      "required": false
+    },
+    "individualId": {
+      "type": "any",
+      "description": "The identifier of an instance of individualId",
+      "required": false
+    },
+    "healthRecordType": {
+      "type": "string",
+      "default": "VitalStats",
+      "required": true
+    },
+    "statType": {
+      "type": "string",
+      "required": false
+    },
+    "statValue": {
+      "type": "string",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

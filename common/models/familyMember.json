@@ -1,0 +1,64 @@
+{
+  "name": "familyMember",
+  "description": "An asset named familyMember",
+  "plural": "familyMember",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "familyMember",
+      "fqn": "io.mefy.individual.familyMember",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.familyMember",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "profileId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "dob": {
+      "type": "string",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

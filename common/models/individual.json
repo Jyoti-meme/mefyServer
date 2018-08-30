@@ -1,0 +1,161 @@
+{
+  "name": "individual",
+  "description": "An asset named individual",
+  "plural": "individual",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "individual",
+      "fqn": "io.mefy.individual.individual",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.individual",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "individualId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "userId": {
+      "type": "any",
+      "description": "The identifier of an instance of userId",
+      "required": false
+    },
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "gender": {
+      "type": "string",
+      "required": false
+    },
+    "married": {
+      "type": "string",
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "address": {
+      "type": "string",
+      "required": false
+    },
+    "profileImage": {
+      "type": "string",
+      "required": false
+    },
+    "dob": {
+      "type": "string",
+      "required": false
+    },
+    "callerId": {
+      "type": "string",
+      "required": false
+    },
+    "credit": {
+      "type": "number",
+      "required": false
+    },
+    "subscription": {
+      "type": "any",
+      "description": "The identifier of an instance of subscription",
+      "required": false
+    },
+    "referredBy": {
+      "type": "any",
+      "description": "The identifier of an instance of referredBy",
+      "required": false
+    },
+    "referal": {
+      "type": "string",
+      "required": false
+    },
+    "location": {
+      "type": "string",
+      "required": false
+    },
+    "phoneNumber": {
+      "type": "string",
+      "required": false
+    },
+    "healthPoint": {
+      "type": "string",
+      "required": false
+    },
+    "bloodGroup": {
+      "type": "string",
+      "required": false
+    },
+    "refferred": {
+      "type": "string",
+      "required": false
+    },
+    "subscriptionStartDate": {
+      "type": "date",
+      "required": false
+    },
+    "subscriptionEndDate": {
+      "type": "date",
+      "required": false
+    },
+    "edgeEnable": {
+      "type": "number",
+      "required": false
+    },
+    "socketId": {
+      "type": "string",
+      "required": false
+    },
+    "family": {
+      "type": [
+        "Family"
+      ],
+      "default": [],
+      "required": false
+    },
+    "HealthRecord": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

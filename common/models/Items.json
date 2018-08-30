@@ -1,0 +1,40 @@
+{
+  "name": "Items",
+  "description": "A concept named Items",
+  "plural": "Items",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.commonModel",
+      "name": "Items",
+      "fqn": "io.mefy.commonModel.Items",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.Items",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "head": {
+      "type": "string",
+      "required": true
+    },
+    "percentage": {
+      "type": "number",
+      "required": true
+    },
+    "CrDr": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

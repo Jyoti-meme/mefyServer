@@ -1,0 +1,89 @@
+{
+  "name": "spirometer",
+  "description": "An asset named spirometer",
+  "plural": "spirometer",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.extra",
+      "name": "spirometer",
+      "fqn": "io.mefy.extra.spirometer",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.extra.spirometer",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "spirometerId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ],
+      "required": false
+    },
+    "maxAge": {
+      "type": "string",
+      "required": false
+    },
+    "minAge": {
+      "type": "string",
+      "required": false
+    },
+    "minHeight": {
+      "type": "string",
+      "required": false
+    },
+    "maxHeight": {
+      "type": "string",
+      "required": false
+    },
+    "fev1": {
+      "type": "string",
+      "required": false
+    },
+    "pef": {
+      "type": "string",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "string",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

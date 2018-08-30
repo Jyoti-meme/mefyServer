@@ -1,0 +1,91 @@
+{
+  "name": "surgical",
+  "description": "An asset named surgical",
+  "plural": "surgical",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "surgical",
+      "fqn": "io.mefy.individual.surgical",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.surgical",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "surgicalId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "individualId": {
+      "type": "string",
+      "required": false
+    },
+    "disease": {
+      "type": "string",
+      "required": false
+    },
+    "dateOfDiagnosis": {
+      "type": "string",
+      "required": false
+    },
+    "helathRecordType": {
+      "type": "string",
+      "required": false
+    },
+    "currentStatus": {
+      "type": "string",
+      "required": false
+    },
+    "signsAndSympton": {
+      "type": "string",
+      "required": false
+    },
+    "otherInformation": {
+      "type": "string",
+      "required": false
+    },
+    "treatmentDetails": {
+      "type": [
+        "TreatmentDetails"
+      ],
+      "default": [],
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

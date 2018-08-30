@@ -1,0 +1,112 @@
+{
+  "name": "prescription",
+  "description": "An asset named prescription",
+  "plural": "prescription",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.commonModel",
+      "name": "prescription",
+      "fqn": "io.mefy.commonModel.prescription",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.prescription",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "prescriptionId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "appointmentId": {
+      "type": "any",
+      "description": "The identifier of an instance of appointmentId",
+      "required": false
+    },
+    "doctorId": {
+      "type": "any",
+      "description": "The identifier of an instance of doctorId",
+      "required": false
+    },
+    "individualId": {
+      "type": "any",
+      "description": "The identifier of an instance of individualId",
+      "required": false
+    },
+    "adviceId": {
+      "type": "any",
+      "description": "The identifier of an instance of adviceId",
+      "required": false
+    },
+    "lifeStyleId": {
+      "type": "any",
+      "description": "The identifier of an instance of lifeStyleId",
+      "required": false
+    },
+    "medicineId": {
+      "type": "any",
+      "description": "The identifier of an instance of medicineId",
+      "required": false
+    },
+    "diagnosisId": {
+      "type": "any",
+      "description": "The identifier of an instance of diagnosisId",
+      "required": false
+    },
+    "specificInstructionId": {
+      "type": "any",
+      "description": "The identifier of an instance of specificInstructionId",
+      "required": false
+    },
+    "recommendedId": {
+      "type": "any",
+      "description": "The identifier of an instance of recommendedId",
+      "required": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Consulting",
+        "Inprogress",
+        "Completed",
+        "Processed",
+        "Locked"
+      ],
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Medicine",
+  "description": "A concept named Medicine",
+  "plural": "Medicine",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.individual",
+      "name": "Medicine",
+      "fqn": "io.mefy.individual.Medicine",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.Medicine",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "medicineName": {
+      "type": "string",
+      "required": true
+    },
+    "Dosage": {
+      "type": "string",
+      "required": true
+    },
+    "frequency": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

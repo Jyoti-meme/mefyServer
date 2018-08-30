@@ -1,0 +1,81 @@
+{
+  "name": "Pharmacy",
+  "description": "An asset named Pharmacy",
+  "plural": "Pharmacy",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.pharmacy",
+      "name": "Pharmacy",
+      "fqn": "io.mefy.pharmacy.Pharmacy",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.Pharmacy",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "tradeLicenseId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "address": {
+      "type": "Address",
+      "required": false
+    },
+    "pharmacyName": {
+      "type": "string",
+      "required": true
+    },
+    "primaryContact": {
+      "type": "string",
+      "required": true
+    },
+    "alternateContact": {
+      "type": "string",
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "gstNo": {
+      "type": "string",
+      "required": true
+    },
+    "degreeFile": {
+      "type": "string",
+      "required": true
+    },
+    "drugLicense": {
+      "type": "string",
+      "required": true
+    },
+    "tradeLicense": {
+      "type": "string",
+      "required": true
+    },
+    "validity": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "active",
+        "inactive",
+        "expired"
+      ],
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

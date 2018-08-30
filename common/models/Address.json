@@ -1,0 +1,44 @@
+{
+  "name": "Address",
+  "description": "A concept named Address",
+  "plural": "Address",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.pharmacy",
+      "name": "Address",
+      "fqn": "io.mefy.pharmacy.Address",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.Address",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "street": {
+      "type": "string",
+      "required": true
+    },
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "country": {
+      "type": "string",
+      "required": true
+    },
+    "zipcode": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

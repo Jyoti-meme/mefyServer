@@ -1,0 +1,260 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "System": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "PingResponse": {
+    "dataSource": "composer",
+    "public": false
+  },
+  "User": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "eConsult": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "account": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "kyc": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "bill": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "billInfo": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "order": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "appointment": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "transaction": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "transactionMaster": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Items": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "prescription": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "doctor": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "doctorRegistration": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "clinic": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "referal": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "subscription": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "contact": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "mefyContact": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "preRegistration": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "QOptions": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Question": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "ResponseC": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Response": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Geo": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "City": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "spirometer": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "individual": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Family": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "family": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "SufferingDate": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Duration": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Notes": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "familyMember": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "medical": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Durations": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Medicine": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "medication": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "immunization": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "allergies": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "TreatmentTaken": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "surgical": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "TreatmentDetails": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "vitalStats": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Pharmacy": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Address": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "UserPharmacy": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "DrugType": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Manufacturer": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "Vendor": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "MedicineMaster": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "PharmacyItem": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "SampleTransaction": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "advice": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "lifeStyle": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "prescribeMedicine": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "diagnosis": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "recommended": {
+    "dataSource": "composer",
+    "public": true
+  },
+  "instruction": {
+    "dataSource": "composer",
+    "public": true
+  }
+}

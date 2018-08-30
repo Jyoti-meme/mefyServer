@@ -1,0 +1,69 @@
+{
+  "name": "preRegistration",
+  "description": "An asset named preRegistration",
+  "plural": "preRegistration",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.extra",
+      "name": "preRegistration",
+      "fqn": "io.mefy.extra.preRegistration",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.extra.preRegistration",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "preRegistrationId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ],
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "phoneNumber": {
+      "type": "string",
+      "required": false
+    },
+    "otp": {
+      "type": "number",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "enabled": {
+      "type": "string",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,66 @@
+{
+  "name": "eConsult",
+  "description": "An asset named eConsult",
+  "plural": "eConsult",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.commonModel",
+      "name": "eConsult",
+      "fqn": "io.mefy.commonModel.eConsult",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.eConsult",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "consultId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "doctorId": {
+      "type": "any",
+      "description": "The identifier of an instance of doctorId",
+      "required": false
+    },
+    "individualId": {
+      "type": "any",
+      "description": "The identifier of an instance of individualId",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

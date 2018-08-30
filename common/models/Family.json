@@ -1,0 +1,37 @@
+{
+  "name": "Family",
+  "description": "A concept named Family",
+  "plural": "Family",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.individual",
+      "name": "Family",
+      "fqn": "io.mefy.individual.Family",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.Family",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "relation": {
+      "type": "string",
+      "required": true
+    },
+    "profile": {
+      "type": "any",
+      "description": "The identifier of an instance of profile",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

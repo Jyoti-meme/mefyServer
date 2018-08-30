@@ -1,0 +1,76 @@
+{
+  "name": "Question",
+  "description": "An asset named Question",
+  "plural": "Question",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.extra",
+      "name": "Question",
+      "fqn": "io.mefy.extra.Question",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.extra.Question",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "QuestionId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "options": {
+      "type": "QOptions",
+      "required": false
+    },
+    "parentId": {
+      "type": "any",
+      "description": "The identifier of an instance of parentId",
+      "required": false
+    },
+    "isParent": {
+      "type": "boolean",
+      "required": false
+    },
+    "condition": {
+      "type": "string",
+      "required": false
+    },
+    "enabled": {
+      "type": "string",
+      "required": false
+    },
+    "groupId": {
+      "type": "string",
+      "required": false
+    },
+    "background": {
+      "type": "string",
+      "required": false
+    },
+    "questionType": {
+      "type": "string",
+      "required": false
+    },
+    "shortQuestion": {
+      "type": "string",
+      "required": false
+    },
+    "longQuestion": {
+      "type": "string",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,93 @@
+{
+  "name": "medication",
+  "description": "An asset named medication",
+  "plural": "medication",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "medication",
+      "fqn": "io.mefy.individual.medication",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.medication",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "medicationId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "individualId": {
+      "type": "any",
+      "description": "The identifier of an instance of individualId",
+      "required": true
+    },
+    "medicineName": {
+      "type": "string",
+      "required": false
+    },
+    "dosage": {
+      "type": "string",
+      "required": false
+    },
+    "days": {
+      "type": "string",
+      "required": false
+    },
+    "medicationName": {
+      "type": "string",
+      "required": false
+    },
+    "healthRecordType": {
+      "type": "string",
+      "required": false
+    },
+    "frequency": {
+      "type": "string",
+      "required": false
+    },
+    "adverseEffects": {
+      "type": "string",
+      "required": false
+    },
+    "currentStus": {
+      "type": "number",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,36 @@
+{
+  "name": "billInfo",
+  "description": "A concept named billInfo",
+  "plural": "billInfo",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.commonModel",
+      "name": "billInfo",
+      "fqn": "io.mefy.commonModel.billInfo",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.billInfo",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "particular": {
+      "type": "string",
+      "required": true
+    },
+    "amount": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,43 @@
+{
+  "name": "DrugType",
+  "description": "An asset named DrugType",
+  "plural": "DrugType",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.pharmacy",
+      "name": "DrugType",
+      "fqn": "io.mefy.pharmacy.DrugType",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.DrugType",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "typeId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

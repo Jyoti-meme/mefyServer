@@ -1,0 +1,66 @@
+{
+  "name": "PharmacyItem",
+  "description": "An asset named PharmacyItem",
+  "plural": "PharmacyItem",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.pharmacy",
+      "name": "PharmacyItem",
+      "fqn": "io.mefy.pharmacy.PharmacyItem",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.PharmacyItem",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "itemId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "safetyStock": {
+      "type": "string",
+      "required": false
+    },
+    "minMax": {
+      "type": "string",
+      "required": false
+    },
+    "leadTime": {
+      "type": "string",
+      "required": false
+    },
+    "binId": {
+      "type": "string",
+      "required": false
+    },
+    "pharmacyId": {
+      "type": "any",
+      "description": "The identifier of an instance of pharmacyId",
+      "required": true
+    },
+    "medicineId": {
+      "type": "any",
+      "description": "The identifier of an instance of medicineId",
+      "required": true
+    },
+    "supplier": {
+      "type": "any",
+      "description": "The identifier of an instance of supplier",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

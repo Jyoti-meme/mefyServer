@@ -1,0 +1,164 @@
+{
+  "name": "doctor",
+  "description": "An asset named doctor",
+  "plural": "doctor",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.doctor",
+      "name": "doctor",
+      "fqn": "io.mefy.doctor.doctor",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.doctor.doctor",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "doctorId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "userId": {
+      "type": "any",
+      "description": "The identifier of an instance of userId",
+      "required": false
+    },
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "gender": {
+      "type": "string",
+      "required": false
+    },
+    "dob": {
+      "type": "string",
+      "required": false
+    },
+    "profileImage": {
+      "type": "string",
+      "required": false
+    },
+    "location": {
+      "type": "number",
+      "required": false
+    },
+    "eConsultFee": {
+      "type": "number",
+      "required": false
+    },
+    "subscription": {
+      "type": "string",
+      "required": false
+    },
+    "practicingSince": {
+      "type": "number",
+      "required": false
+    },
+    "educationl": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "registrationNumber": {
+      "type": "string",
+      "required": false
+    },
+    "year": {
+      "type": "string",
+      "required": false
+    },
+    "address": {
+      "type": "string",
+      "required": false
+    },
+    "city": {
+      "type": "string",
+      "required": false
+    },
+    "language": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    },
+    "issuingAuthority": {
+      "type": "string",
+      "required": false
+    },
+    "speciality": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    },
+    "callerId": {
+      "type": "string",
+      "required": false
+    },
+    "state": {
+      "type": "string",
+      "required": false
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "Online",
+        "Offline",
+        "Busy"
+      ],
+      "required": false
+    },
+    "credit": {
+      "type": "string",
+      "default": "0",
+      "required": true
+    },
+    "socketId": {
+      "type": "string",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

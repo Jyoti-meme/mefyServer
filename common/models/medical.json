@@ -1,0 +1,95 @@
+{
+  "name": "medical",
+  "description": "An asset named medical",
+  "plural": "medical",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "medical",
+      "fqn": "io.mefy.individual.medical",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.medical",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "medicalId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "individualId": {
+      "type": "string",
+      "required": false
+    },
+    "sufferingFrom": {
+      "type": "string",
+      "required": false
+    },
+    "healthRecordType": {
+      "type": "string",
+      "required": false
+    },
+    "sympton": {
+      "type": "string",
+      "required": false
+    },
+    "currentStatus": {
+      "type": "string",
+      "required": false
+    },
+    "medicineId": {
+      "type": [
+        "any"
+      ],
+      "description": "The identifier of an instance of medicineId",
+      "required": false
+    },
+    "sufferingDate": {
+      "type": "SufferingDate",
+      "required": false
+    },
+    "medicine": {
+      "type": "Medicine",
+      "required": false
+    },
+    "duration": {
+      "type": "Durations",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

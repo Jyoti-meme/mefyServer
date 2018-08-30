@@ -1,0 +1,43 @@
+{
+  "name": "City",
+  "description": "An asset named City",
+  "plural": "City",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.extra",
+      "name": "City",
+      "fqn": "io.mefy.extra.City",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.extra.City",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "CityId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "geo": {
+      "type": "Geo",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

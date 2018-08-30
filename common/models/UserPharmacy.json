@@ -1,0 +1,54 @@
+{
+  "name": "UserPharmacy",
+  "description": "An asset named UserPharmacy",
+  "plural": "UserPharmacy",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.pharmacy",
+      "name": "UserPharmacy",
+      "fqn": "io.mefy.pharmacy.UserPharmacy",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.pharmacy.UserPharmacy",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "recordId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "user": {
+      "type": "any",
+      "description": "The identifier of an instance of user",
+      "required": true
+    },
+    "pharmacy": {
+      "type": "any",
+      "description": "The identifier of an instance of pharmacy",
+      "required": true
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "accountant",
+        "assistant"
+      ],
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

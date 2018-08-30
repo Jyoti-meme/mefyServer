@@ -1,0 +1,32 @@
+{
+  "name": "kyc",
+  "description": "A concept named kyc",
+  "plural": "kyc",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.commonModel",
+      "name": "kyc",
+      "fqn": "io.mefy.commonModel.kyc",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.kyc",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "imageId": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

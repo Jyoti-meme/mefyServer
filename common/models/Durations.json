@@ -1,0 +1,40 @@
+{
+  "name": "Durations",
+  "description": "A concept named Durations",
+  "plural": "Durations",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.individual",
+      "name": "Durations",
+      "fqn": "io.mefy.individual.Durations",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.Durations",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "years": {
+      "type": "number",
+      "required": true
+    },
+    "months": {
+      "type": "number",
+      "required": true
+    },
+    "days": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

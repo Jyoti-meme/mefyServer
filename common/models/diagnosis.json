@@ -1,0 +1,64 @@
+{
+  "name": "diagnosis",
+  "description": "An asset named diagnosis",
+  "plural": "diagnosis",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.prescription",
+      "name": "diagnosis",
+      "fqn": "io.mefy.prescription.diagnosis",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.prescription.diagnosis",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "diagnosisId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "diagnosisFor": {
+      "type": "string",
+      "required": false
+    },
+    "diagnosisBrief": {
+      "type": "string",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "string",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,83 @@
+{
+  "name": "immunization",
+  "description": "An asset named immunization",
+  "plural": "immunization",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.individual",
+      "name": "immunization",
+      "fqn": "io.mefy.individual.immunization",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.immunization",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "immunizationId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "profileId": {
+      "type": "any",
+      "description": "The identifier of an instance of profileId",
+      "required": false
+    },
+    "vaccine": {
+      "type": "string",
+      "required": false
+    },
+    "ageGroup": {
+      "type": "number",
+      "required": false
+    },
+    "healthRecordType": {
+      "type": "string",
+      "default": "Immunization",
+      "required": true
+    },
+    "scheduleDate": {
+      "type": "string",
+      "required": false
+    },
+    "isDone": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

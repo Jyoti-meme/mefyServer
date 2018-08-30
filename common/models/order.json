@@ -1,0 +1,82 @@
+{
+  "name": "order",
+  "description": "An asset named order",
+  "plural": "order",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.commonModel",
+      "name": "order",
+      "fqn": "io.mefy.commonModel.order",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.commonModel.order",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "orderId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "doctorId": {
+      "type": "any",
+      "description": "The identifier of an instance of doctorId",
+      "required": false
+    },
+    "paymentType": {
+      "type": "string",
+      "required": false
+    },
+    "paymentAmount": {
+      "type": "string",
+      "required": false
+    },
+    "CustomerId": {
+      "type": "string",
+      "required": false
+    },
+    "referalCode": {
+      "type": "string",
+      "required": false
+    },
+    "status": {
+      "type": "string",
+      "default": "Pending",
+      "required": false
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

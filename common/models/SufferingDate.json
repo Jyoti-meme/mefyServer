@@ -1,0 +1,36 @@
+{
+  "name": "SufferingDate",
+  "description": "A concept named SufferingDate",
+  "plural": "SufferingDate",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.individual",
+      "name": "SufferingDate",
+      "fqn": "io.mefy.individual.SufferingDate",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.SufferingDate",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "start": {
+      "type": "string",
+      "required": true
+    },
+    "end": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

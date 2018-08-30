@@ -1,0 +1,51 @@
+{
+  "name": "TreatmentDetails",
+  "description": "A concept named TreatmentDetails",
+  "plural": "TreatmentDetails",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.individual",
+      "name": "TreatmentDetails",
+      "fqn": "io.mefy.individual.TreatmentDetails",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.TreatmentDetails",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "reportType": {
+      "type": "string",
+      "required": true
+    },
+    "fileId": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,90 @@
+{
+  "name": "doctorRegistration",
+  "description": "An asset named doctorRegistration",
+  "plural": "doctorRegistration",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.doctor",
+      "name": "doctorRegistration",
+      "fqn": "io.mefy.doctor.doctorRegistration",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.doctor.doctorRegistration",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "doctorId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": false
+    },
+    "qualification": {
+      "type": "string",
+      "required": false
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "phoneNumber": {
+      "type": "string",
+      "required": false
+    },
+    "otp": {
+      "type": "number",
+      "required": false
+    },
+    "city": {
+      "type": "string",
+      "required": false
+    },
+    "language": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    },
+    "speciality": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    },
+    "medicalCouncilNumber": {
+      "type": "number",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

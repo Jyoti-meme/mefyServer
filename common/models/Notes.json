@@ -1,0 +1,36 @@
+{
+  "name": "Notes",
+  "description": "A concept named Notes",
+  "plural": "Notes",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.individual",
+      "name": "Notes",
+      "fqn": "io.mefy.individual.Notes",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.individual.Notes",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

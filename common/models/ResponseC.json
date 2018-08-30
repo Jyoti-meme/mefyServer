@@ -1,0 +1,32 @@
+{
+  "name": "ResponseC",
+  "description": "A concept named ResponseC",
+  "plural": "ResponseC",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "concept",
+      "namespace": "io.mefy.extra",
+      "name": "ResponseC",
+      "fqn": "io.mefy.extra.ResponseC",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.extra.ResponseC",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "response": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,113 @@
+{
+  "name": "clinic",
+  "description": "An asset named clinic",
+  "plural": "clinic",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "asset",
+      "namespace": "io.mefy.doctor",
+      "name": "clinic",
+      "fqn": "io.mefy.doctor.clinic",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.doctor.clinic",
+      "required": false,
+      "description": "The class identifier for this type"
+    },
+    "clinicId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "doctorId": {
+      "type": "any",
+      "description": "The identifier of an instance of doctorId",
+      "required": false
+    },
+    "clinicName": {
+      "type": "string",
+      "required": false
+    },
+    "phoneNumber": {
+      "type": "string",
+      "required": false
+    },
+    "city": {
+      "type": "string",
+      "required": false
+    },
+    "address": {
+      "type": "string",
+      "required": false
+    },
+    "pin": {
+      "type": "string",
+      "required": false
+    },
+    "fee": {
+      "type": "string",
+      "required": false
+    },
+    "startTime": {
+      "type": "string",
+      "required": false
+    },
+    "endTime": {
+      "type": "string",
+      "required": false
+    },
+    "weekDays": {
+      "type": [
+        "string"
+      ],
+      "default": [],
+      "required": false
+    },
+    "bookingStatus": {
+      "type": "string",
+      "enum": [
+        "Availability",
+        "NotAvailable"
+      ],
+      "required": false
+    },
+    "availability": {
+      "type": "string",
+      "default": "open",
+      "required": true
+    },
+    "createdBy": {
+      "type": "string",
+      "required": false
+    },
+    "updatedBy": {
+      "type": "string",
+      "required": false
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
