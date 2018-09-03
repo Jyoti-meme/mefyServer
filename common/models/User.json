@@ -25,7 +25,9 @@
       "type": "string",
       "id": true,
       "description": "The instance identifier for this type",
-      "required": true
+      "required": true,
+      "defaultFn":"uuidv4"
+      
     },
     "email": {
       "type": "string",
@@ -58,11 +60,13 @@
     },
     "createdDate": {
       "type": "date",
-      "required": false
+      "required": false,
+      "defaultFn":"now"
     },
     "updatedDate": {
       "type": "date",
-      "required": false
+      "required": false,
+      "defaultFn":"now"
     },
     "enabled": {
       "type": "number",

@@ -25,7 +25,8 @@
       "type": "string",
       "id": true,
       "description": "The instance identifier for this type",
-      "required": true
+      "required": true,
+      "defaultFn":"uuidv4"
     },
     "gender": {
       "type": "string",

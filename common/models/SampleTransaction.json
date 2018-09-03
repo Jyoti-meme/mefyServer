@@ -26,7 +26,8 @@
       "id": true,
       "description": "The instance identifier for this type",
       "required": false,
-      "generated": true
+     
+      "defaultFn":"uuidv4"
     },
     "timestamp": {
       "type": "date",
