@@ -6,8 +6,12 @@ const bizNetworkConnection = new BusinessNetworkConnection();
 const cardName = "admin@mefy";
 
 module.exports = function (User) {
-  // Composer.restrictModelMethods(User);
 
+  /***CHECK THE EXISTENCE OF EMAIL */
+  User.validatesUniquenessOf('email', { message: 'EMAIL ALREADY EXIST' });
+  /**    CHECKING COMPLETED */
+
+  
   User.addPharmacy = async function (userData) {
 
     bizNetworkConnection.connect(cardName)
