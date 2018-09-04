@@ -8,41 +8,31 @@ const cardName = "admin@mefy";
 module.exports = function (User) {
 
   /***CHECK THE EXISTENCE OF EMAIL AND PHONENUMBER */
-  User.validatesUniquenessOf('email', { message: 'EMAIL ALREADY EXIST' });
-  // User.validatesUniquenessOf('phoneNumber', { message: 'USER WITH THIS PHONENUMBER  ALREADY EXIST' });
-  /**    CHECKING COMPLETED */
+  User.validatesUniquenessOf('email', { message: 'email already exists' });
+  User.validatesUniquenessOf('phoneNumber', { message: 'phoneNumber already exists' });
 
-  User.beforeRemote('create', function (context, user, next) {
-    User.find({ where: { phoneNumber: context.args.data.phoneNumber } }, function (err, exists) {
-      console.log('EXISTED', exists);
-      if (exists.length != 0) {
-        var x = {
-          error: 'true',
-          message: 'phonenumber already exist'
-        }
-        next(x);
-      }
-      else {
-        next();
-      }
 
-    })
-  })
-
+  /*** AFTER REMOTE METHOD  */
   User.afterRemote('**', function (context, user, next) {
     var status = context.res.statusCode;
-    console.log('STATUS', context.res.statusCode + 'MESSAGE' + context.res.message);
-    console.log('RESULT', context.result)
-    // if(context.res.statusCode && context.res.statusCode==200){
     context.result = {
       error: 'false',
       users: context.result,
       message: context.methodString + " success"
     }
-    // }
 
     next();
   })
+
+  /*** CATCH ERORRS */
+  User.afterRemoteError('create', function (ctx, next) {
+    var objectname = Object.keys(ctx.error.details.messages)[0]
+    ctx.error.message = ctx.error.details.messages[objectname][0];
+    delete ctx.error['details'];
+    delete ctx.error['stack'];
+    next(ctx.error);
+  });
+
 
   // User.addPharmacy = async function (userData) {
 
