@@ -34,11 +34,20 @@ module.exports = function (User) {
     next(ctx.error);
   });
 
-
+/************USER REGISTRATION OTP SENDING**************** */
+  User.remoteMethod('registration', {
+    http: { path: '/registration', verb: 'post' },
+    accepts: [
+      { arg: 'phoneNumber', type: 'string' },
+      { arg: 'role', type: 'string' }
+    ],
+    returns: { arg: 'result', type: 'string' },
+  });
 
   // USER REGISTRATION API
   User.registration = function (phoneNumber, role, cb) {
     console.log('USER', phoneNumber, role)
+  
     User.find({ where: { and: [{ phoneNumber: phoneNumber }, { role: role }] } }, function (err, user) {
       console.log('user info', user)
       if (user.length != 0) {
@@ -77,6 +86,7 @@ module.exports = function (User) {
     })
 
   }
+
   // send otp to number
   function sendOtp(phoneNumber) {
     return new Promise((resolve, reject) => {
@@ -86,31 +96,40 @@ module.exports = function (User) {
       })
         .then((response) => response.json())
         .then((responseJSON) => {
-          // console.log('JSON RESPONSE', responseJSON)
           resolve(responseJSON)
-          // do something with jsonResponse
-        });
-      //   .catch((error) => {
-      // }) 
+        })
+        .catch((error) => {
+          reject(err)
+      }) 
     })
   }
 
+  /***************************VERIFY OTP************************************/
 
-  User.remoteMethod('registration', {
-    http: { path: '/registration', verb: 'post' },
+  User.remoteMethod('verifyotp', {
+    http: { path: '/verifyotp', verb: 'post' },
     accepts: [
       { arg: 'phoneNumber', type: 'string' },
-      { arg: 'role', type: 'string' }
+      { arg: 'otp', type: 'string' },
+      { arg: 'role', type: 'string' },
+      
+      { arg: 'name', type: 'string' },
+      { arg: 'gender', type: 'string' },
+      { arg: 'dob', type: 'string' },
+      { arg: 'city', type: 'string' },
+      { arg: 'deviceId', type: 'string' },
+      { arg: 'socketId', type: 'string' }
     ],
     returns: { arg: 'result', type: 'string' },
-  },
-  );
+  });
 
-  /***************************VERIFY OTP************************************/
+
+
   User.verifyotp = function (phoneNumber, otp, role, name, gender, dob, city, deviceId, socketId, cb) {
-    console.log('USER Verification', phoneNumber, otp)
+    console.log('USER', phoneNumber, role)
+    // cb(null,{ name: "Pushpendu" });
     const Individual = app.models.individual
-    verifyOtp(phoneNumber, otp).then(function(result) {
+    verifyOtp(phoneNumber, otp).then(function (result) {
       console.log('resultttttt', result)
       if (result.type == 'success') {
         // for user creation and individual creation
@@ -128,7 +147,7 @@ module.exports = function (User) {
                 user: res,
                 message: 'User created Successfully'
               }
-              cb(null, sucresponse);
+              cb(null, res);
             })
           }
         );
@@ -142,9 +161,15 @@ module.exports = function (User) {
       }
     })
       .catch(err => {
-        cb(null, err)
+        var otperror1 = {
+          error: true,
+          message: '  Otp verification failed',
+        }
+        cb(null, otperror1)
       })
+
   }
+
 
   function verifyOtp(phoneNumber, otp) {
     console.log('dataaaa', phoneNumber, otp)
@@ -158,70 +183,84 @@ module.exports = function (User) {
         .then((responseJSON) => {
           console.log('url json response', responseJSON)
           resolve(responseJSON)
-        }).catch(err=>{
+        }).catch(err => {
           reject(err)
         })
       // })
     })
   }
 
-  User.remoteMethod('verifyotp', {
-    http: { path: '/verifyotp', verb: 'post' },
-    accepts: [
-      { arg: 'phoneNumber', type: 'string' },
-      { arg: 'otp', type: 'string' },
-      { arg: 'role', type: 'string' },
-      { arg: 'name', type: 'string' },
-      { arg: 'gender', type: 'string' },
-      { arg: 'dob', type: 'string' },
-      { arg: 'city', type: 'string' },
-      { arg: 'deviceId', type: 'string' },
-      { arg: 'socketId', type: 'string' }
-    ],
-    return: { arg: 'result', type: 'string' },
-  })
+/**********************END OF VERIFY OTP*******************************/
 
-
-/**************RESEND OTP ****************** */
+/***************RESEND OTP********************** */
 User.remoteMethod('resendOtp', {
   http: { path: '/resendOtp', verb: 'post' },
-  accepts: [{ arg: 'phoneNumber', type: 'string' },
-  { arg: 'retrytype', type: 'string' }],
-  return: { arg: 'result', type: 'string' }
-})
+  accepts: [
+    { arg: 'phoneNumber', type: 'string' },
+    { arg: 'retrytype', type: 'string' }
+  ],
+  returns: { arg: 'result', type: 'string' },
+});
 
-User.resendOtp = function (phoneNumber,retrytype, cb) {
-  let url = "http://control.msg91.com/api/retryotp.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=" + phoneNumber+'&retrytype='+retrytype;
+
+
+// USER REGISTRATION API
+User.resendOtp = function (phoneNumber, retrytype, cb) {
+  let url = "http://control.msg91.com/api/retryotp.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=" + phoneNumber + '&retrytype=' + retrytype;
   fetch(url, {
     method: 'POST'
   })
     .then((response) => response.json())
     .then((responseJSON) => {
+      console.log(responseJSON);
       console.log('url json response', responseJSON)
-      if (responseJSON.type = "success") {
-        var resendresponse = {
+      if (responseJSON.type == "success") {
+        console.log('inside if')
+        let resendresponse = {
           error: false,
           message: 'OTP sent successfully'
         }
-        cb(null, resendresponse);
+        cb(null,resendresponse);
         console.log('after reseb dotp')
       }
       else {
-        var responses = {
+        console.log('inside else')
+        let responses = {
           error: true,
           message: 'OTP sending failed'
         }
         cb(null, responses)
       }
-    });
+    }).catch(err => {
+      let responses1 = {
+        error: true,
+        message: 'OTP sending failed'
+      }
+      cb(null, responses1)
+    })
 }
-/******************************************* */
-
-
-
+/*************************************** */
 };
 
-/**********************END OF VERIFY OTP*******************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
