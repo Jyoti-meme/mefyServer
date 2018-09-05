@@ -44,7 +44,7 @@ module.exports = function (User) {
       if (user.length != 0) {
         var response = {
           error: false,
-          message: 'User alresdy registered'
+          message: 'User already registered'
         }
         cb(null, response)
 
@@ -107,31 +107,14 @@ module.exports = function (User) {
   );
 
   /***************************VERIFY OTP************************************/
-  function verifyOtp(phoneNumber, otp) {
-    console.log('dataaaa', phoneNumber, otp)
-    return new Promise((resolve, reject) => {
-      let verifyOtpUrl = 'https://control.msg91.com/api/verifyRequestOTP.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=' + phoneNumber + '&otp=' + otp;
-      console.log('verifyOtpUrl', verifyOtpUrl)
-      fetch(verifyOtpUrl, {
-        method: 'POSt'
-      })
-        .then((response) => response.json())
-        .then((responseJSON) => {
-          console.log('url json response', responseJSON)
-          resolve(responseJSON)
-        });
-      // })
-    })
-  }
-
   User.verifyotp = function (phoneNumber, otp, role, name, gender, dob, city, deviceId, socketId, cb) {
     console.log('USER Verification', phoneNumber, otp)
-    const Individual =app.models.individual
-    verifyOtp(phoneNumber, otp).then((result) => {
+    const Individual = app.models.individual
+    verifyOtp(phoneNumber, otp).then(function(result) {
       console.log('resultttttt', result)
       if (result.type == 'success') {
         // for user creation and individual creation
-      
+
         User.create(
           { phoneNumber: phoneNumber, role: role, }, function (err, res) {
             console.log('user created response', res)
@@ -145,7 +128,7 @@ module.exports = function (User) {
                 user: res,
                 message: 'User created Successfully'
               }
-              cb(null, err || sucresponse);
+              cb(null, sucresponse);
             })
           }
         );
@@ -154,7 +137,6 @@ module.exports = function (User) {
         var otperror = {
           error: true,
           message: ' Invalid Otp ',
-
         }
         cb(null, otperror)
       }
@@ -162,6 +144,25 @@ module.exports = function (User) {
       .catch(err => {
         cb(null, err)
       })
+  }
+
+  function verifyOtp(phoneNumber, otp) {
+    console.log('dataaaa', phoneNumber, otp)
+    return new Promise((resolve, reject) => {
+      let verifyOtpUrl = 'https://control.msg91.com/api/verifyRequestOTP.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=' + phoneNumber + '&otp=' + otp;
+      console.log('verifyOtpUrl', verifyOtpUrl)
+      fetch(verifyOtpUrl, {
+        method: 'POST'
+      })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+          console.log('url json response', responseJSON)
+          resolve(responseJSON)
+        }).catch(err=>{
+          reject(err)
+        })
+      // })
+    })
   }
 
   User.remoteMethod('verifyotp', {
@@ -175,14 +176,52 @@ module.exports = function (User) {
       { arg: 'dob', type: 'string' },
       { arg: 'city', type: 'string' },
       { arg: 'deviceId', type: 'string' },
-      {arg:'socketId', type:'string'}
+      { arg: 'socketId', type: 'string' }
     ],
     return: { arg: 'result', type: 'string' },
   })
+
+
+/**************RESEND OTP ****************** */
+User.remoteMethod('resendOtp', {
+  http: { path: '/resendOtp', verb: 'post' },
+  accepts: [{ arg: 'phoneNumber', type: 'string' },
+  { arg: 'retrytype', type: 'string' }],
+  return: { arg: 'result', type: 'string' }
+})
+
+User.resendOtp = function (phoneNumber,retrytype, cb) {
+  let url = "http://control.msg91.com/api/retryotp.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=" + phoneNumber+'&retrytype='+retrytype;
+  fetch(url, {
+    method: 'POST'
+  })
+    .then((response) => response.json())
+    .then((responseJSON) => {
+      console.log('url json response', responseJSON)
+      if (responseJSON.type = "success") {
+        var resendresponse = {
+          error: false,
+          message: 'OTP sent successfully'
+        }
+        cb(null, resendresponse);
+        console.log('after reseb dotp')
+      }
+      else {
+        var responses = {
+          error: true,
+          message: 'OTP sending failed'
+        }
+        cb(null, responses)
+      }
+    });
+}
+/******************************************* */
+
+
+
 };
 
 /**********************END OF VERIFY OTP*******************************/
-
 
 
 
