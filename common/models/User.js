@@ -36,10 +36,10 @@ module.exports = function (User) {
 
 
 
-  User.registration = function (phoneNumber, role, name, gender, dob, city, deviceId, cb) {
+  // USER REGISTRATION API
+  User.registration = function (phoneNumber, role, cb) {
     console.log('USER', phoneNumber, role)
-    const Individual = app.models.individual;
-    User.find({ where: { phoneNumber: phoneNumber } }, function (err, user) {
+    User.find({ where: { and: [{ phoneNumber: phoneNumber }, { role: role }] } }, function (err, user) {
       console.log('user info', user)
       if (user.length != 0) {
         var response = {
@@ -50,7 +50,7 @@ module.exports = function (User) {
 
       }
       else {
-        // send otp
+        // *********send otp*******
         sendOtp(phoneNumber).then(function (result) {
           console.log('RRESULT', result)
           if (result.type == 'success') {
@@ -71,7 +71,7 @@ module.exports = function (User) {
         }).catch(err => {
           cb(null, err)
         })
-
+        /******* */
       }
 
     })
@@ -81,13 +81,12 @@ module.exports = function (User) {
   function sendOtp(phoneNumber) {
     return new Promise((resolve, reject) => {
       let url = 'http://control.msg91.com/api/sendotp.php?authkey=235289A8Oo7Uojwo5b8cd569&message=%23%23OTP%23%23&sender=MEFYME&mobile=' + phoneNumber;
-      console.log('url', url)
       fetch(url, {
         method: 'GET'
       })
         .then((response) => response.json())
         .then((responseJSON) => {
-          console.log('JSON RESPONSE', responseJSON)
+          // console.log('JSON RESPONSE', responseJSON)
           resolve(responseJSON)
           // do something with jsonResponse
         });
@@ -101,14 +100,8 @@ module.exports = function (User) {
     http: { path: '/registration', verb: 'post' },
     accepts: [
       { arg: 'phoneNumber', type: 'string' },
-      { arg: 'role', type: 'string' },
-      { arg: 'name', type: 'string' },
-      { arg: 'gender', type: 'string' },
-      { arg: 'dob', type: 'string' },
-      { arg: 'city', type: 'string' },
-      { arg: 'deviceId', type: 'string' }
+      { arg: 'role', type: 'string' }
     ],
-    //   , ],
     returns: { arg: 'result', type: 'string' },
   },
   );
