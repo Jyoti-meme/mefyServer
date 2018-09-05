@@ -110,11 +110,34 @@ module.exports = function (User) {
   User.verifyotp = function (phoneNumber, otp, role, name, gender, dob, city, deviceId, socketId, cb) {
     console.log('USER Verification', phoneNumber, otp)
     const Individual = app.models.individual
+    const Doctor  = app.models.doctor
     verifyOtp(phoneNumber, otp).then(function(result) {
       console.log('resultttttt', result)
       if (result.type == 'success') {
         // for user creation and individual creation
-
+       console.log('user  role',role)
+            /**Doctor created**/
+       if(role == 'doctor'){
+        User.create(
+          { phoneNumber: phoneNumber, role: role, }, function (err, res) {
+            console.log('user created response', res)
+            // send otp and verify it then create Doctor
+            Doctor.create({
+              name: name, phoneNumber: phoneNumber, gender: gender, dob: dob, city: city, deviceId: deviceId, userId: res.userId, socketId: socketId ? socketId : ''
+            }, function (err, res) {
+              console.log('created Doctor data', res)
+              var sucresponse = {
+                error: false,
+                user: res,
+                message: 'User created Successfully'
+              }
+              cb(null, sucresponse);
+            })
+          }
+        );
+       }
+       else{
+            /** User created**/
         User.create(
           { phoneNumber: phoneNumber, role: role, }, function (err, res) {
             console.log('user created response', res)
@@ -133,6 +156,7 @@ module.exports = function (User) {
           }
         );
       }
+    }
       else {
         var otperror = {
           error: true,
