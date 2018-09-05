@@ -36,7 +36,6 @@ module.exports = function (User) {
 
 
 
-
   User.registration = function (phoneNumber, role, name, gender, dob, city, deviceId, cb) {
     console.log('USER', phoneNumber, role)
     const Individual = app.models.individual;
@@ -114,28 +113,84 @@ module.exports = function (User) {
   },
   );
 
+  /***************************VERIFY OTP************************************/
+  function verifyOtp(phoneNumber, otp) {
+    console.log('dataaaa', phoneNumber, otp)
+    return new Promise((resolve, reject) => {
+      let verifyOtpUrl = 'https://control.msg91.com/api/verifyRequestOTP.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=' + phoneNumber + '&otp=' + otp;
+      console.log('verifyOtpUrl', verifyOtpUrl)
+      fetch(verifyOtpUrl, {
+        method: 'POSt'
+      })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+          console.log('url json response', responseJSON)
+          resolve(responseJSON)
+        });
+      // })
+    })
+  }
+
+  User.verifyotp = function (phoneNumber, otp, role, name, gender, dob, city, deviceId, socketId, cb) {
+    console.log('USER Verification', phoneNumber, otp)
+    const Individual =app.models.individual
+    verifyOtp(phoneNumber, otp).then((result) => {
+      console.log('resultttttt', result)
+      if (result.type == 'success') {
+        // for user creation and individual creation
+      
+        User.create(
+          { phoneNumber: phoneNumber, role: role, }, function (err, res) {
+            console.log('user created response', res)
+            // send otp and verify it then create individual
+            Individual.create({
+              name: name, phoneNumber: phoneNumber, gender: gender, dob: dob, city: city, deviceId: deviceId, userId: res.userId, socketId: socketId ? socketId : ''
+            }, function (err, res) {
+              console.log('created individual data', res)
+              var sucresponse = {
+                error: false,
+                user: res,
+                message: 'User created Successfully'
+              }
+              cb(null, err || sucresponse);
+            })
+          }
+        );
+      }
+      else {
+        var otperror = {
+          error: true,
+          message: ' Invalid Otp ',
+
+        }
+        cb(null, otperror)
+      }
+    })
+      .catch(err => {
+        cb(null, err)
+      })
+  }
+
+  User.remoteMethod('verifyotp', {
+    http: { path: '/verifyotp', verb: 'post' },
+    accepts: [
+      { arg: 'phoneNumber', type: 'string' },
+      { arg: 'otp', type: 'string' },
+      { arg: 'role', type: 'string' },
+      { arg: 'name', type: 'string' },
+      { arg: 'gender', type: 'string' },
+      { arg: 'dob', type: 'string' },
+      { arg: 'city', type: 'string' },
+      { arg: 'deviceId', type: 'string' },
+      {arg:'socketId', type:'string'}
+    ],
+    return: { arg: 'result', type: 'string' },
+  })
 };
 
-// for user creation and individual creation
- // User.create(
-            //   { phoneNumber: phoneNumber, role: role, }, function (err, res) {
-            //     console.log('user created response', res)
-            //     // send otp and verify it then create individual
-            //     Individual.create({
-            //       name: name, phoneNumber: phoneNumber, gender: gender, dob: dob, city: city, deviceId: deviceId, userId: res.userId
-            //     }, function (err, res) {
-            //       console.log('created individual data', res)
-            //       var sucresponse = {
-            //         error: false,
-            //         user: res,
-            //         message: 'User created Successfully'
-            //       }
-            //       cb(null, err || sucresponse);
-            //     })
+/**********************END OF VERIFY OTP*******************************/
 
-            //     // cb(null);
-            //   }
-            // );
+
 
 
              // User.addPharmacy = async function (userData) {
