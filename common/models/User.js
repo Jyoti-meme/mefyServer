@@ -218,7 +218,7 @@ module.exports = function (User) {
 
 /***************RESEND OTP********************** */
 User.remoteMethod('resendOtp', {
-  http: { path: '/resendOtp', verb: 'post' },
+  http: { path: '/resendotp', verb: 'post' },
   accepts: [
     { arg: 'phoneNumber', type: 'string' },
     { arg: 'retrytype', type: 'string' }
