@@ -21,7 +21,7 @@
     "loopback": "^3.19.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.0.0",
-    "loopback-connector-composer": "0.19.12",
+    "loopback-connector-composer": "0.20.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^2.0.0"
   },
