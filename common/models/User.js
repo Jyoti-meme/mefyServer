@@ -36,7 +36,7 @@ module.exports = function (User) {
 
 /************USER REGISTRATION OTP SENDING**************** */
   User.remoteMethod('registration', {
-    http: { path: '/registration', verb: 'post' },
+    http: { path: '/pre-registration', verb: 'post' },
     accepts: [
       { arg: 'phoneNumber', type: 'string' },
       { arg: 'role', type: 'string' }
@@ -107,7 +107,7 @@ module.exports = function (User) {
   /***************************VERIFY OTP************************************/
 
   User.remoteMethod('verifyotp', {
-    http: { path: '/verifyotp', verb: 'post' },
+    http: { path: '/registration', verb: 'post' },
     accepts: [
       { arg: 'phoneNumber', type: 'string' },
       { arg: 'otp', type: 'string' },
