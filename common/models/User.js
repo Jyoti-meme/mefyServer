@@ -36,7 +36,7 @@ module.exports = function (User) {
 
 /************USER REGISTRATION OTP SENDING**************** */
   User.remoteMethod('registration', {
-    http: { path: '/pre-registration', verb: 'post' },
+    http: { path: '/preregistration', verb: 'post' },
     accepts: [
       { arg: 'phoneNumber', type: 'string' },
       { arg: 'role', type: 'string' }
