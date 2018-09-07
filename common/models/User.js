@@ -34,7 +34,7 @@ module.exports = function (User) {
     next(ctx.error);
   });
 
-/************USER REGISTRATION OTP SENDING**************** */
+  /************USER REGISTRATION OTP SENDING**************** */
   User.remoteMethod('registration', {
     http: { path: '/preregistration', verb: 'post' },
     accepts: [
@@ -47,7 +47,7 @@ module.exports = function (User) {
   // USER REGISTRATION API
   User.registration = function (phoneNumber, role, cb) {
     console.log('USER', phoneNumber, role)
-  
+
     User.find({ where: { and: [{ phoneNumber: phoneNumber }, { role: role }] } }, function (err, user) {
       console.log('user info', user)
       if (user.length != 0) {
@@ -100,7 +100,7 @@ module.exports = function (User) {
         })
         .catch((error) => {
           reject(err)
-      }) 
+        })
     })
   }
 
@@ -112,7 +112,7 @@ module.exports = function (User) {
       { arg: 'phoneNumber', type: 'string' },
       { arg: 'otp', type: 'string' },
       { arg: 'role', type: 'string' },
-      
+
       { arg: 'name', type: 'string' },
       { arg: 'gender', type: 'string' },
       { arg: 'dob', type: 'string' },
@@ -128,54 +128,54 @@ module.exports = function (User) {
   User.verifyotp = function (phoneNumber, otp, role, name, gender, dob, city, deviceId, socketId, cb) {
     console.log('USER', phoneNumber, role)
     // cb(null,{ name: "Pushpendu" });
-    const Doctor=app.models.doctor;
+    const Doctor = app.models.doctor;
     const Individual = app.models.individual
     verifyOtp(phoneNumber, otp).then(function (result) {
       console.log('resultttttt', result)
       if (result.type == 'success') {
         // for user creation and individual creation
-       console.log('user  role',role)
-            /**Doctor created**/
-       if(role == 'doctor'){
-        User.create(
-          { phoneNumber: phoneNumber, role: role, }, function (err, res) {
-            console.log('user created response', res)
-            // send otp and verify it then create Doctor
-            Doctor.create({
-              name: name, phoneNumber: phoneNumber, gender: gender, dob: dob, city: city, deviceId: deviceId, userId: res.userId, socketId: socketId ? socketId : ''
-            }, function (err, res) {
-              console.log('created Doctor data', res)
-              var sucresponse = {
-                error: false,
-                user: res,
-                message: 'User created Successfully'
-              }
-              cb(null, sucresponse);
-            })
-          }
-        );
-       }
-       else{
-            /** User created**/
-        User.create(
-          { phoneNumber: phoneNumber, role: role, }, function (err, res) {
-            console.log('user created response', res)
-            // send otp and verify it then create individual
-            Individual.create({
-              name: name, phoneNumber: phoneNumber, gender: gender, dob: dob, city: city, deviceId: deviceId, userId: res.userId, socketId: socketId ? socketId : ''
-            }, function (err, res) {
-              console.log('created individual data', res)
-              var sucresponse1 = {
-                error: false,
-                user: res,
-                message: 'User created Successfully'
-              }
-              cb(null, sucresponse1);
-            })
-          }
-        );
+        console.log('user  role', role)
+        /**Doctor created**/
+        if (role == 'doctor') {
+          User.create(
+            { phoneNumber: phoneNumber, role: role, }, function (err, res) {
+              console.log('user created response', res)
+              // send otp and verify it then create Doctor
+              Doctor.create({
+                name: name, phoneNumber: phoneNumber, gender: gender, dob: dob, city: city, deviceId: deviceId, userId: res.userId, socketId: socketId ? socketId : ''
+              }, function (err, res) {
+                console.log('created Doctor data', res)
+                var sucresponse = {
+                  error: false,
+                  user: res,
+                  message: 'User created Successfully'
+                }
+                cb(null, sucresponse);
+              })
+            }
+          );
+        }
+        else {
+          /** User created**/
+          User.create(
+            { phoneNumber: phoneNumber, role: role, }, function (err, res) {
+              console.log('user created response', res)
+              // send otp and verify it then create individual
+              Individual.create({
+                name: name, phoneNumber: phoneNumber, gender: gender, dob: dob, city: city, deviceId: deviceId, userId: res.userId, socketId: socketId ? socketId : ''
+              }, function (err, res) {
+                console.log('created individual data', res)
+                var sucresponse1 = {
+                  error: false,
+                  user: res,
+                  message: 'User created Successfully'
+                }
+                cb(null, sucresponse1);
+              })
+            }
+          );
+        }
       }
-    }
       else {
         var otperror = {
           error: true,
@@ -214,56 +214,56 @@ module.exports = function (User) {
     })
   }
 
-/**********************END OF VERIFY OTP*******************************/
+  /**********************END OF VERIFY OTP*******************************/
 
-/***************RESEND OTP********************** */
-User.remoteMethod('resendOtp', {
-  http: { path: '/resendotp', verb: 'post' },
-  accepts: [
-    { arg: 'phoneNumber', type: 'string' },
-    { arg: 'retrytype', type: 'string' }
-  ],
-  returns: { arg: 'result', type: 'string' },
-});
+  /***************RESEND OTP********************** */
+  User.remoteMethod('resendOtp', {
+    http: { path: '/resendotp', verb: 'post' },
+    accepts: [
+      { arg: 'phoneNumber', type: 'string' },
+      { arg: 'retrytype', type: 'string' }
+    ],
+    returns: { arg: 'result', type: 'string' },
+  });
 
 
 
-// USER REGISTRATION API
-User.resendOtp = function (phoneNumber, retrytype, cb) {
-  let url = "http://control.msg91.com/api/retryotp.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=" + phoneNumber + '&retrytype=' + retrytype;
-  fetch(url, {
-    method: 'POST'
-  })
-    .then((response) => response.json())
-    .then((responseJSON) => {
-      console.log(responseJSON);
-      console.log('url json response', responseJSON)
-      if (responseJSON.type == "success") {
-        console.log('inside if')
-        let resendresponse = {
-          error: false,
-          message: 'OTP sent successfully'
+  // USER REGISTRATION API
+  User.resendOtp = function (phoneNumber, retrytype, cb) {
+    let url = "http://control.msg91.com/api/retryotp.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=" + phoneNumber + '&retrytype=' + retrytype;
+    fetch(url, {
+      method: 'POST'
+    })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        console.log(responseJSON);
+        console.log('url json response', responseJSON)
+        if (responseJSON.type == "success") {
+          console.log('inside if')
+          let resendresponse = {
+            error: false,
+            message: 'OTP sent successfully'
+          }
+          cb(null, resendresponse);
+          console.log('after reseb dotp')
         }
-        cb(null,resendresponse);
-        console.log('after reseb dotp')
-      }
-      else {
-        console.log('inside else')
-        let responses = {
+        else {
+          console.log('inside else')
+          let responses = {
+            error: true,
+            message: 'OTP sending failed'
+          }
+          cb(null, responses)
+        }
+      }).catch(err => {
+        let responses1 = {
           error: true,
           message: 'OTP sending failed'
         }
-        cb(null, responses)
-      }
-    }).catch(err => {
-      let responses1 = {
-        error: true,
-        message: 'OTP sending failed'
-      }
-      cb(null, responses1)
-    })
-}
-/*************************************** */
+        cb(null, responses1)
+      })
+  }
+  /*************************************** */
 };
 
 

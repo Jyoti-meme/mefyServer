@@ -26,7 +26,7 @@
       "id": true,
       "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "defaultFn": "uuidv4"
     },
     "userId": {
       "type": "any",
@@ -130,6 +130,10 @@
     "credit": {
       "type": "string",
       "default": "0",
+      "required": true
+    },
+    "deviceId": {
+      "type": "string",
       "required": true
     },
     "socketId": {
