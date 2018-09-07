@@ -129,7 +129,7 @@ module.exports = function (User) {
     console.log('USER', phoneNumber, role)
     // cb(null,{ name: "Pushpendu" });
     const Doctor = app.models.doctor;
-    const Individual = app.models.individual
+    const Individual = app.models.individual;
     verifyOtp(phoneNumber, otp).then(function (result) {
       console.log('resultttttt', result)
       if (result.type == 'success') {

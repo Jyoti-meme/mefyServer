@@ -41,6 +41,10 @@
       "type": "string",
       "required": false
     },
+    "phoneNumber": {
+      "type": "string",
+      "required": false
+    },
     "dob": {
       "type": "string",
       "required": false
