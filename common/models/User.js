@@ -265,6 +265,134 @@ module.exports = function (User) {
       })
   }
   /*************************************** */
+
+/***********************USER(INDIVIDUAL/DOCTOR) LOGIN*************************** */
+User.remoteMethod('login', {
+  http: { path: '/login', verb: 'post' },
+  accepts: [
+    { arg: 'phoneNumber', type: 'string',required:true},
+    { arg: 'deviceId', type: 'string',required:true },
+    {arg:'role',type:'string',required:true}
+  ],
+  returns: { arg: 'result', type: 'string' },
+});
+
+User.login=function(phoneNumber,deviceId,role,cb){
+console.log(phoneNumber,deviceId,role)
+const Individual=app.models.individual;
+const Doctor=app.models.doctor;
+
+User.findOne({ where:{and:[{phoneNumber: phoneNumber },{role:role}]}  }, function (err, exists) {
+  console.log('user existence',exists)
+if(Object.keys(exists).length!=0){
+  //user exists 
+ if(role=='doctor'){
+   console.log(exists.userId)
+ Doctor.findOne({where:{ userId:'resource:io.mefy.commonModel.User#'+exists.userId}}, function (err, doctor) {
+      console.log('doctor',doctor)
+      if(doctor.deviceId==deviceId){
+        console.log('device id matched')
+        // login
+        let dloggedin={
+                  error:false,
+                  user:doctor,
+                  message:'Doctor loggedIn successfully'
+                }
+                cb(null,dloggedin)
+      }
+      else{
+        // send otp
+        sendOtp(phoneNumber).then(function (result) {
+          console.log('RRESULT', result)
+          if (result.type == 'success') {
+            var otpresponse = {
+              err: false,
+              message: 'OTP sent to registered number'
+            }
+            cb(null, otpresponse)
+          }
+          else {
+            var otperror = {
+              error: true,
+              message: 'Otp sending falied',
+              details: result
+            }
+            cb(null, otperror)
+          }
+        }).catch(err => {
+          cb(null, err)
+        })
+      }
+      
+ })
+ }
+ else{
+   Individual.findOne({where:{ userId:'resource:io.mefy.commonModel.User#'+exists.userId}}, function (err, individual) {
+     console.log('in',individual)
+    
+     if(individual.deviceId == deviceId){
+       //login
+      let loggedin={
+        error:false,
+        user:individual,
+        message:'Individual loggedIn successfully'
+      }
+      cb(null,loggedin)
+     }
+     else{
+       //send otp
+      sendOtp(phoneNumber).then(function (result) {
+        console.log('RRESULT', result)
+        if (result.type == 'success') {
+          var otpresponse = {
+            err: false,
+            message: 'OTP sent to registered number'
+          }
+          cb(null, otpresponse)
+        }
+        else {
+          var otperror = {
+            error: true,
+            message: 'Otp sending falied',
+            details: result
+          }
+          cb(null, otperror)
+        }
+      }).catch(err => {
+        cb(null, err)
+      })
+     }
+   
+   })
+  }
+
+}  
+else{
+  //user not registered
+  let errMessage={
+    error:true,
+    message:'User not Registered'
+  }
+  cb(null,errMessage)
+}
+})
+}
+
+
+/****************************************************************************** */
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
 
@@ -278,34 +406,3 @@ module.exports = function (User) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-             // User.addPharmacy = async function (userData) {
-
-  //   bizNetworkConnection.connect(cardName)
-  //     .then((result) => {
-  //       bizNetworkConnection.getAssetRegistry('io.mefy.pharmacy.User')
-  //         .then((result) => {
-  //           console.log(result);
-  //           // this.titlesRegistry = result;
-  //         });
-  //     }).catch((error) => {
-  //       console.log(error);
-  //     });
-
-  //   let userId = "9734072595";
-  //   let pharmacyUser = {
-  //     "tradeLicenseId": "tradelisenceone",
-  //     "role": "admin"
-  //   }
-  //   return userData;
-  // }
