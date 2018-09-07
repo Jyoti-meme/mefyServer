@@ -91,7 +91,7 @@ module.exports = function (User) {
   // send otp to number
   function sendOtp(phoneNumber) {
     return new Promise((resolve, reject) => {
-      let url = 'http://control.msg91.com/api/sendotp.php?authkey=235289A8Oo7Uojwo5b8cd569&message=%23%23OTP%23%23&sender=MEFYME&mobile=' + phoneNumber;
+      let url = 'http://control.msg91.com/api/sendotp.php?authkey=235477AKwYpPQcD5b8e270f&message=%23%23OTP%23%23&sender=MEFYME&mobile=' + phoneNumber;
       fetch(url, {
         method: 'GET'
       })
@@ -199,7 +199,7 @@ module.exports = function (User) {
   function verifyOtp(phoneNumber, otp) {
     console.log('dataaaa', phoneNumber, otp)
     return new Promise((resolve, reject) => {
-      let verifyOtpUrl = 'https://control.msg91.com/api/verifyRequestOTP.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=' + phoneNumber + '&otp=' + otp;
+      let verifyOtpUrl = 'https://control.msg91.com/api/verifyRequestOTP.php?authkey=235477AKwYpPQcD5b8e270f&mobile=' + phoneNumber + '&otp=' + otp;
       console.log('verifyOtpUrl', verifyOtpUrl)
       fetch(verifyOtpUrl, {
         method: 'POST'
@@ -231,7 +231,7 @@ module.exports = function (User) {
 
   // USER REGISTRATION API
   User.resendOtp = function (phoneNumber, retrytype, cb) {
-    let url = "http://control.msg91.com/api/retryotp.php?authkey=235289A8Oo7Uojwo5b8cd569&mobile=" + phoneNumber + '&retrytype=' + retrytype;
+    let url = "http://control.msg91.com/api/retryotp.php?authkey=235477AKwYpPQcD5b8e270f&mobile=" + phoneNumber + '&retrytype=' + retrytype;
     fetch(url, {
       method: 'POST'
     })
