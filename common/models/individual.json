@@ -26,7 +26,7 @@
       "id": true,
       "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "defaultFn": "uuidv4"
     },
     "userId": {
       "type": "any",
@@ -114,6 +114,10 @@
     "edgeEnable": {
       "type": "number",
       "required": false
+    },
+    "deviceId": {
+      "type": "string",
+      "required": true
     },
     "socketId": {
       "type": "string",
