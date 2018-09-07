@@ -5,7 +5,10 @@ const BusinessNetworkConnection = require('composer-client').BusinessNetworkConn
 const bizNetworkConnection = new BusinessNetworkConnection();
 const cardName = "admin@mefy";
 const app = require('../../server/server');
-;
+
+// const Individual = app.models.individual;
+// const Doctor = app.models.doctor;
+
 module.exports = function (User) {
 
   /***CHECK THE EXISTENCE OF EMAIL AND PHONENUMBER */
@@ -125,7 +128,7 @@ module.exports = function (User) {
   });
 
 
-// d
+  // d
   User.verifyotp = function (phoneNumber, otp, role, name, gender, dob, city, deviceId, socketId, cb) {
     console.log('USER', phoneNumber, role)
     // cb(null,{ name: "Pushpendu" });
@@ -266,122 +269,178 @@ module.exports = function (User) {
   }
   /*************************************** */
 
-/***********************USER(INDIVIDUAL/DOCTOR) LOGIN*************************** */
-User.remoteMethod('login', {
-  http: { path: '/login', verb: 'post' },
-  accepts: [
-    { arg: 'phoneNumber', type: 'string',required:true},
-    { arg: 'deviceId', type: 'string',required:true },
-    {arg:'role',type:'string',required:true}
-  ],
-  returns: { arg: 'result', type: 'string' },
-});
+  /***********************USER(INDIVIDUAL/DOCTOR) LOGIN*************************** */
+  User.remoteMethod('login', {
+    http: { path: '/login', verb: 'post' },
+    accepts: [
+      { arg: 'phoneNumber', type: 'string', required: true },
+      { arg: 'deviceId', type: 'string', required: true },
+      { arg: 'role', type: 'string', required: true }
+    ],
+    returns: { arg: 'result', type: 'string' },
+  });
 
-User.login=function(phoneNumber,deviceId,role,cb){
-console.log(phoneNumber,deviceId,role)
-const Individual=app.models.individual;
-const Doctor=app.models.doctor;
+  User.login = function (phoneNumber, deviceId, role, cb) {
+    console.log(phoneNumber, deviceId, role)
+    const Individual = app.models.individual;
+    const Doctor = app.models.doctor;
 
-User.findOne({ where:{and:[{phoneNumber: phoneNumber },{role:role}]}  }, function (err, exists) {
-  console.log('user existence',exists)
-if(Object.keys(exists).length!=0){
-  //user exists 
- if(role=='doctor'){
-   console.log(exists.userId)
- Doctor.findOne({where:{ userId:'resource:io.mefy.commonModel.User#'+exists.userId}}, function (err, doctor) {
-      console.log('doctor',doctor)
-      if(doctor.deviceId==deviceId){
-        console.log('device id matched')
-        // login
-        let dloggedin={
-                  error:false,
-                  user:doctor,
-                  message:'Doctor loggedIn successfully'
+    User.findOne({ where: { and: [{ phoneNumber: phoneNumber }, { role: role }] } }, function (err, exists) {
+      console.log('user existence', exists)
+      if (exists!=null  && Object.keys(exists).length != 0) {
+        //user exists 
+        if (role == 'doctor') {
+          console.log(exists.userId)
+          Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, doctor) {
+            console.log('doctor', doctor)
+            if (doctor.deviceId == deviceId) {
+              console.log('device id matched')
+              // login
+              let dloggedin = {
+                error: false,
+                user: doctor,
+                message: 'Doctor loggedIn successfully'
+              }
+              cb(null, dloggedin)
+            }
+            else {
+              // send otp
+              sendOtp(phoneNumber).then(function (result) {
+                console.log('RRESULT', result)
+                if (result.type == 'success') {
+                  var otpresponse = {
+                    err: false,
+                    message: 'OTP sent to registered number'
+                  }
+                  cb(null, otpresponse)
                 }
-                cb(null,dloggedin)
-      }
-      else{
-        // send otp
-        sendOtp(phoneNumber).then(function (result) {
-          console.log('RRESULT', result)
-          if (result.type == 'success') {
-            var otpresponse = {
-              err: false,
-              message: 'OTP sent to registered number'
+                else {
+                  var otperror = {
+                    error: true,
+                    message: 'Otp sending falied',
+                    details: result
+                  }
+                  cb(null, otperror)
+                }
+              }).catch(err => {
+                cb(null, err)
+              })
             }
-            cb(null, otpresponse)
-          }
-          else {
-            var otperror = {
-              error: true,
-              message: 'Otp sending falied',
-              details: result
-            }
-            cb(null, otperror)
-          }
-        }).catch(err => {
-          cb(null, err)
-        })
-      }
-      
- })
- }
- else{
-   Individual.findOne({where:{ userId:'resource:io.mefy.commonModel.User#'+exists.userId}}, function (err, individual) {
-     console.log('in',individual)
-    
-     if(individual.deviceId == deviceId){
-       //login
-      let loggedin={
-        error:false,
-        user:individual,
-        message:'Individual loggedIn successfully'
-      }
-      cb(null,loggedin)
-     }
-     else{
-       //send otp
-      sendOtp(phoneNumber).then(function (result) {
-        console.log('RRESULT', result)
-        if (result.type == 'success') {
-          var otpresponse = {
-            err: false,
-            message: 'OTP sent to registered number'
-          }
-          cb(null, otpresponse)
+
+          })
         }
         else {
-          var otperror = {
-            error: true,
-            message: 'Otp sending falied',
-            details: result
-          }
-          cb(null, otperror)
+          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, individual) {
+            console.log('in', individual)
+
+            if (individual.deviceId == deviceId) {
+              //login
+              let loggedin = {
+                error: false,
+                user: individual,
+                message: 'Individual loggedIn successfully'
+              }
+              cb(null, loggedin)
+            }
+            else {
+              //send otp
+              sendOtp(phoneNumber).then(function (result) {
+                console.log('RRESULT', result)
+                if (result.type == 'success') {
+                  var otpresponse = {
+                    err: false,
+                    message: 'OTP sent to registered number'
+                  }
+                  cb(null, otpresponse)
+                }
+                else {
+                  var otperror = {
+                    error: true,
+                    message: 'Otp sending falied',
+                    details: result
+                  }
+                  cb(null, otperror)
+                }
+              }).catch(err => {
+                cb(null, err)
+              })
+            }
+
+          })
         }
-      }).catch(err => {
-        cb(null, err)
-      })
-     }
-   
-   })
+
+      }
+      else {
+        //user not registered
+        let errMessage = {
+          error: true,
+          message: 'User not Registered'
+        }
+        cb(null, errMessage)
+      }
+    })
   }
 
-}  
-else{
-  //user not registered
-  let errMessage={
-    error:true,
-    message:'User not Registered'
+
+  /*********************************END********************************************* */
+
+  /***************GET USER PROFILE FOR DOCTOR/INDIVIDUAL************************ */
+  User.remoteMethod('profile', {
+    http: { path: '/profile', verb: 'get' },
+    accepts: [
+      { arg: 'userId', type: 'string', required: true },
+      { arg: 'role', type: 'string', required: true }
+    ],
+    returns: { arg: 'result', type: 'string' },
+  });
+
+  User.profile = function (userId, role, cb) {
+    console.log(userId, role)
+    const Doctor = app.models.doctor;
+    const Individual = app.models.individual;
+    User.findOne({ where: { userId: userId } }, function (err, exists) {
+      console.log('user existence', exists, userId)
+      if (exists!=null  && Object.keys(exists).length != 0 ) {
+        //user exists 
+        if (role == 'doctor') {
+          Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, doctor) {
+            console.log('doctor', doctor)
+            // login
+            let dloggedin = {
+              error: false,
+              user: doctor,
+              message: 'Doctor Profile'
+            }
+            cb(null, dloggedin)
+
+          })
+        }
+        else {
+          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, individual) {
+            console.log('in', individual)
+            //login
+            let loggedin = {
+              error: false,
+              user: individual,
+              message: 'Individual Profile'
+            }
+            cb(null, loggedin)
+
+          })
+        }
+
+      }
+      else {
+        //user not exists
+        let errMessage = {
+          error: true,
+          message: 'User not Exists'
+        }
+        cb(null, errMessage)
+      }
+    })
   }
-  cb(null,errMessage)
-}
-})
-}
-
-
-/****************************************************************************** */
-
-
+  /*******************************END***********************************************/
 
 
 
