@@ -37,6 +37,10 @@
       "type": "string",
       "required": false
     },
+    "phoneNumber": {
+      "type": "string",
+      "required": false
+    },
     "gender": {
       "type": "string",
       "required": false
@@ -136,6 +140,10 @@
       "type": "string",
       "required": false
     },
+    "deviceId": {
+      "type": "string",
+      "required": false
+    },
     "createdBy": {
       "type": "string",
       "required": false
@@ -159,7 +167,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "userId": {
+      "type": "belongsTo",
+      "model": "User",
+      "foreignKey": "userId"
+    }
+  },
   "acls": [],
   "methods": []
 }

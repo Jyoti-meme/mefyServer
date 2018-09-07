@@ -9,8 +9,8 @@ const app = require('../../server/server');
 module.exports = function (User) {
 
   /***CHECK THE EXISTENCE OF EMAIL AND PHONENUMBER */
-  User.validatesUniquenessOf('email', { message: 'email already exists' });
-  User.validatesUniquenessOf('phoneNumber', { message: 'phoneNumber already exists' });
+  // User.validatesUniquenessOf('email', { message: 'email already exists' });
+  // User.validatesUniquenessOf('phoneNumber', { message: 'phoneNumber already exists' });
 
 
   /*** AFTER REMOTE METHOD  */
@@ -124,19 +124,21 @@ module.exports = function (User) {
   });
 
 
-
+// d
   User.verifyotp = function (phoneNumber, otp, role, name, gender, dob, city, deviceId, socketId, cb) {
     console.log('USER', phoneNumber, role)
     // cb(null,{ name: "Pushpendu" });
-    const Doctor=app.models.doctor;
-    const Individual = app.models.individual
+    const Doctor = app.models.doctor;
+    const Individual = app.models.individual;
     verifyOtp(phoneNumber, otp).then(function (result) {
       console.log('resultttttt', result)
       if (result.type == 'success') {
         // for user creation and individual creation
-       console.log('user  role',role)
+      
             /**Doctor created**/
-       if(role == 'doctor'){
+       if(role === "doctor"){
+        console.log('role',role)
+       
         User.create(
           { phoneNumber: phoneNumber, role: role, }, function (err, res) {
             console.log('user created response', res)
@@ -157,6 +159,7 @@ module.exports = function (User) {
        }
        else{
             /** User created**/
+            console.log('role',role)
         User.create(
           { phoneNumber: phoneNumber, role: role, }, function (err, res) {
             console.log('user created response', res)

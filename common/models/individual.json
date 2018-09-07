@@ -119,6 +119,10 @@
       "type": "string",
       "required": false
     },
+    "deviceId": {
+      "type": "string",
+      "required": false
+    },
     "family": {
       "type": [
         "Family"
@@ -156,7 +160,12 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "userId": {
+    "type": "belongsTo",
+    "model": "User",
+    "foreignKey": "userId"
+  }},
   "acls": [],
   "methods": []
 }
