@@ -45,10 +45,6 @@
       "type": "string",
       "required": false
     },
-    "phoneNumber": {
-      "type": "string",
-      "required": false
-    },
     "dob": {
       "type": "string",
       "required": false
@@ -145,10 +141,6 @@
       "required": true
     },
     "socketId": {
-      "type": "string",
-      "required": false
-    },
-    "deviceId": {
       "type": "string",
       "required": false
     },
