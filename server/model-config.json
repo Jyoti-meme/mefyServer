@@ -27,43 +27,43 @@
   },
   "eConsult": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "account": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "kyc": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "bill": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "billInfo": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "order": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "appointment": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "transaction": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "transactionMaster": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Items": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "prescription": {
     "dataSource": "composer",
@@ -75,59 +75,59 @@
   },
   "doctorRegistration": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "clinic": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "referal": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "subscription": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "contact": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "mefyContact": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "preRegistration": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "QOptions": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Question": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "ResponseC": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Response": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Geo": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "City": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "spirometer": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "individual": {
     "dataSource": "composer",
@@ -135,67 +135,67 @@
   },
   "Family": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "family": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "SufferingDate": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Duration": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Notes": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "familyMember": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "medical": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Durations": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Medicine": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "medication": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "immunization": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "allergies": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "TreatmentTaken": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "surgical": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "TreatmentDetails": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "vitalStats": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "Pharmacy": {
     "dataSource": "composer",
@@ -203,7 +203,7 @@
   },
   "Address": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "UserPharmacy": {
     "dataSource": "composer",
@@ -235,26 +235,26 @@
   },
   "advice": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "lifeStyle": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "prescribeMedicine": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "diagnosis": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "recommended": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   },
   "instruction": {
     "dataSource": "composer",
-    "public": true
+    "public": false
   }
 }
