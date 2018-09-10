@@ -29,7 +29,7 @@ module.exports = function (User) {
 // HIDE UNUSED REMOTE METHODS
 const enabledRemoteMethods = ["create","findById", "registration", "deleteById","verifyotp","resendOtp","login","profile"];
 User.sharedClass.methods().forEach(method => {
-  console.log('metods name',method.stringName)
+  // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
       User.disableRemoteMethodByName(methodName);
