@@ -6,9 +6,6 @@ const bizNetworkConnection = new BusinessNetworkConnection();
 const cardName = "admin@mefy";
 const app = require('../../server/server');
 
-// const Individual = app.models.individual;
-// const Doctor = app.models.doctor;
-
 module.exports = function (User) {
 
   /***CHECK THE EXISTENCE OF EMAIL AND PHONENUMBER */
@@ -28,6 +25,20 @@ module.exports = function (User) {
   //   next();
   // })
 
+
+// HIDE UNUSED REMOTE METHODS
+const enabledRemoteMethods = ["create","findById", "registration", "deleteById","verifyotp","resendOtp","login","profile"];
+User.sharedClass.methods().forEach(method => {
+  console.log('metods name',method.stringName)
+    const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
+    if (enabledRemoteMethods.indexOf(methodName) === -1) {
+      User.disableRemoteMethodByName(methodName);
+    }
+  });
+
+
+
+
   /*** CATCH ERORRS */
   User.afterRemoteError('create', function (ctx, next) {
     console.log(ctx.error.details)
@@ -38,7 +49,7 @@ module.exports = function (User) {
     next(ctx.error);
   });
 
-  /************USER REGISTRATION OTP SENDING**************** */
+  /************USER REGISTRATION OTP SENDING STARTS **************** */
   User.remoteMethod('registration', {
     http: { path: '/preregistration', verb: 'post' },
     accepts: [
@@ -107,8 +118,8 @@ module.exports = function (User) {
         })
     })
   }
-
-  /***************************VERIFY OTP************************************/
+/******************************* ENDS ************************************************* */
+  /************************************VERIFY OTP STARTS *********************************/
 
   User.remoteMethod('verifyotp', {
     http: { path: '/registration', verb: 'post' },
@@ -220,7 +231,7 @@ module.exports = function (User) {
 
   /**********************END OF VERIFY OTP*******************************/
 
-  /***************RESEND OTP********************** */
+  /******************************** RESEND OTP STARTS  ********************** */
   User.remoteMethod('resendOtp', {
     http: { path: '/resendotp', verb: 'post' },
     accepts: [
@@ -267,9 +278,9 @@ module.exports = function (User) {
         cb(null, responses1)
       })
   }
-  /*************************************** */
+  /******************************** ENDS ****************************************** */
 
-  /***********************USER(INDIVIDUAL/DOCTOR) LOGIN*************************** */
+  /***********************USER(INDIVIDUAL/DOCTOR) LOGIN* STARTS ************************** */
   User.remoteMethod('login', {
     http: { path: '/login', verb: 'post' },
     accepts: [
@@ -382,9 +393,9 @@ module.exports = function (User) {
   }
 
 
-  /*********************************END********************************************* */
+  /*********************************  END  ********************************************* */
 
-  /***************GET USER PROFILE FOR DOCTOR/INDIVIDUAL************************ */
+  /*************** GET USER PROFILE FOR DOCTOR/INDIVIDUAL  STARTS ************************ */
   User.remoteMethod('profile', {
     http: { path: '/profile', verb: 'get' },
     accepts: [
@@ -440,7 +451,7 @@ module.exports = function (User) {
       }
     })
   }
-  /*******************************END***********************************************/
+  /*******************************   ENDS   ***********************************************/
 
 
 

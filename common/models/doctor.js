@@ -4,12 +4,20 @@ const Composer = require('../lib/composer.js');
 const server = require('../../server/server');
 
 module.exports = function (doctor) {
-  // Composer.restrictModelMethods(doctor);
+  // HIDE UNUSED REMORE METHODS
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById"];
+  doctor.sharedClass.methods().forEach(method => {
+    const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
+    if (enabledRemoteMethods.indexOf(methodName) === -1) {
+      doctor.disableRemoteMethodByName(methodName);
+    }
+  });
 
-  /**********************************************DOCTOR UPDATE API******************** */
+  /****************************** DOCTOR UPDATE API STARTS *********************** */
 
   doctor.remoteMethod('updateProfile', {
     http: { path: '/profile/:userId', verb: 'put' },
+    description:"update doctor profile by userId",
     accepts: [
       { arg: 'userId', type: 'string', required: true, http: { source: 'path' } },
       { arg: 'data', type: 'obj' }
@@ -45,5 +53,5 @@ module.exports = function (doctor) {
       }
     })
   }
-  /******************************************************************************************* */
+  /************************************ENDS******************************************************* */
 };

@@ -4,11 +4,20 @@ const Composer = require('../lib/composer.js');
 
 module.exports = function (individual) {
 
+   // HIDE UNUSED REMORE METHODS
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById"];
+  individual.sharedClass.methods().forEach(method => {
+    const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
+    if (enabledRemoteMethods.indexOf(methodName) === -1) {
+      individual.disableRemoteMethodByName(methodName);
+    }
+  });
 
-  /*********************UPDATE INDIVIDUAL****************************** */
+  /*********************UPDATE INDIVIDUAL STARTS ****************************** */
 
   individual.remoteMethod('updateProfile', {
     http: { path: '/profile/:userId', verb: 'put' },
+    description:"update individual profile by userId",
     accepts: [
       { arg: 'userId', type: 'string', required: true, http: { source: 'path' } },
       { arg: 'data', type: 'obj' }
@@ -46,5 +55,5 @@ module.exports = function (individual) {
     })
   }
 
-  /******************************************************************** */
+  /********************************ENDS ************************************ */
 };
