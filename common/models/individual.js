@@ -20,7 +20,7 @@ module.exports = function (individual) {
     description: "update individual profile by userId",
     accepts: [
       { arg: 'userId', type: 'string', required: true, http: { source: 'path' } },
-      { arg: 'data', type: 'obj' }
+      { arg: 'data', type: 'obj' ,http: { source: 'body' } }
     ],
     returns: { arg: 'result', type: 'string' },
   });
@@ -65,7 +65,7 @@ module.exports = function (individual) {
     description: "add family members",
     accepts: [
       { arg: 'userId', type: 'string', required: true, http: { source: 'path' } },
-      { arg: 'data', type: 'obj' }
+      { arg: 'data', type: 'obj', http: { source: 'body' } }
     ],
     returns: { arg: 'result', type: 'string' },
   });

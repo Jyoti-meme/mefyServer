@@ -20,7 +20,7 @@ module.exports = function (doctor) {
     description:"update doctor profile by userId",
     accepts: [
       { arg: 'userId', type: 'string', required: true, http: { source: 'path' } },
-      { arg: 'data', type: 'obj' }
+      { arg: 'data', type: 'obj',http: { source: 'body' } }
     ],
     returns: { arg: 'result', type: 'string' },
   });
