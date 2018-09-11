@@ -115,10 +115,6 @@
       "type": "number",
       "required": false
     },
-    "deviceId": {
-      "type": "string",
-      "required": true
-    },
     "socketId": {
       "type": "string",
       "required": false
@@ -129,7 +125,7 @@
     },
     "family": {
       "type": [
-        "Family"
+        {}
       ],
       "default": [],
       "required": false
