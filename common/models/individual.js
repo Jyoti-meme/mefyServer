@@ -111,36 +111,82 @@ module.exports = function (individual) {
 
   /********************GET INDIVIDUAL DETAILS BASED ON ID FROM FAMILY ****************** */
 
-  individual.remoteMethod('getfamily', {
-    http: { path: '/getfamily', verb: 'get' },
-    description: "add family members",
-    accepts:
-      // { arg: 'individualId', type: 'string' },
-      { arg: 'userId', type: 'string' },
-    returns: { arg: 'result', type: 'string' },
-  });
+//   individual.remoteMethod('getfamily', {
+//     http: { path: '/getfamily', verb: 'get' },
+//     description: "add family members",
+//     accepts:
+//       // { arg: 'individualId', type: 'string' },
+//       { arg: 'userId', type: 'string' },
+//     returns: { arg: 'result', type: 'string' },
+//   });
 
 
-  individual.getfamily = function (userId, cb) {
-    console.log(userId)
-    individual.find({include: {individual: 'family'}}, function(err,res){
-cb(null,res)    })
-    // individual.find({
-    //   include: 'userId',
-    //   scope: {
-    //     fields: ['name', 'phoneNumber', 'role', 'gender', 'city'],
-    //     include: {
-    //       relation: 'User',
-    //       scope: {
-    //         where: { individualId: userId }
-    //       }
-    //     }
-    //   }
-    // }, function (err, res) {
-    //   console.log('fffff', res)
-    //   cb(null,res);
-    // })
-  }
+//   individual.getfamily = function (userId, cb) {
+//     console.log(userId)
+//     individual.findOne({where:{userId:'resource:io.mefy.commonModel.User#'+userId}},function(err,user){
+      
+//     })
+//     individual.findOne({
+//       userId: 'resource:io.mefy.commonModel.User#'+userId,
+//       // filter: {
+//       //   include: 'individual'
+//       // }
+//     },function(err,res){
+//       console.log('response',res)
+//       cb(null,res)
+//     });
+//     // individual.find({
+//     //   include: 'userId',
+//     //   scope: {
+//     //     fields: ['name', 'phoneNumber', 'role', 'gender', 'city'],
+//     //     include: {
+//     //       re": [
+// //   {
+// //     "x": {
+// //       "type": "number"
+// //     },
+// //     "y": {
+// //       "type": "string"
+// //     }
+// //   }
+// // ]
+//     //       se": [
+// //   {
+// //     "x": {
+// //       "type": "number"
+// //     },
+// //     "y": {
+// //       "type": "string"
+// //     }
+// //   }
+// // ]
+//     //        e": [
+// //   {
+// //     "x": {
+// //       "type": "number"
+// //     },
+// //     "y": {
+// //       "type": "string"
+// //     }
+// //   }
+// // ]
+//     //       }e": [
+// //   {
+// //     "x": {
+// //       "type": "number"
+// //     },
+// //     "y": {
+// //       "type": "string"
+// //     }
+// //   }
+// // ]
+//     //     }
+//     //   }
+//     // }, function (err, res) {
+//     //   console.log('fffff', res)
+//     //   cb(null,res);
+//     // })
+//   }
     // individual.find({where:{family:{inq:['Father']}}},function(err,res){
     //   console.log('response',res)
     //   cb();
@@ -173,3 +219,13 @@ cb(null,res)    })
 
 
 // {"name":"dev","phoneNumber":"823894944","city":"jsr","dob":"3-23-1990","gender":"male","relation":"papa"}
+// type": [
+//   {
+//     "x": {
+//       "type": "number"
+//     },
+//     "y": {
+//       "type": "string"
+//     }
+//   }
+// ]

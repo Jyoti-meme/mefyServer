@@ -60,7 +60,6 @@ module.exports = function (User) {
   // USER REGISTRATION API
   User.registration = function (data, cb) {
     console.log('USER', data)
-
     User.find({ where: { and: [{ phoneNumber: data.phoneNumber }, { role: data.role }] } }, function (err, user) {
       console.log('user info', user)
       if (user.length != 0) {
@@ -315,16 +314,18 @@ module.exports = function (User) {
     console.log(logindata)
     const Individual = app.models.individual;
     const Doctor = app.models.doctor;
-
-    User.findOne({ where: { and: [{ phoneNumber:logindata.phoneNumber }, { role: logindata.role }] } }, function (err, exists) {
-      console.log('user existence', exists)
+// User.findOne({where:{and:[{phoneNumber:logindata.phoneNumber},{role:logindata.role}] } },function(err,exists){
+  User.findOne({ where: { and: [{ phoneNumber: logindata.phoneNumber }, { role: logindata.role }] } }, function (err, exists) {
+    console.log('user existence', exists)
+    // cb(null,exists)
       if (exists != null && Object.keys(exists).length != 0) {
+       
         //user exists 
-        if (role == 'doctor') {
+        if (logindata.role == 'doctor') {
           console.log(exists.userId)
           Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, doctor) {
             console.log('doctor', doctor)
-            if (doctor.deviceId == deviceId) {
+            if (doctor.deviceId == logindata.deviceId) {
               console.log('device id matched')
               // login
               let dloggedin = {
@@ -369,7 +370,7 @@ module.exports = function (User) {
           Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, individual) {
             console.log('in', individual)
 
-            if (individual.deviceId == deviceId) {
+            if (individual.deviceId ==logindata.deviceId) {
               //login
               let loggedin = {
                 error: false,
@@ -385,7 +386,7 @@ module.exports = function (User) {
                       message: 'OTP sent to registered number'
                     }
                     cb(null, otpresponse)
-              // sendOtp(phoneNumber).then(function (result) {
+              // sendOtp(logindata.phoneNumber).then(function (result) {
               //   console.log('RRESULT', result)
               //   if (result.type == 'success') {
               //     var otpresponse = {
