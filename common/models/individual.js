@@ -5,7 +5,7 @@ const Composer = require('../lib/composer.js');
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById","find"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -20,7 +20,7 @@ module.exports = function (individual) {
     description: "update individual profile by userId",
     accepts: [
       { arg: 'userId', type: 'string', required: true, http: { source: 'path' } },
-      { arg: 'data', type: 'obj' ,http: { source: 'body' } }
+      { arg: 'data', type: 'obj', http: { source: 'body' } }
     ],
     returns: { arg: 'result', type: 'string' },
   });
@@ -71,43 +71,104 @@ module.exports = function (individual) {
   });
 
   individual.addFamily = function (userId, data, cb) {
-    let famarray=[];
+    let famarray = [];
     individual.create(
-      { name:data.name,phoneNumber: data.phoneNumber,dob:data.dob,gender:data.gender,city:data.city }, function (err, res) {
-      console.log('created individual data', res)
-     
-      individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, exists) {   
-             console.log('exists', exists);
-        if (exists != null && Object.keys(exists).length != 0) {
-         let datas={
-           relation:data.relation,
-           individual:res.individualId
-         } 
-         exists.family.push(datas);
-          console.log('data to be updated',famarray)
-          exists.updateAttribute('family',exists.family, function (err, result) {
-            console.log('result', result)
-            let successmessage={
-              error:false,
-              result:result,
-              message:'Family member addition failed'
-            }
-            cb(null,successmessage);
-          })
-        }
-        else {
-          let errormessage={
-            error:true,
-            message:"User not found"
-          }
-          cb(null,errormessage);
-        }
-      })
+      { name: data.name, phoneNumber: data.phoneNumber, dob: data.dob, gender: data.gender, city: data.city }, function (err, res) {
+        console.log('created individual data', res)
 
-    })
+        individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, exists) {
+          console.log('exists', exists);
+          if (exists != null && Object.keys(exists).length != 0) {
+            let datas = {
+              relation: data.relation,
+              individual: res.individualId
+            }
+            exists.family.push(datas);
+            console.log('data to be updated', famarray)
+            exists.updateAttribute('family', exists.family, function (err, result) {
+              console.log('result', result)
+              let successmessage = {
+                error: false,
+                result: result,
+                message: 'Family member addition failed'
+              }
+              cb(null, successmessage);
+            })
+          }
+          else {
+            let errormessage = {
+              error: true,
+              message: "User not found"
+            }
+            cb(null, errormessage);
+          }
+        })
+
+      })
   }
 
   /******************************************* ENDS *************************************** */
+
+  /********************GET INDIVIDUAL DETAILS BASED ON ID FROM FAMILY ****************** */
+
+//   individual.remoteMethod('getfamily', {
+//     http: { path: '/getfamily', verb: 'get' },
+//     description: "add family members",
+//     accepts:
+//       // { arg: 'individualId', type: 'string' },
+//       { arg: 'userId', type: 'string' },
+//     returns: { arg: 'result', type: 'string' },
+//   });
+
+
+//   individual.getfamily = function (userId, cb) {
+//     console.log(userId)
+//     individual.find({include: {individual: 'family'}}, function(err,res){
+// cb(null,res)    })
+//     // individual.find({
+//     //   include: 'userId',
+//     //   scope: {
+//     //     fields: ['name', 'phoneNumber', 'role', 'gender', 'city'],
+//     //     include: {
+//     //       relation: 'User',
+//     //       scope: {
+//     //         where: { individualId: userId }
+//     //       }
+//     //     }
+//     //   }
+//     // }, function (err, res) {
+//     //   console.log('fffff', res)
+//     //   cb(null,res);
+//     // })
+//   }
+    // individual.find({where:{family:{inq:['Father']}}},function(err,res){
+    //   console.log('response',res)
+    //   cb();
+    // })
+
+  //   include: {
+  //     relation: 'product',
+  //     scope: {
+  //       fields: ['productDesc']
+  //     }
+  //   },
+  //   where: {
+  //     id: 1
+  //   }
+  // }
+  /************************************************************************************* */
+  // include: {
+  //   relation: 'owner', // include the owner object
+  //   scope: { // further filter the owner object
+  //     fields: ['username', 'email'], // only show two fields
+  //     include: { // include orders for the owner
+  //       relation: 'orders', 
+  //       scope: {
+  //         where: {orderId: 5} // only select order with id 5
+  //       }
+  //     }
+  //   }
+  // }
 };
 
 

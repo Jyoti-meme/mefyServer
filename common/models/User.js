@@ -154,7 +154,7 @@ module.exports = function (User) {
       // if (result.type == 'success') {
         // for user creation and individual creation
         if(result){
-        console.log('user  role', role)
+        console.log('user  role', data.role)
         /**Doctor created**/
         if (data.role == 'doctor') {
           User.create(
@@ -205,6 +205,7 @@ module.exports = function (User) {
       }
     })
       .catch(err => {
+        console.log(err)
         var otperror1 = {
           error: true,
           message: '  Otp verification failed',
