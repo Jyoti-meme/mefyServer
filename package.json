@@ -23,6 +23,8 @@
     "loopback-component-explorer": "^6.0.0",
     "loopback-connector-composer": "0.20.0",
     "serve-favicon": "^2.0.1",
+    "socket.io": "^2.1.1",
+    "socketio-auth": "^0.1.1",
     "strong-error-handler": "^2.0.0"
   },
   "devDependencies": {

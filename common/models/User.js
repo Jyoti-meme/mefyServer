@@ -5,6 +5,8 @@ const BusinessNetworkConnection = require('composer-client').BusinessNetworkConn
 const bizNetworkConnection = new BusinessNetworkConnection();
 const cardName = "admin@mefy";
 const app = require('../../server/server');
+var sockConnection = require('../../server/sockett.js');
+var loopback = require('loopback');
 
 module.exports = function (User) {
 
@@ -154,7 +156,7 @@ module.exports = function (User) {
       // if (result.type == 'success') {
         // for user creation and individual creation
         if(result){
-        console.log('user  role', role)
+        console.log('user  role', data.role)
         /**Doctor created**/
         if (data.role == 'doctor') {
           User.create(
@@ -483,16 +485,19 @@ module.exports = function (User) {
   }
   /*******************************   ENDS   ***********************************************/
 
+ /************************ SOCKET CONNECT AT LOGIN******************* */
+  User.observe('after save', function (ctx, next) {
+    var socket = User.app.io;
+        //Now publishing the data..
 
-
-
-
-
-
-
-
-
-
+        sockConnection.publish(socket, {
+            collectionName : 'User',
+            data: ctx.instance,
+            method: 'POST'
+        });      
+    next();
+}); //after save..
+/*******************************  ENDS **************************/
 };
 
 
