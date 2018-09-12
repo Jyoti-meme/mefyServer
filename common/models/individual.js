@@ -111,121 +111,93 @@ module.exports = function (individual) {
 
   /********************GET INDIVIDUAL DETAILS BASED ON ID FROM FAMILY ****************** */
 
-//   individual.remoteMethod('getfamily', {
-//     http: { path: '/getfamily', verb: 'get' },
-//     description: "add family members",
-//     accepts:
-//       // { arg: 'individualId', type: 'string' },
-//       { arg: 'userId', type: 'string' },
-//     returns: { arg: 'result', type: 'string' },
-//   });
+  individual.remoteMethod('getfamily', {
+    http: { path: '/getfamily', verb: 'get' },
+    description: "add family members",
+    accepts: { arg: 'userId', type: 'string' },
+    returns: { arg: 'result', type: 'any' },
+  });
 
 
-//   individual.getfamily = function (userId, cb) {
-//     console.log(userId)
-//     individual.findOne({where:{userId:'resource:io.mefy.commonModel.User#'+userId}},function(err,user){
-      
-//     })
-//     individual.findOne({
-//       userId: 'resource:io.mefy.commonModel.User#'+userId,
-//       // filter: {
-//       //   include: 'individual'
-//       // }
-//     },function(err,res){
-//       console.log('response',res)
-//       cb(null,res)
-//     });
-//     // individual.find({
-//     //   include: 'userId',
-//     //   scope: {
-//     //     fields: ['name', 'phoneNumber', 'role', 'gender', 'city'],
-//     //     include: {
-//     //       re": [
-// //   {
-// //     "x": {
-// //       "type": "number"
-// //     },
-// //     "y": {
-// //       "type": "string"
-// //     }
-// //   }
-// // ]
-//     //       se": [
-// //   {
-// //     "x": {
-// //       "type": "number"
-// //     },
-// //     "y": {
-// //       "type": "string"
-// //     }
-// //   }
-// // ]
-//     //        e": [
-// //   {
-// //     "x": {
-// //       "type": "number"
-// //     },
-// //     "y": {
-// //       "type": "string"
-// //     }
-// //   }
-// // ]
-//     //       }e": [
-// //   {
-// //     "x": {
-// //       "type": "number"
-// //     },
-// //     "y": {
-// //       "type": "string"
-// //     }
-// //   }
-// // ]
-//     //     }
-//     //   }
-//     // }, function (err, res) {
-//     //   console.log('fffff', res)
-//     //   cb(null,res);
-//     // })
-//   }
-    // individual.find({where:{family:{inq:['Father']}}},function(err,res){
-    //   console.log('response',res)
-    //   cb();
-    // })
+  individual.getfamily = function (userId, cb) {
+    console.log(userId);
+    individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, user) {
+      if (user != null && Object.keys(user).length != 0) {
+        ProcessArray(user.family).then(users => {
+          let result = {
+            error: false,
+            family: users,
+            message: 'family member get successfull'
+          }
+          cb(null, result)
+        })
+          .catch(err => {
+            let errors = {
+              error: true,
+              message: 'Error in fetching data'
+            }
+            cb(null, errors);
+          })
+      } else {
+        let errors = {
+          error: true,
+          message: 'Error in fetching data'
+        }
+        cb(null, errors);
+      }
+    })
+  }
 
-  //   include: {
-  //     relation: 'product',
-  //     scope: {
-  //       fields: ['productDesc']
-  //     }
-  //   },
-  //   where: {
-  //     id: 1
-  //   }
-  // }
+
+  async function ProcessArray(array) {
+    // console.log('INSIDE PROCESS ARRAY', array)
+    const x = [];
+    for (const subs of array) {
+      // console.log('substitute data',subs)
+      await Promise.all([substitutedata(subs)]).then(function (values) {
+        // console.log('RETUNED VALUESSSS',values);
+        x.push(values[0]);
+      });
+    }
+    return x;
+  }
+
+  async function substitutedata(item) {
+    // console.log('INSIDE SUBSTITIUE FUNCTION', item)
+    return new Promise((resolve) => {
+      individual.findOne({ where: { individualId: item.individual.split('#')[1] } }, function (err, medicine) {
+        // console.log('INSIDE MEDICINE FIND METHOD', medicine[0])
+        console.log('mdecine', medicine)
+        resolve(medicine);
+      })
+    })
+  }
+
   /************************************************************************************* */
-  // include: {
-  //   relation: 'owner', // include the owner object
-  //   scope: { // further filter the owner object
-  //     fields: ['username', 'email'], // only show two fields
-  //     include: { // include orders for the owner
-  //       relation: 'orders', 
-  //       scope: {
-  //         where: {orderId: 5} // only select order with id 5
-  //       }
-  //     }
-  //   }
-  // }
+
 };
+  // individual.find({where:{family:{inq:['Father']}}},function(err,res){
+// individual.find({
+//   where: { userId: 'resource:io.mefy.commonModel.User#' + userId },
+//   include: {
+//     relation: "family",
+//     scope: {
+//       include: {
+//         relation: "individual"
 
-
-// {"name":"dev","phoneNumber":"823894944","city":"jsr","dob":"3-23-1990","gender":"male","relation":"papa"}
-// type": [
-//   {
-//     "x": {
-//       "type": "number"
-//     },
-//     "y": {
-//       "type": "string"
+//       },
 //     }
 //   }
-// ]
+// }, function (err, res) {
+//   console.log('response', res)
+//   cb(null, res)
+// })
+
+// {"name":"dev","phoneNumber":"823894944","city":"jsr","dob":"3-23-1990","gender":"male","relation":"papa"}
+// "family":{
+//   "type":"hasOne",
+//   "model":"individual",
+//   "foreignKey":"individual",
+//   "through": "individual"
+
+// }
