@@ -153,8 +153,8 @@ module.exports = function (User) {
     verifyOtp(data.phoneNumber, data.otp).then(function (result) {
       console.log('resultttttt', result)
       // if (result.type == 'success') {
-        // for user creation and individual creation
-        if(result){
+      // for user creation and individual creation
+      if (result) {
         console.log('user  role', data.role)
         /**Doctor created**/
         if (data.role == 'doctor') {
@@ -248,7 +248,7 @@ module.exports = function (User) {
   /******************************** RESEND OTP STARTS  ********************** */
   User.remoteMethod('resendOtp', {
     http: { path: '/resendotp', verb: 'post' },
-    accepts: {arg:'data',type:'object',http: { source: 'body' } },
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
     // [
     //   { arg: 'phoneNumber', type: 'string' },
     //   { arg: 'retrytype', type: 'string' }
@@ -303,7 +303,7 @@ module.exports = function (User) {
   /***********************USER(INDIVIDUAL/DOCTOR) LOGIN* STARTS ************************** */
   User.remoteMethod('login', {
     http: { path: '/login', verb: 'post' },
-    accepts: {arg:'logindata',type:'object',http: { source: 'body' }},
+    accepts: { arg: 'logindata', type: 'object', http: { source: 'body' } },
     // [
     //   { arg: 'phoneNumber', type: 'string', required: true },
     //   { arg: 'deviceId', type: 'string', required: true },
@@ -316,12 +316,12 @@ module.exports = function (User) {
     console.log(logindata)
     const Individual = app.models.individual;
     const Doctor = app.models.doctor;
-// User.findOne({where:{and:[{phoneNumber:logindata.phoneNumber},{role:logindata.role}] } },function(err,exists){
-  User.findOne({ where: { and: [{ phoneNumber: logindata.phoneNumber }, { role: logindata.role }] } }, function (err, exists) {
-    console.log('user existence', exists)
-    // cb(null,exists)
+    // User.findOne({where:{and:[{phoneNumber:logindata.phoneNumber},{role:logindata.role}] } },function(err,exists){
+    User.findOne({ where: { and: [{ phoneNumber: logindata.phoneNumber }, { role: logindata.role }] } }, function (err, exists) {
+      console.log('user existence', exists)
+      // cb(null,exists)
       if (exists != null && Object.keys(exists).length != 0) {
-       
+
         //user exists 
         if (logindata.role == 'doctor') {
           console.log(exists.userId)
@@ -340,10 +340,10 @@ module.exports = function (User) {
             else {
               // send otp
               var otpresponse = {
-                      err: false,
-                      message: 'OTP sent to registered number'
-                    }
-                    cb(null, otpresponse)
+                err: false,
+                message: 'OTP sent to registered number'
+              }
+              cb(null, otpresponse)
               // sendOtp(logindata.phoneNumber).then(function (result) {
               //   console.log('RRESULT', result)
               //   if (result.type == 'success') {
@@ -372,7 +372,7 @@ module.exports = function (User) {
           Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, individual) {
             console.log('in', individual)
 
-            if (individual.deviceId ==logindata.deviceId) {
+            if (individual.deviceId == logindata.deviceId) {
               //login
               let loggedin = {
                 error: false,
@@ -384,10 +384,10 @@ module.exports = function (User) {
             else {
               //send otp
               var otpresponse = {
-                      err: false,
-                      message: 'OTP sent to registered number'
-                    }
-                    cb(null, otpresponse)
+                err: false,
+                message: 'OTP sent to registered number'
+              }
+              cb(null, otpresponse)
               // sendOtp(logindata.phoneNumber).then(function (result) {
               //   console.log('RRESULT', result)
               //   if (result.type == 'success') {
@@ -431,7 +431,7 @@ module.exports = function (User) {
   /*************** GET USER PROFILE FOR DOCTOR/INDIVIDUAL  STARTS ************************ */
   User.remoteMethod('profile', {
     http: { path: '/profile', verb: 'get' },
-    accepts: {arg:'data',type:'object',http: { source: 'body' }},
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
     // [
     //   { arg: 'userId', type: 'string', required: true },
     //   { arg: 'role', type: 'string', required: true }
@@ -461,7 +461,7 @@ module.exports = function (User) {
           })
         }
         else {
-          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' +data.userId } }, function (err, individual) {
+          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
             console.log('in', individual)
             //login
             let loggedin = {
@@ -487,20 +487,77 @@ module.exports = function (User) {
   }
   /*******************************   ENDS   ***********************************************/
 
- /************************ SOCKET CONNECT AT LOGIN******************* */
+  /************************ SOCKET CONNECT AT LOGIN******************* */
   User.observe('after save', function (ctx, next) {
     var socket = User.app.io;
-        //Now publishing the data..
+    //Now publishing the data..
 
-        sockConnection.publish(socket, {
-            collectionName : 'User',
-            data: ctx.instance,
-            method: 'POST'
-        });      
+    sockConnection.publish(socket, {
+      collectionName: 'User',
+      data: ctx.instance,
+      method: 'POST'
+    });
     next();
-}); //after save..
-/*******************************  ENDS **************************/
-};
+  }); //after save..
+  /*******************************  ENDS **************************/
+
+  /**************************** LOGIN BY SCANNER ***************************/
+  User.remoteMethod('loginByScanner', {
+    http: { path: '/loginByScanner', verb: 'post' },
+    accepts: { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
+
+    returns: { arg: 'result', type: 'string' },
+  });
+
+  /******************************  API LOGIC  *********************** */
+  User.loginByScanner = function (data, cb) {
+    console.log('user Detail....', data.userId, data.socketId, data.role)
+    const Individual = app.models.individual;
+    const Doctor = app.models.doctor;
+    User.findOne({ where: { userId: data.userId } }, function (err, exists) {
+
+      if (exists != null && Object.keys(exists).length != 0) {
+        if (data.role == 'doctor') {
+          Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, doctor) {
+            console.log('doctor', doctor)
+            console.log('exists doctor..........', data.socketId)
+            doctor.updateAttribute('socketId', data.socketId, function (err, result) {
+              console.log('result', result)
+              let successmessage = {
+                error: false,
+                result: result,
+                message: 'SocketId added Successfully'
+              }
+              cb(null, successmessage);
+            })
+          })
+        }
+        else {
+          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
+            individual.updateAttribute('socketId', data.socketId, function (err, result) {
+              console.log('resultttt', result)
+              let successmessage = {
+                error: false,
+                result: result,
+                message: 'SocketId added Successfully'
+              }
+              cb(null, successmessage);
+            })
+          })
+        }
+      }
+      else {
+        let errMessage = {
+          error: true,
+          message: 'User not Exists'
+        }
+        cb(null, errMessage)
+      }
+    })
+  }
+  /************************************ END OF LOGINBYSCANNER **************/
+}
+
 
 
 
