@@ -139,7 +139,7 @@
   },
   "family": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "SufferingDate": {
     "dataSource": "composer",

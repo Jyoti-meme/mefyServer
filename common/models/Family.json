@@ -24,7 +24,7 @@
       "type": "string",
       "required": true
     },
-    "profile": {
+    "indivdual": {
       "type": "any",
       "description": "The identifier of an instance of profile",
       "required": true

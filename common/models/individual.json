@@ -125,7 +125,7 @@
     },
     "family": {
       "type": [
-        {}
+      {}
       ],
       "default": [],
       "required": false
@@ -162,10 +162,11 @@
   "validations": [],
   "relations": {
     "userId": {
-    "type": "belongsTo",
-    "model": "User",
-    "foreignKey": "userId"
-  }},
+      "type": "belongsTo",
+      "model": "User",
+      "foreignKey": "userId"
+    }
+  },
   "acls": [],
   "methods": []
 }
