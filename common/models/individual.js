@@ -90,7 +90,7 @@ module.exports = function (individual) {
               let successmessage = {
                 error: false,
                 result: result,
-                message: 'Family member addition failed'
+                message: 'Family member added Successfully'
               }
               cb(null, successmessage);
             })
@@ -111,36 +111,36 @@ module.exports = function (individual) {
 
   /********************GET INDIVIDUAL DETAILS BASED ON ID FROM FAMILY ****************** */
 
-//   individual.remoteMethod('getfamily', {
-//     http: { path: '/getfamily', verb: 'get' },
-//     description: "add family members",
-//     accepts:
-//       // { arg: 'individualId', type: 'string' },
-//       { arg: 'userId', type: 'string' },
-//     returns: { arg: 'result', type: 'string' },
-//   });
+  individual.remoteMethod('getfamily', {
+    http: { path: '/getfamily', verb: 'get' },
+    description: "add family members",
+    accepts:
+      // { arg: 'individualId', type: 'string' },
+      { arg: 'userId', type: 'string' },
+    returns: { arg: 'result', type: 'string' },
+  });
 
 
-//   individual.getfamily = function (userId, cb) {
-//     console.log(userId)
-//     individual.find({include: {individual: 'family'}}, function(err,res){
-// cb(null,res)    })
-//     // individual.find({
-//     //   include: 'userId',
-//     //   scope: {
-//     //     fields: ['name', 'phoneNumber', 'role', 'gender', 'city'],
-//     //     include: {
-//     //       relation: 'User',
-//     //       scope: {
-//     //         where: { individualId: userId }
-//     //       }
-//     //     }
-//     //   }
-//     // }, function (err, res) {
-//     //   console.log('fffff', res)
-//     //   cb(null,res);
-//     // })
-//   }
+  individual.getfamily = function (userId, cb) {
+    console.log(userId)
+    individual.find({include: {individual: 'family'}}, function(err,res){
+cb(null,res)    })
+    // individual.find({
+    //   include: 'userId',
+    //   scope: {
+    //     fields: ['name', 'phoneNumber', 'role', 'gender', 'city'],
+    //     include: {
+    //       relation: 'User',
+    //       scope: {
+    //         where: { individualId: userId }
+    //       }
+    //     }
+    //   }
+    // }, function (err, res) {
+    //   console.log('fffff', res)
+    //   cb(null,res);
+    // })
+  }
     // individual.find({where:{family:{inq:['Father']}}},function(err,res){
     //   console.log('response',res)
     //   cb();
