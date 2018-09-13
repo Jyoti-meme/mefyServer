@@ -563,7 +563,7 @@ module.exports = function (User) {
     accepts: { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
     returns: { arg: 'result', type: 'string' },
   });
-/************************* API LOGIC *************************/
+  /************************* API LOGIC *************************/
   User.updateUserStatus = function (data, cb) {
     console.log('user Detail....', data.userId, data.socketId, data.availability)
 
@@ -572,17 +572,13 @@ module.exports = function (User) {
 
     User.findOne({ where: { userId: data.userId } }, function (err, exists) {
 
-      console.log('exists.........', exists)
-
       if (exists != null && Object.keys(exists).length != 0) {
 
         if (exists.role == 'individual') {
 
-          console.log('existsbg./////........', exists.role)
           Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
-            console.log('existsbg./////........', data.socketId)
 
-            individual.updateAttribute('socketId', data.socketId, function (err, result) {
+            individual.updateAttributes({ 'socketId': data.socketId, 'availability': data.availability }, function (err, result) {
               console.log('resultttt', result)
               let successmessage = {
                 error: false,
@@ -597,13 +593,13 @@ module.exports = function (User) {
           Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, doctor) {
 
             console.log('doctor', data.socketId)
-  
-            doctor.updateAttribute('socketId', data.socketId, function (err, result) {
+            console.log('exists ...socketId..............', doctor)
+            doctor.updateAttributes({ 'socketId': data.socketId, 'availability': data.availability }, function (err, result) {
               console.log('result', result)
               let successmessage = {
                 error: false,
                 result: result,
-                message: 'SocketId added Successfully'
+                message: 'User Status Updated Successfully'
               }
               cb(null, successmessage);
             })
