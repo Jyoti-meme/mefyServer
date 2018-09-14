@@ -119,6 +119,15 @@
       "type": "string",
       "required": false
     },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "Online",
+        "Offline",
+        "Busy"
+      ],
+      "required": false
+    },
     "deviceId": {
       "type": "string",
       "required": false
