@@ -17,21 +17,21 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.individual.immunization",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.individual.immunization"
     },
     "immunizationId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "profileId": {
       "type": "any",
-      "description": "The identifier of an instance of profileId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of profileId"
     },
     "vaccine": {
       "type": "string",
@@ -43,8 +43,8 @@
     },
     "healthRecordType": {
       "type": "string",
-      "default": "Immunization",
-      "required": true
+      "required": true,
+      "default": "Immunization"
     },
     "scheduleDate": {
       "type": "string",
@@ -52,8 +52,8 @@
     },
     "isDone": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     },
     "createdBy": {
       "type": "string",
@@ -73,12 +73,12 @@
     },
     "enabled": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

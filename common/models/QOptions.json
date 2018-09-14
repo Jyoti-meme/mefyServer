@@ -16,9 +16,9 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.extra.QOptions",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.extra.QOptions"
     },
     "name": {
       "type": "string",
@@ -34,12 +34,12 @@
     },
     "nextQuestion": {
       "type": "any",
-      "description": "The identifier of an instance of nextQuestion",
-      "required": true
+      "required": true,
+      "description": "The identifier of an instance of nextQuestion"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

@@ -121,31 +121,35 @@ module.exports = function (individual) {
 
   individual.getfamily = function (userId, cb) {
     console.log(userId);
-    individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, user) {
-      if (user != null && Object.keys(user).length != 0) {
-        ProcessArray(user.family).then(users => {
-          let result = {
-            error: false,
-            family: users,
-            message: 'family member get successfull'
-          }
-          cb(null, result)
-        })
-          .catch(err => {
-            let errors = {
-              error: true,
-              message: 'Error in fetching data'
-            }
-            cb(null, errors);
-          })
-      } else {
-        let errors = {
-          error: true,
-          message: 'Error in fetching data'
-        }
-        cb(null, errors);
-      }
+    individual.find({include:"userId"},function(err,res){
+      // console.log('response',res)
+      cb(null,res);
     })
+    // individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, user) {
+    //   if (user != null && Object.keys(user).length != 0) {
+    //     ProcessArray(user.family).then(users => {
+    //       let result = {
+    //         error: false,
+    //         family: users,
+    //         message: 'family member get successfull'
+    //       }
+    //       cb(null, result)
+    //     })
+    //       .catch(err => {
+    //         let errors = {
+    //           error: true,
+    //           message: 'Error in fetching data'
+    //         }
+    //         cb(null, errors);
+    //       })
+    //   } else {
+    //     let errors = {
+    //       error: true,
+    //       message: 'Error in fetching data'
+    //     }
+    //     cb(null, errors);
+    //   }
+    // })
   }
 
 

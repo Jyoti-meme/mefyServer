@@ -17,21 +17,21 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.doctor.doctor",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.doctor.doctor"
     },
     "doctorId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
+      "description": "The instance identifier for this type",
       "defaultFn": "uuidv4"
     },
     "userId": {
       "type": "any",
-      "description": "The identifier of an instance of userId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of userId"
     },
     "name": {
       "type": "string",
@@ -73,8 +73,8 @@
       "type": [
         "string"
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     },
     "email": {
       "type": "string",
@@ -100,8 +100,8 @@
       "type": [
         "string"
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     },
     "issuingAuthority": {
       "type": "string",
@@ -111,8 +111,8 @@
       "type": [
         "string"
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     },
     "callerId": {
       "type": "string",
@@ -124,17 +124,17 @@
     },
     "availability": {
       "type": "string",
+      "required": false,
       "enum": [
         "Online",
         "Offline",
         "Busy"
-      ],
-      "required": false
+      ]
     },
     "credit": {
       "type": "string",
-      "default": "0",
-      "required": true
+      "required": true,
+      "default": "0"
     },
     "deviceId": {
       "type": "string",
@@ -162,8 +162,8 @@
     },
     "enabled": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
@@ -175,5 +175,5 @@
     }
   },
   "acls": [],
-  "methods": []
+  "methods": {}
 }

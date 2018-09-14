@@ -1,8 +1,8 @@
 {
   "name": "PharmacyItem",
-  "base": "PersistedModel",
   "description": "An asset named PharmacyItem",
   "plural": "PharmacyItem",
+  "base": "PersistedModel",
   "idInjection": false,
   "options": {
     "validateUpsert": true,
@@ -14,7 +14,6 @@
       "abstract": false
     }
   },
-
   "properties": {
     "$class": {
       "type": "string",
@@ -22,44 +21,44 @@
       "description": "The class identifier for this type",
       "default": "io.mefy.pharmacy.PharmacyItem"
     },
-    "itemId": {                                                    
+    "itemId": {
       "type": "string",
-      "required": false,
       "id": true,
+      "required": false,
       "description": "The instance identifier for this type"
     },
     "safetyStock": {
       "type": "string",
       "required": false
-     },
-     "minMax": {
+    },
+    "minMax": {
       "type": "string",
       "required": false
-     },
-     "leadTime": {
+    },
+    "leadTime": {
       "type": "string",
       "required": false
-     },
-     "binId": {
+    },
+    "binId": {
       "type": "string",
       "required": false
-     },
-     "pharmacyId": {
+    },
+    "pharmacyId": {
       "type": "string",
       "required": true,
       "description": "The identification of the pharmacy"
-     },
-     "medicineId": {
+    },
+    "medicineId": {
       "type": "string",
       "required": true,
       "description": "The identification of the medicine master"
-     },
-     "supplier": {
+    },
+    "supplier": {
       "type": "string",
       "required": true,
       "description": "The identification of the vendor"
-     }
-    },
+    }
+  },
   "validations": [],
   "relations": {
     "pharmacyId": {
@@ -77,7 +76,6 @@
       "model": "Vendor",
       "foreignKey": "supplier"
     }
-
   },
   "acls": [],
   "methods": {}
