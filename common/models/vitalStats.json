@@ -17,16 +17,16 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.individual.vitalStats",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.individual.vitalStats"
     },
     "vitalId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "loginTime": {
       "type": "date",
@@ -34,13 +34,13 @@
     },
     "individualId": {
       "type": "any",
-      "description": "The identifier of an instance of individualId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of individualId"
     },
     "healthRecordType": {
       "type": "string",
-      "default": "VitalStats",
-      "required": true
+      "required": true,
+      "default": "VitalStats"
     },
     "statType": {
       "type": "string",
@@ -68,12 +68,12 @@
     },
     "enabled": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

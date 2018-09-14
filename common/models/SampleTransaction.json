@@ -14,20 +14,20 @@
       "abstract": false
     }
   },
+  "forceId": true,
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.pharmacy.SampleTransaction",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.pharmacy.SampleTransaction"
     },
     "transactionId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": false,
-     
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "timestamp": {
       "type": "date",
@@ -37,6 +37,5 @@
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": [],
-  "forceId": true
+  "methods": {}
 }

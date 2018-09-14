@@ -16,9 +16,9 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.individual.TreatmentDetails",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.individual.TreatmentDetails"
     },
     "name": {
       "type": "string",
@@ -40,12 +40,12 @@
       "type": [
         "string"
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

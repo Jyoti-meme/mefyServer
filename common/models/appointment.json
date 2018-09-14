@@ -17,31 +17,31 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.commonModel.appointment",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.commonModel.appointment"
     },
     "appointmentId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "eConsultId": {
       "type": "any",
-      "description": "The identifier of an instance of eConsultId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of eConsultId"
     },
     "doctorId": {
       "type": "any",
-      "description": "The identifier of an instance of doctorId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of doctorId"
     },
     "individualId": {
       "type": "any",
-      "description": "The identifier of an instance of individualId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of individualId"
     },
     "clinicName": {
       "type": "string",
@@ -49,18 +49,18 @@
     },
     "clinicId": {
       "type": "any",
-      "description": "The identifier of an instance of clinicId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of clinicId"
     },
     "status": {
       "type": "string",
+      "required": false,
       "enum": [
         "New",
         "Conformed",
         "Tentative",
         "Cancelled"
-      ],
-      "required": false
+      ]
     },
     "patientName": {
       "type": "string",
@@ -108,12 +108,12 @@
     },
     "enabled": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

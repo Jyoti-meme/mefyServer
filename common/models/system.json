@@ -12,20 +12,22 @@
   "acls": [],
   "methods": {
     "ping": {
-      "description": "Test the connection to the business network",
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "options",
           "type": "object",
           "http": "optionsFromRequest"
-      }],
+        }
+      ],
       "returns": {
-          "type": "PingResponse",
-          "root": true
+        "type": "PingResponse",
+        "root": true
       },
+      "description": "Test the connection to the business network",
       "http": {
-          "verb": "get",
-          "path": "/ping"
+        "verb": "get",
+        "path": "/ping"
       }
-  }
+    }
   }
 }

@@ -17,21 +17,21 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.individual.individual",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.individual.individual"
     },
     "individualId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
+      "description": "The instance identifier for this type",
       "defaultFn": "uuidv4"
     },
     "userId": {
       "type": "any",
-      "description": "The identifier of an instance of userId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of userId"
     },
     "name": {
       "type": "string",
@@ -71,13 +71,13 @@
     },
     "subscription": {
       "type": "any",
-      "description": "The identifier of an instance of subscription",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of subscription"
     },
     "referredBy": {
       "type": "any",
-      "description": "The identifier of an instance of referredBy",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of referredBy"
     },
     "referal": {
       "type": "string",
@@ -125,17 +125,17 @@
     },
     "family": {
       "type": [
-      {}
+        {}
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     },
     "HealthRecord": {
       "type": [
         "string"
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     },
     "createdBy": {
       "type": "string",
@@ -155,18 +155,18 @@
     },
     "enabled": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
   "relations": {
     "userId": {
-      "type": "belongsTo",
+      "type": "hasOne",
       "model": "User",
       "foreignKey": "userId"
     }
   },
   "acls": [],
-  "methods": []
+  "methods": {}
 }

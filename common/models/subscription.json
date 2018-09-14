@@ -17,16 +17,16 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.extra.subscription",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.extra.subscription"
     },
     "subscriptionId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "name": {
       "type": "string",
@@ -36,8 +36,8 @@
       "type": [
         "string"
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     },
     "actualPrice": {
       "type": "number",
@@ -65,12 +65,12 @@
     },
     "enabled": {
       "type": "string",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }
