@@ -17,72 +17,72 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.commonModel.prescription",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.commonModel.prescription"
     },
     "prescriptionId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "appointmentId": {
       "type": "any",
-      "description": "The identifier of an instance of appointmentId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of appointmentId"
     },
     "doctorId": {
       "type": "any",
-      "description": "The identifier of an instance of doctorId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of doctorId"
     },
     "individualId": {
       "type": "any",
-      "description": "The identifier of an instance of individualId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of individualId"
     },
     "adviceId": {
       "type": "any",
-      "description": "The identifier of an instance of adviceId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of adviceId"
     },
     "lifeStyleId": {
       "type": "any",
-      "description": "The identifier of an instance of lifeStyleId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of lifeStyleId"
     },
     "medicineId": {
       "type": "any",
-      "description": "The identifier of an instance of medicineId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of medicineId"
     },
     "diagnosisId": {
       "type": "any",
-      "description": "The identifier of an instance of diagnosisId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of diagnosisId"
     },
     "specificInstructionId": {
       "type": "any",
-      "description": "The identifier of an instance of specificInstructionId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of specificInstructionId"
     },
     "recommendedId": {
       "type": "any",
-      "description": "The identifier of an instance of recommendedId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of recommendedId"
     },
     "status": {
       "type": "string",
+      "required": false,
       "enum": [
         "Consulting",
         "Inprogress",
         "Completed",
         "Processed",
         "Locked"
-      ],
-      "required": false
+      ]
     },
     "createdBy": {
       "type": "string",
@@ -102,12 +102,12 @@
     },
     "enabled": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

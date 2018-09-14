@@ -17,26 +17,26 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.commonModel.account",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.commonModel.account"
     },
     "accountId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "doctorId": {
       "type": "any",
-      "description": "The identifier of an instance of doctorId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of doctorId"
     },
     "individualId": {
       "type": "any",
-      "description": "The identifier of an instance of individualId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of individualId"
     },
     "accountHolderName": {
       "type": "string",
@@ -58,8 +58,8 @@
       "type": [
         "kyc"
       ],
-      "default": [],
-      "required": false
+      "required": false,
+      "default": []
     },
     "createdBy": {
       "type": "string",
@@ -79,12 +79,12 @@
     },
     "enabled": {
       "type": "number",
-      "default": "1",
-      "required": true
+      "required": true,
+      "default": "1"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

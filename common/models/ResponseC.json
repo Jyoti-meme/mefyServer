@@ -16,9 +16,9 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.extra.ResponseC",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.extra.ResponseC"
     },
     "response": {
       "type": "string",
@@ -28,5 +28,5 @@
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

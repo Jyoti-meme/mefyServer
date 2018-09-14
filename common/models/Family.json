@@ -16,9 +16,9 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.individual.Family",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.individual.Family"
     },
     "relation": {
       "type": "string",
@@ -26,12 +26,12 @@
     },
     "indivdual": {
       "type": "any",
-      "description": "The identifier of an instance of profile",
-      "required": true
+      "required": true,
+      "description": "The identifier of an instance of profile"
     }
   },
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }

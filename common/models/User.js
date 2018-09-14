@@ -519,8 +519,8 @@ module.exports = function (User) {
       if (exists != null && Object.keys(exists).length != 0) {
         if (data.role == 'doctor') {
           Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, doctor) {
-            console.log('doctor', doctor)
             console.log('exists doctor..........', data.socketId)
+
             doctor.updateAttribute('socketId', data.socketId, function (err, result) {
               console.log('result', result)
               let successmessage = {
@@ -556,7 +556,69 @@ module.exports = function (User) {
     })
   }
   /************************************ END OF LOGINBYSCANNER **************/
+
+  /**************************** UPDATE USER STATUS*********************/
+  User.remoteMethod('updateUserStatus', {
+    http: { path: '/updateUserStatus', verb: 'post' },
+    accepts: { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
+    returns: { arg: 'result', type: 'string' },
+  });
+  /************************* API LOGIC *************************/
+  User.updateUserStatus = function (data, cb) {
+    console.log('user Detail....', data.userId, data.socketId, data.availability)
+
+    const Individual = app.models.individual;
+    const Doctor = app.models.doctor;
+
+    User.findOne({ where: { userId: data.userId } }, function (err, exists) {
+
+      if (exists != null && Object.keys(exists).length != 0) {
+
+        if (exists.role == 'individual') {
+
+          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
+
+            individual.updateAttributes({ 'socketId': data.socketId, 'availability': data.availability }, function (err, result) {
+              console.log('resultttt', result)
+              let successmessage = {
+                error: false,
+                result: result,
+                message: 'User Status Updated Successfully'
+              }
+              cb(null, successmessage);
+            })
+          })
+        }
+        else {
+          Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, doctor) {
+
+            console.log('doctor', data.socketId)
+            console.log('exists ...socketId..............', doctor)
+            doctor.updateAttributes({ 'socketId': data.socketId, 'availability': data.availability }, function (err, result) {
+              console.log('result', result)
+              let successmessage = {
+                error: false,
+                result: result,
+                message: 'User Status Updated Successfully'
+              }
+              cb(null, successmessage);
+            })
+          })
+        }
+      }
+      else {
+        let errMessage = {
+          error: true,
+          message: 'User not Exists'
+        }
+        cb(null, errMessage)
+      }
+
+    })
+  }
+
 }
+
 
 
 

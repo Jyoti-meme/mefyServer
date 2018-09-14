@@ -17,16 +17,16 @@
   "properties": {
     "$class": {
       "type": "string",
-      "default": "io.mefy.extra.Response",
       "required": false,
-      "description": "The class identifier for this type"
+      "description": "The class identifier for this type",
+      "default": "io.mefy.extra.Response"
     },
     "ResponseId": {
       "type": "string",
       "id": true,
-      "description": "The instance identifier for this type",
       "required": true,
-      "defaultFn":"uuidv4"
+      "description": "The instance identifier for this type",
+      "defaultFn": "uuidv4"
     },
     "individualId": {
       "type": "string",
@@ -38,8 +38,8 @@
     },
     "nextQuestionId": {
       "type": "any",
-      "description": "The identifier of an instance of nextQuestionId",
-      "required": false
+      "required": false,
+      "description": "The identifier of an instance of nextQuestionId"
     },
     "response": {
       "type": "Response",
@@ -49,5 +49,5 @@
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": []
+  "methods": {}
 }
