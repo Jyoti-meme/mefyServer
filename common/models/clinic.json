@@ -29,7 +29,7 @@
       "defaultFn": "uuidv4"
     },
     "doctorId": {
-      "type": "any",
+      "type": "string",
       "required": true,
       "description": "The identifier of an instance of doctorId"
     },
@@ -59,7 +59,7 @@
     },
     "weekDays": {
       "type": [
-       {}
+        {}
       ],
       "required": true
     },
@@ -99,7 +99,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "doctor": {
+      "type": "belongsTo",
+      "model": "doctor",
+      "foreignKey": "doctorId"
+    }
+  },
   "acls": [],
   "methods": {}
 }
