@@ -79,7 +79,7 @@
   },
   "clinic": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "referal": {
     "dataSource": "composer",
