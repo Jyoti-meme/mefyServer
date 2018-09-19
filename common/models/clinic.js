@@ -3,7 +3,7 @@
 const Composer = require('../lib/composer.js');
 
 module.exports = function(clinic) {
-  const enabledRemoteMethods = ["findById", "create", "deleteById","find","addClinic"];
+  const enabledRemoteMethods = ["findById", "deleteById","find","addClinic","getClinicByDoctorId"];
   clinic.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -35,4 +35,25 @@ module.exports = function(clinic) {
    
   }
   /************************************************************************ */
-};
+   /***************GET  CLINIC BY DOCTOR ID********************************************** */
+   clinic.remoteMethod('getClinicByDoctorId', {
+    http: { path: '/clinicByDoctorId/:doctorId', verb: 'get' },
+    description: " Get Clinic By DoctorId",
+    accepts: { arg: 'doctorId', type: 'string', http: { source: 'path' }},
+    returns: { arg: 'result', type: 'string' },
+  });
+
+  /*********************** LOGIC************************ */
+  clinic.getClinicByDoctorId = function(doctorId,cb){
+    clinic.find({ where:  { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, result){
+      console.log('exists',result)
+      let doctorClinc = {
+        error: false,
+        result: result,
+        message: "Getting doctor's Clinic list"
+      }
+      cb(null, doctorClinc)
+  })
+}
+}
+  /**********************************END************************************** */
