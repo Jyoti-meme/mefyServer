@@ -3,7 +3,7 @@
 const Composer = require('../lib/composer.js');
 
 module.exports = function(clinic) {
-  const enabledRemoteMethods = ["findById", "create", "deleteById","find","addClinic"];
+  const enabledRemoteMethods = ["findById", "deleteById","find","addClinic","getClinicByDoctorId"];
   clinic.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -34,4 +34,16 @@ module.exports = function(clinic) {
    
   }
   /************************************************************************ */
-};
+   /***************GET  CLINIC BY DOCTOR ID********************************************** */
+   clinic.remoteMethod('getClinicByDoctorId', {
+    http: { path: '/getClinicByDoctorId/:doctorId', verb: 'get' },
+    accepts: { arg: 'doctorId', type: 'string',required:true, http: { source: 'body' }},
+    returns: { arg: 'result', type: 'string' },
+  });
+
+  clinic.getClinicByDoctorId=function(doctorId,cb){
+    console.log('doctor',doctorId)
+   
+  }
+}
+  /************************************************************************ */
