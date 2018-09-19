@@ -22,7 +22,7 @@ module.exports = function(clinic) {
     clinic.create(
       { doctorId:data.doctorId,clinicName:data.clinicName,phoneNumber:data.phoneNumber,city:data.city,
         address:data.address,pin:data.pin,fee:data.fee,weekDays:data.weekDays,bookingStatus:data.bookingStatus,
-        availability:data.availability,
+        availability:data.availability
       }, function (err, res) {
         console.log('eesult',res)
         let result={
