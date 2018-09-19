@@ -37,14 +37,23 @@ module.exports = function(clinic) {
   /************************************************************************ */
    /***************GET  CLINIC BY DOCTOR ID********************************************** */
    clinic.remoteMethod('getClinicByDoctorId', {
-    http: { path: '/getClinicByDoctorId/:doctorId', verb: 'get' },
-    accepts: { arg: 'doctorId', type: 'string',required:true, http: { source: 'body' }},
+    http: { path: '/clinicByDoctorId/:doctorId', verb: 'get' },
+    description: " Get Clinic By DoctorId",
+    accepts: { arg: 'doctorId', type: 'string', http: { source: 'path' }},
     returns: { arg: 'result', type: 'string' },
   });
 
-  clinic.getClinicByDoctorId=function(doctorId,cb){
-    console.log('doctor',doctorId)
-   
-  }
+  /*********************** LOGIC************************ */
+  clinic.getClinicByDoctorId = function(doctorId,cb){
+    clinic.find({ where:  { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, result){
+      console.log('exists',result)
+      let doctorClinc = {
+        error: false,
+        result: result,
+        message: "Getting doctor's Clinic list"
+      }
+      cb(null, doctorClinc)
+  })
 }
-  /************************************************************************ */
+}
+  /**********************************END************************************** */
