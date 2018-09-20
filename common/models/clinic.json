@@ -29,48 +29,39 @@
       "defaultFn": "uuidv4"
     },
     "doctorId": {
-      "type": "any",
-      "required": false,
+      "type": "string",
+      "required": true,
       "description": "The identifier of an instance of doctorId"
     },
     "clinicName": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "phoneNumber": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "city": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "address": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "pin": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "fee": {
       "type": "string",
-      "required": false
-    },
-    "startTime": {
-      "type": "string",
-      "required": false
-    },
-    "endTime": {
-      "type": "string",
-      "required": false
+      "required": true
     },
     "weekDays": {
       "type": [
-        "string"
+        {}
       ],
-      "required": false,
-      "default": []
+      "required": true
     },
     "bookingStatus": {
       "type": "string",
@@ -108,7 +99,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "doctor": {
+      "type": "belongsTo",
+      "model": "doctor",
+      "foreignKey": "doctorId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

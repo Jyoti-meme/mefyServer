@@ -121,12 +121,12 @@
     },
     "availability": {
       "type": "string",
+      "required": false,
       "enum": [
         "Online",
         "Offline",
         "Busy"
-      ],
-      "required": false
+      ]
     },
     "deviceId": {
       "type": "string",

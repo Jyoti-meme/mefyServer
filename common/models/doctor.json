@@ -172,6 +172,11 @@
       "type": "belongsTo",
       "model": "User",
       "foreignKey": "userId"
+    },
+    "clinics": {
+      "type": "hasMany",
+      "model": "clinic",
+      "foreignKey": "doctorId"
     }
   },
   "acls": [],
