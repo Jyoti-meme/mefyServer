@@ -1,9 +1,9 @@
 'use strict';
 
 const Composer = require('../lib/composer.js');
-var moment = require('moment');
-module.exports = function (clinic) {
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "addClinic", "getClinicByDoctorId"];
+
+module.exports = function(clinic) {
+  const enabledRemoteMethods = ["findById", "deleteById","find","addClinic","getClinicByDoctorId","updateClinic"];
   clinic.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -128,7 +128,49 @@ module.exports = function (clinic) {
 
   /********************************************************************************** */
 }
+<<<<<<< HEAD
 
 // standard date format 2018-09-19T14:23:38+05:30
 // {where:{and:[{'doctorId':'resource:io.mefy.doctor.doctor#'+doctorId},{"weekDays.day":"Monday"}]}}
 // {"weekDays.0.day":{inq:['Monday']}}
+=======
+  /**********************************END OF CLINIC LIST************************************** */
+/*********************** UPDATE CLINIC BY CLINICID**********************/
+  clinic.remoteMethod('updateClinic', {
+    http: { path: '/updateClinic/:clinicId', verb: 'put' },
+    description: "update clinic  by clinicId",
+    accepts: [
+      { arg: 'clinicId', type: 'string', required: true, http: { source: 'path' } },
+      { arg: 'data', type: 'obj', http: { source: 'body' } }
+    ],
+    returns: { arg: 'result', type: 'string' },
+  });
+  clinic.updateClinic = function (clinicId, data, cb) {
+    clinic.findOne({ where: { clinicId:clinicId } }, function (err, exists) {
+      console.log('result', exists)
+      if (exists != null && Object.keys(exists).length != 0) {
+        // update attributes
+        exists.updateAttributes(data, function (err, result) {
+          console.log('response from update', result);
+
+          let success = {
+            error: false,
+            result: result,
+            message: 'Clinic updated Sucessfully'
+          }
+          cb(null, success);
+        })
+
+      }
+      else {
+        let error = {
+          error: true,
+          message: 'Clinic not found'
+        }
+        cb(null, error)
+      }
+    })
+  }
+  /**********************************END OF CLINIC UPDATE************************************** */
+}
+>>>>>>> 77a9581f505d93df1f85b26425542f5a805c4689
