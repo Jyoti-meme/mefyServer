@@ -127,13 +127,11 @@ module.exports = function(clinic) {
   }
 
   /********************************************************************************** */
-}
-<<<<<<< HEAD
+
 
 // standard date format 2018-09-19T14:23:38+05:30
 // {where:{and:[{'doctorId':'resource:io.mefy.doctor.doctor#'+doctorId},{"weekDays.day":"Monday"}]}}
 // {"weekDays.0.day":{inq:['Monday']}}
-=======
   /**********************************END OF CLINIC LIST************************************** */
 /*********************** UPDATE CLINIC BY CLINICID**********************/
   clinic.remoteMethod('updateClinic', {
@@ -173,4 +171,3 @@ module.exports = function(clinic) {
   }
   /**********************************END OF CLINIC UPDATE************************************** */
 }
->>>>>>> 77a9581f505d93df1f85b26425542f5a805c4689
