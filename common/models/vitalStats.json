@@ -44,7 +44,8 @@
     },
     "statType": {
       "type": "string",
-      "required": false
+      "enum": ["bodyScale","bp","glucometer","ecg","spo2","temperature","gsr","emg","airflow","spirometer","thyroid"],
+      "required": true
     },
     "statValue": {
       "type": "string",
