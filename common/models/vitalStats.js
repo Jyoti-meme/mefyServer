@@ -6,13 +6,15 @@ module.exports = function (vitalStats) {
   Composer.restrictModelMethods(vitalStats);
 
   vitalStats.createRecord = function (data, cb) {
+    console.log(data)
+
     let stringData = "";
 
-    if (typeof data.stats == "string") {
-      stringData = data.stats;
+    if (typeof data.statsValue == "string") {
+      stringData = data.statValue;
     } else {
-      console.log(data.stats);
-      stringData = JSON.stringify(data.stats);
+      console.log(data.statValue);
+      stringData = JSON.stringify(data.statValue);
     }
 
     let vitalRecord = {
@@ -23,7 +25,7 @@ module.exports = function (vitalStats) {
     }
 
     console.log(vitalRecord);
-
+    // {individualId:data.individualId,loginTime:data.loginTime,statType:data.statType,statValue:stringData}
     vitalStats.create(vitalRecord, function (err, res) {
       if (err) {
         let errormessage = {
@@ -34,6 +36,7 @@ module.exports = function (vitalStats) {
       } else {
         let successMessage = {
           error: true,
+          result:res,
           message: "Record has been saved successfully"
         }
         cb(null, successMessage);
@@ -45,9 +48,8 @@ module.exports = function (vitalStats) {
 
   vitalStats.remoteMethod('createRecord', {
     http: { path: '/createRecord', verb: 'post' },
-    accepts: [
+    accepts:
       { arg: 'data', type: 'any', http: { source: 'body' } },
-    ],
     returns: { arg: 'result', type: 'any' }
   });
 
