@@ -146,6 +146,22 @@
       "required": false,
       "default": []
     },
+    "allergy":{
+     "type":"Boolean",
+     "required":false
+    },
+    "surgery":{
+      "type":"Boolean",
+      "required":false
+     },
+     "disease":{
+      "type":"Boolean",
+      "required":false
+     },
+     "familyMedical":{
+      "type":"Boolean",
+      "required":false
+     },
     "createdBy": {
       "type": "string",
       "required": false
