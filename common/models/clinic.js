@@ -77,15 +77,15 @@ module.exports = function (clinic) {
   clinic.clinicByDate = function (doctorId, date, cb) {
     var day = moment(date).format('dddd')
     console.log('day', day);
-    clinic.find({ where: { 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, res) {
+    clinic.find({ where: {and:[{ 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId },{'weekDays.day' : {$in: ["Monday"]}}]} }, function (err, res) {
       console.log('Response from find', res);
-      var returnResult = filterClinics(res, day)
-      let sucessResponse = {
-        eror: false,
-        clinic: returnResult[0],
-        message: "clinic fetched according to date"
-      }
-      cb(null, sucessResponse)
+      // var returnResult = filterClinics(res, day)
+      // let sucessResponse = {
+      //   eror: false,
+      //   clinic: returnResult[0],
+      //   message: "clinic fetched according to date"
+      // }
+      // cb(null, sucessResponse)
 
 
     })
