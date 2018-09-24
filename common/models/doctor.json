@@ -69,7 +69,7 @@
       "type": "number",
       "required": false
     },
-    "educationl": {
+    "education": {
       "type": [
         "string"
       ],
