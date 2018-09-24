@@ -30,7 +30,7 @@
     },
     "individualId": {
       "type": "string",
-      "required": false
+      "required": true
     },
     "sufferingFrom": {
       "type": "string",
@@ -38,7 +38,8 @@
     },
     "healthRecordType": {
       "type": "string",
-      "required": false
+      "required": true,
+      "default":"currentComplaint"
     },
     "sympton": {
       "type": "string",
@@ -90,7 +91,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "individualId": {
+      "type": "belongsTo",
+      "model": "individual",
+      "foreignKey": "individualId"
+    }
+  },
   "acls": [],
   "methods": {}
 }
