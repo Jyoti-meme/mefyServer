@@ -12,7 +12,7 @@ module.exports = function (clinic) {
     }
   });
 
-  /***************ADD CLINIC********************************************** */
+  /******************************* ADD CLINIC ******************************************** */
   clinic.remoteMethod('addClinic', {
     http: { path: '/addclinic', verb: 'post' },
     accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
@@ -20,26 +20,99 @@ module.exports = function (clinic) {
   });
 
   clinic.addClinic = function (data, cb) {
-    clinic.create(
-      {
-        doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
-        address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
-        availability: data.availability
-      }, function (err, res) {
-        console.log('eesult', res)
-        let result = {
-          error: false,
-          clinic: res,
-          message: "clinic create successfully"
+    clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId } }, function (err, list) {
+      // console.log('exists', result)
+      filterClinic(list, data).then(result => {
+        console.log('returned result', result)
+        if (result == false) {
+          console.log('inside if')
+          //clinic create
+          clinic.create(
+            {
+              doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
+              address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
+              availability: data.availability
+            }, function (err, res) {
+              console.log('eesult', res)
+              let cliniccreation = {
+                error: false,
+                clinic: res,
+                message: "clinic create successfully"
+              }
+              cb(null, cliniccreation);
+            })
+        } else {
+          ///time collapsed
+          let collapsedtime = {
+            error: false,
+            message: 'You had another clinic on this time for same day',
+            forDay: result
+          }
+          cb(null, collapsedtime)
         }
-        cb(null, result);
+
+      }).catch(err => {
+        let collapsedtime = {
+          error: true,
+          message: 'something went wrong'
+
+        }
+        cb(null, collapsedtime)
       })
 
+    });
+
   }
-  /******************************* END ***************************************** */
 
 
-  /***************GET  CLINIC BY DOCTOR ID********************************************** */
+  //checking whether same time for same day collapsed
+  function filterClinic(clinicList, input) {
+    // console.log('filter', clinicList)
+    // console.log('input', input)
+    return new Promise((resolve, reject) => {
+
+      for (let j = 0; j < clinicList.length; j++) {
+        console.log('j:::', clinicList[j]);
+        for (let k = 0; k < clinicList[j].weekDays.length; k++) {
+          console.log('k:::', clinicList[j].weekDays);
+          for (let i = 0; i < input.weekDays.length; i++) {
+            console.log('i:::', i);
+            if (input.weekDays[i].day === clinicList[j].weekDays[k].day) {
+              console.log('day matched', clinicList[j].weekDays[k].day)
+              var time = moment(input.weekDays[i].startTime, format);
+              var beforeTime = moment(clinicList[j].weekDays[k].startTime, format);
+              var afterTime = moment(clinicList[j].weekDays[k].endTime, format);
+              // console.log('time', time);
+              // console.log('starttime', beforeTime)
+              // console.log('endtime', afterTime)
+              // console.log('beforeissame:', time.isSame(beforeTime))
+              // console.log('afterissame', time.isSame(afterTime))
+              // console.log('betwen:', time.isBetween(beforeTime, afterTime))
+              if (time.isSame(beforeTime) || time.isSame(afterTime) || time.isBetween(beforeTime, afterTime)) {
+                resolve(input.weekDays[i])
+                console.log('insideif')
+
+              } else {
+
+                console.log('is not between')
+                resolve(false)
+              }
+            } else {
+              resolve(false)
+            }
+          }
+
+
+        }
+      }
+    })
+
+  }
+
+  /************************************** END ***************************************** */
+
+
+  /*************************************  GET CLINIC BY DOCTOR ID   ********************* */
 
   clinic.remoteMethod('getClinicByDoctorId', {
     http: { path: '/clinicByDoctorId/:doctorId', verb: 'get' },
@@ -61,10 +134,10 @@ module.exports = function (clinic) {
     })
   }
 
-  /**********************************END************************************** */
+  /**********************************  END  ************************************** */
 
 
-  /*********************CLINIC BY DATE AND DOCTORID*********************************** */
+  /*********************  CLINIC BY DATE AND DOCTORID  *********************************** */
 
   clinic.remoteMethod('clinicByDate', {
     http: { path: '/clinicbydate', verb: 'get' },
@@ -77,7 +150,7 @@ module.exports = function (clinic) {
   clinic.clinicByDate = function (doctorId, date, cb) {
     var day = moment(date).format('dddd')
     console.log('day', day);
-    clinic.find({ where: { 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, res) {
+    clinic.find({ where: { and: [{ 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId }, { 'weekDays.day': { $in: ["Monday"] } }] } }, function (err, res) {
       console.log('Response from find', res);
       var returnResult = filterClinics(res, day)
       let sucessResponse = {
@@ -123,7 +196,7 @@ module.exports = function (clinic) {
 
 
 
-  /*********************** UPDATE CLINIC BY CLINICID**********************/
+  /*********************** UPDATE CLINIC BY CLINICID **********************/
   clinic.remoteMethod('updateClinic', {
     http: { path: '/updateClinic/:clinicId', verb: 'put' },
     description: "update clinic  by clinicId",
@@ -225,3 +298,5 @@ module.exports = function (clinic) {
 
   /*********************** END OF API Specific clinic's available slots for a day**********************/
 }
+
+

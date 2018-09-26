@@ -159,7 +159,7 @@
   },
   "medical": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "Durations": {
     "dataSource": "composer",
@@ -195,7 +195,7 @@
   },
   "vitalStats": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "Pharmacy": {
     "dataSource": "composer",

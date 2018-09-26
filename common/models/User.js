@@ -63,6 +63,7 @@ module.exports = function (User) {
   User.registration = function (data, cb) {
     console.log('USER', data)
     User.find({ where: { and: [{ phoneNumber: data.phoneNumber }, { role: data.role }] } }, function (err, user) {
+     console.log('error',err)
       console.log('user info', user)
       if (user.length != 0) {
         var response = {
