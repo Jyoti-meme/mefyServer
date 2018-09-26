@@ -195,7 +195,7 @@
   },
   "vitalStats": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "Pharmacy": {
     "dataSource": "composer",
