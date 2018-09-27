@@ -19,7 +19,7 @@ module.exports = function (clinic) {
     returns: { arg: 'result', type: 'any' },
   });
 
-  clinic.addClinic = function (data, cb) {
+clinic.addClinic = function (data, cb) {
     clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId } }, function (err, list) {
       // console.log('exists', result)
       filterClinic(list, data).then(result => {
