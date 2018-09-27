@@ -4,7 +4,7 @@ const Composer = require('../lib/composer.js');
 const moment = require('moment');
 
 module.exports = function (clinic) {
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "addClinic", "getClinicByDoctorId", "updateClinic", "clinicByDate"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "addClinic", "getClinicByDoctorId", "updateClinic", "clinicByDate", "getClinicSlot"];
   clinic.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -206,6 +206,7 @@ module.exports = function (clinic) {
     ],
     returns: { arg: 'result', type: 'string' },
   });
+
   clinic.updateClinic = function (clinicId, data, cb) {
     clinic.findOne({ where: { clinicId: clinicId } }, function (err, exists) {
       console.log('result', exists)
@@ -232,23 +233,70 @@ module.exports = function (clinic) {
       }
     })
   }
-  /********************************** END OF CLINIC UPDATE ************************************** */
+  /**********************************END OF CLINIC UPDATE************************************** */
+
+
+  /*********************** Get Specific clinic's available slots for a day**********************/
+  clinic.remoteMethod('getClinicSlot', {
+    http: { path: '/getTimeSlot', verb: 'get' },
+    description: "Get Specific clinic's available slots for a day",
+    accepts: [
+      { arg: 'clinicId', type: 'string' },
+      { arg: 'date', type: 'string' }
+    ],
+    returns: { arg: 'result', type: 'string' },
+  });
+  clinic.getClinicSlot = function (clinicId, date, cb) {
+    var day = moment(date).format('dddd')
+    console.log('day', day);
+    clinic.findOne({ where: { clinicId: clinicId } }, function (err, result) {
+      console.log('result....', result)
+
+      if (result != null && Object.keys(result).length != 0) {
+        var slot = [];
+        let duration = result.weekDays;
+        for (let i = 0; i < duration.length; i++) {
+          console.log('duration', duration[i])
+          if (duration[i].day == day) {
+
+            let startMinutes = moment.duration(duration[i].startTime).asMinutes();
+            let endMinutes = moment.duration(duration[i].endTime).asMinutes();
+            let timediff = (endMinutes - startMinutes) / 10;
+
+            let timeArray = [];
+
+            for (let i = 0; i < timediff; i++) {
+              let hr = Math.floor(startMinutes / 60);
+              let min = Math.floor(startMinutes % 60);
+              let schTime;
+              schTime = (hr < 10 ? '0' + hr : hr) + ':' + (min < 10 ? '0' + min : min);
+              startMinutes = startMinutes + 10;
+              timeArray.push(schTime);
+            }
+            var x = 'slot'.concat((i + 1).toString());
+            let a = {
+              [x]: timeArray
+            }
+            slot.push(a)
+            console.log('slot array', slot)
+          }
+        };
+        let success = {
+          error: false,
+          timeSlot1: slot,
+          message: 'Get Clinic slot Sucessfully'
+        }
+        cb(null, success)
+
+      }
+      else {
+        cb(null, 'data not found')
+      }
+
+    })
+  }
+
+  /*********************** END OF API Specific clinic's available slots for a day**********************/
 }
 
 
-var format = 'hh:mm:ss'
-
-// var time = moment() gives you current time. no format required.
-var time = moment('09:34:00', format),
-  beforeTime = moment('08:34:00', format),
-  afterTime = moment('10:34:00', format);
-
-if (time.isBetween(beforeTime, afterTime)) {
-
-  console.log('is between')
-
-} else {
-
-  console.log('is not between')
-
-}
