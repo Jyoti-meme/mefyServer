@@ -160,8 +160,8 @@ module.exports = function (User) {
         /**Doctor created**/
         if (data.role == 'doctor') {
           User.create(
-            { phoneNumber: data.phoneNumber, role: data.role, }, function (err, res) {
-              console.log('user created response', res)
+            { phoneNumber: data.phoneNumber, role: data.role}, function (err, res) {
+              console.log('User created response', res)
               // send otp and verify it then create Doctor
               Doctor.create({
                 name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId, userId: res.userId, socketId: data.socketId ? data.socketId : ''
@@ -219,7 +219,7 @@ module.exports = function (User) {
 
 
   function verifyOtp(phoneNumber, otp) {
-    console.log('dataaaa', phoneNumber, otp)
+    console.log('dataaaaa', phoneNumber, otp)
     return new Promise((resolve, reject) => {
 
       if (otp == "8888") {
