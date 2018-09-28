@@ -21,44 +21,63 @@ module.exports = function (clinic) {
 
 clinic.addClinic = function (data, cb) {
     clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId } }, function (err, list) {
-      // console.log('exists', result)
-      filterClinic(list, data).then(result => {
-        console.log('returned result', result)
-        if (result == false) {
-          console.log('inside if')
-          //clinic create
-          clinic.create(
-            {
-              doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
-              address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
-              availability: data.availability
-            }, function (err, res) {
-              console.log('eesult', res)
-              let cliniccreation = {
-                error: false,
-                clinic: res,
-                message: "clinic create successfully"
-              }
-              cb(null, cliniccreation);
-            })
-        } else {
-          ///time collapsed
+      console.log('exists', list)
+      if(list.length==0){
+        clinic.create(
+          {
+            doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
+            address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
+            availability: data.availability
+          }, function (err, res) {
+            console.log('eesult', res)
+            let cliniccreation = {
+              error: false,
+              clinic: res,
+              message: "clinic create successfully"
+            }
+            cb(null, cliniccreation);
+          })
+      }
+      else{
+        filterClinic(list, data).then(result => {
+          console.log('returned result', result)
+          if (result == false) {
+            console.log('inside if')
+            //clinic create
+            clinic.create(
+              {
+                doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
+                address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
+                availability: data.availability
+              }, function (err, res) {
+                console.log('eesult', res)
+                let cliniccreation = {
+                  error: false,
+                  clinic: res,
+                  message: "clinic create successfully"
+                }
+                cb(null, cliniccreation);
+              })
+          } else {
+            ///time collapsed
+            let collapsedtime = {
+              error: false,
+              message: 'You had another clinic on this time for same day',
+              forDay: result
+            }
+            cb(null, collapsedtime)
+          }
+  
+        }).catch(err => {
           let collapsedtime = {
-            error: false,
-            message: 'You had another clinic on this time for same day',
-            forDay: result
+            error: true,
+            message: 'something went wrong'
+  
           }
           cb(null, collapsedtime)
-        }
-
-      }).catch(err => {
-        let collapsedtime = {
-          error: true,
-          message: 'something went wrong'
-
-        }
-        cb(null, collapsedtime)
-      })
+        })
+      }
+     
 
     });
 
@@ -78,13 +97,14 @@ clinic.addClinic = function (data, cb) {
           for (let i = 0; i < input.weekDays.length; i++) {
             console.log('i:::', i);
             if (input.weekDays[i].day === clinicList[j].weekDays[k].day) {
-              console.log('day matched', clinicList[j].weekDays[k].day)
+              var format = 'hh:mm:ss';
               var time = moment(input.weekDays[i].startTime, format);
               var beforeTime = moment(clinicList[j].weekDays[k].startTime, format);
               var afterTime = moment(clinicList[j].weekDays[k].endTime, format);
               // console.log('time', time);
               // console.log('starttime', beforeTime)
               // console.log('endtime', afterTime)
+              // console.log('jkkjk')
               // console.log('beforeissame:', time.isSame(beforeTime))
               // console.log('afterissame', time.isSame(afterTime))
               // console.log('betwen:', time.isBetween(beforeTime, afterTime))
