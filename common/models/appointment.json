@@ -56,10 +56,9 @@
       "type": "string",
       "required": false,
       "enum": [
-        "New",
-        "Conformed",
-        "Tentative",
-        "Cancelled"
+        "Active",
+        "Cancelled",
+        "Completed"
       ]
     },
     "patientName": {
