@@ -29,7 +29,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile","updateUserStatus","loginByScanner"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile","loginByScanner"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -149,7 +149,7 @@ module.exports = function (User) {
   User.verifyotp = function (data, cb) {
     console.log('USER', data)
     // cb(null,{ name: "Pushpendu" });
-    const Doctor=app.models.doctor
+    const Doctor = app.models.doctor;
     const Individual = app.models.individual;
     verifyOtp(data.phoneNumber, data.otp).then(function (result) {
       console.log('resultttttt', result)
@@ -160,19 +160,19 @@ module.exports = function (User) {
         /**Doctor created**/
         if (data.role == 'doctor') {
           User.create(
-            { phoneNumber: data.phoneNumber, role: data.role}, function (err, res) {
-              console.log('User created response', res)
-              // send otp and verify it then create Doctor
+            { phoneNumber: data.phoneNumber, role: data.role, }, function (err, res) {
+              console.log('user created response', res)
+              // send otp and verify it then create individual
               Doctor.create({
-                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId, userId: res.userId, socketId: data.socketId ? data.socketId : ''
+                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId?data.deviceId:'', userId: res.userId, socketId: data.socketId ? data.socketId : ''
               }, function (err, res) {
-                console.log('created Doctor data', res)
-                var sucresponse = {
+                console.log('created doctor data', res,err)
+                var sucresponse1 = {
                   error: false,
                   user: res,
                   message: 'User created Successfully'
                 }
-                cb(null, sucresponse);
+                cb(null, sucresponse1);
               })
             }
           );

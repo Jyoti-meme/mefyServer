@@ -19,10 +19,10 @@ module.exports = function (clinic) {
     returns: { arg: 'result', type: 'any' },
   });
 
-clinic.addClinic = function (data, cb) {
+  clinic.addClinic = function (data, cb) {
     clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId } }, function (err, list) {
       console.log('exists', list)
-      if(list.length==0){
+      if (list.length == 0) {
         clinic.create(
           {
             doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
@@ -38,7 +38,7 @@ clinic.addClinic = function (data, cb) {
             cb(null, cliniccreation);
           })
       }
-      else{
+      else {
         filterClinic(list, data).then(result => {
           console.log('returned result', result)
           if (result == false) {
@@ -67,17 +67,17 @@ clinic.addClinic = function (data, cb) {
             }
             cb(null, collapsedtime)
           }
-  
+
         }).catch(err => {
           let collapsedtime = {
             error: true,
             message: 'something went wrong'
-  
+
           }
           cb(null, collapsedtime)
         })
       }
-     
+
 
     });
 
@@ -280,10 +280,14 @@ clinic.addClinic = function (data, cb) {
           if (duration[i].day == day) {
 
             let startMinutes = moment.duration(duration[i].startTime).asMinutes();
+            console.log('jhgh', startMinutes)
             let endMinutes = moment.duration(duration[i].endTime).asMinutes();
             let timediff = (endMinutes - startMinutes) / 10;
 
             let timeArray = [];
+
+            var sTime;
+            var eTime;
 
             for (let i = 0; i < timediff; i++) {
               let hr = Math.floor(startMinutes / 60);
@@ -291,8 +295,21 @@ clinic.addClinic = function (data, cb) {
               let schTime;
               schTime = (hr < 10 ? '0' + hr : hr) + ':' + (min < 10 ? '0' + min : min);
               startMinutes = startMinutes + 10;
-              timeArray.push(schTime);
+//logic for dividing time slots
+              if (i != 0) {
+                let newtime = {
+                  sTime: sTime,
+                  eTime: schTime,
+                  status: 'enabled'
+                }
+                timeArray.push(newtime);
+                sTime = schTime;
+              } else {
+                sTime = schTime;
+              }
+
             }
+
             var x = 'slot'.concat((i + 1).toString());
             let a = {
               [x]: timeArray
