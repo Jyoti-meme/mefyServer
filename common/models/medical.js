@@ -8,7 +8,7 @@ module.exports = function (medical) {
 
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "addMedical", "indvCurrentComplaint"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "addMedical", "indvCurrentComplaint", "changeStatusCurrentComplaint"];
   medical.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -71,4 +71,37 @@ module.exports = function (medical) {
 
   }
   /**************************************************  ENDS ************************************************ */
+
+  /*************************************** CHANGE STATUS OF CURRENT COMPLIANT *********************************** */
+  medical.remoteMethod('changeStatusCurrentComplaint', {
+    http: { path: '/currentcomplaintstatus/:medicalId', verb: 'put' },
+    accepts: { arg: 'medicalId', type: 'string', required: true, http: { source: 'path' } },
+    returns: { arg: 'result', type: 'any' },
+  });
+
+  medical.changeStatusCurrentComplaint = function (medicalId, cb) {
+    console.log('medicalid', medicalId)
+    medical.findOne({ where: { medicalId: medicalId } }, function (err, result) {
+      console.log('result', result)
+      result.updateAttribute('status', 'solved', function (err, response) {
+        console.log(response)
+        if (err) {
+          let response = {
+            error: true,
+            message: 'Something went wrong '
+          }
+          cb(null, response);
+        }
+        else {
+          let response = {
+            error: false,
+            message: 'Status changed successfully'
+          }
+          cb(null, response);
+        }
+
+      });
+    });
+  }
+  /****************************************** ENDS ************************************************************** */
 };
