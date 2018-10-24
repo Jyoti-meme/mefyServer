@@ -35,7 +35,7 @@ module.exports = function (medical) {
     medical.create(
       {
         individualId: data.individualId, healthRecordType: data.healthRecordType, sympton: data.sympton, duration: data.duration,
-        sufferingDate: data.sufferingDate
+        sufferingDate: data.sufferingDate,status:'unsolved'
       }, function (err, res) {
         console.log('eesult', res)
         let result = {
