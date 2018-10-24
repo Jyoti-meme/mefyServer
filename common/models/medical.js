@@ -8,7 +8,7 @@ module.exports = function (medical) {
 
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "deleteById", "find","addMedical"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "addMedical", "indvCurrentComplaint"];
   medical.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -35,7 +35,7 @@ module.exports = function (medical) {
     medical.create(
       {
         individualId: data.individualId, healthRecordType: data.healthRecordType, sympton: data.sympton, duration: data.duration,
-        sufferingDate: data.sufferingDate,status:'unsolved'
+        sufferingDate: data.sufferingDate, status: 'unsolved'
       }, function (err, res) {
         console.log('eesult', res)
         let result = {
@@ -48,4 +48,27 @@ module.exports = function (medical) {
   }
 
   /***************************************  END  ************************************************ */
+  /******************************** GET COMPLAINTS BY INDIVIDUAL ID ************************************** */
+
+  medical.remoteMethod('indvCurrentComplaint', {
+    http: { path: '/currentcomplaint', verb: 'get' },
+    accepts: { arg: 'individualId', type: 'string' },
+    returns: { arg: 'result', type: 'any' },
+  });
+
+  medical.indvCurrentComplaint = function (individualId, cb) {
+    console.log('individual', individualId)
+    medical.find({ where: { and: [{ healthRecordType: 'currentComplaint' }, { individualId: 'resource:io.mefy.individual.individual#' + individualId }] } }, function (err, result) {
+      console.log('result', result)
+      console.log('error', err)
+      let response = {
+        error: false,
+        result: result,
+        message: 'current complaint list get successfully'
+      }
+      cb(null, response);
+    })
+
+  }
+  /**************************************************  ENDS ************************************************ */
 };
