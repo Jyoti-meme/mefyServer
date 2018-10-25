@@ -284,7 +284,7 @@ module.exports = function (individual) {
     const doctor = app.models.doctor;
     doctor.findOne({ where: { and: [{ doctorId: data.doctorId }, { availability: 'Online' }] } }, function (err, result) {
       console.log('error:::' + err, 'result:::' + result);
-      if (Object.keys(result).length != 0 && result != null) {
+      if (result != null  && Object.keys(result).length != 0  ) {
         //doctor is online emit socket event
         var socket=app.io;
         socket.to(result.socketId).emit("call", {
