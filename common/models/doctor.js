@@ -182,8 +182,7 @@ doctor.callactions = function (actions, individualId, doctorId, token, cb) {
     else {
       cb(null, 'user doesnot exists')
     }
-  })
-  cb(null)
+  });
 }
 /************************************************* ENDS *************************************************** */
 };

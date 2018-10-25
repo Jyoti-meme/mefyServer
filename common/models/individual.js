@@ -335,7 +335,8 @@ module.exports = function (individual) {
           //acept event emit
           socket.to(result.socketId).emit("accept", {
             individualId: data.individualId,
-            message:'Call accepted'
+            message:'Call accepted',
+         
           });
           let response = {
             error: false,
@@ -372,7 +373,7 @@ module.exports = function (individual) {
         cb(null, 'user doesnot exists')
       }
     })
-    cb(null)
+  
   }
   /************************************************* ENDS *************************************************** */
 };
