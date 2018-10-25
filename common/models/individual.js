@@ -6,7 +6,7 @@ const app = require('../../server/server');
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -181,7 +181,7 @@ module.exports = function (individual) {
   /*************************************** ENDS ********************************************** */
 
   /*********************************** SEARCH DOCTOR ON THE BASIS OF NAME,SPECIALITY,ONLINE ***************************** */
- 
+
   individual.remoteMethod('filterdoctor', {
     http: { path: '/filterdoctor', verb: 'get' },
     description: "filter doctor on the basis of name,speciality,online/offline",
@@ -203,10 +203,10 @@ module.exports = function (individual) {
       Doctor.find({ where: { name: name } }, function (err, list) {
         console.log('name  filter', list);
         console.log('error', err)
-        let result={
-          error:false,
-          result:list,
-          message:'List get successfully'
+        let result = {
+          error: false,
+          result: list,
+          message: 'List get successfully'
         }
         cb(null, result);
       })
@@ -216,24 +216,24 @@ module.exports = function (individual) {
       Doctor.find({ where: { availability: 'Online' } }, function (err, list) {
         console.log('online  filter', list);
         console.log('error', err)
-        let result={
-          error:false,
-          result:list,
-          message:'List get successfully'
+        let result = {
+          error: false,
+          result: list,
+          message: 'List get successfully'
         }
         cb(null, result);
       })
     }
     else if (name == undefined && availability == undefined && speciality != undefined) {
       // search doctor by speciality
-     //  inq not working  
+      //  inq not working  
       Doctor.find({ where: { speciality: { inq: [speciality] } } }, function (err, list) {
         console.log('speciality  filter', list);
         console.log('error', err)
-        let result={
-          error:false,
-          result:list,
-          message:'List get successfully'
+        let result = {
+          error: false,
+          result: list,
+          message: 'List get successfully'
         }
         cb(null, result);
       })
@@ -243,10 +243,10 @@ module.exports = function (individual) {
       Doctor.find({ where: { and: [{ availability: 'Online' }, { name: name }] } }, function (err, list) {
         console.log('availabilty and name', list);
         console.log('error', err);
-        let result={
-          error:false,
-          result:list,
-          message:'List get successfully'
+        let result = {
+          error: false,
+          result: list,
+          message: 'List get successfully'
         }
         cb(null, result);
       })
@@ -265,6 +265,116 @@ module.exports = function (individual) {
   }
   /******************************************** ENDS ********************************************************************** */
 
+
+  /********************************************* INDVIDUAL INITIATES VIDEO CALL ********************************************* */
+
+  individual.remoteMethod('callinitiation', {
+    http: { path: '/callinitiation', verb: 'post' },
+    description: " video call initiation api ",
+    accepts:
+      // { arg: 'doctorId', type: 'string', required: false },
+      // { arg: 'individualId', type: 'string', required: false },
+      // { arg: 'token', type: 'string', required: false },
+      { arg: 'data', type: 'obj', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.callinitiation = function (data, cb) {
+    console.log('data captured', data.doctorId, data.individualId, data.token);
+    const doctor = app.models.doctor;
+    doctor.findOne({ where: { and: [{ doctorId: data.doctorId }, { availability: 'Online' }] } }, function (err, result) {
+      console.log('error:::' + err, 'result:::' + result);
+      if (result != null && Object.keys(result).length != 0) {
+        //doctor is online emit socket event
+        var socket = app.io;
+        socket.to(result.socketId).emit("call", {
+          individualId: data.individualId,
+          token: data.token
+        });
+        let response = {
+          error: false,
+          message: 'Call initiated'
+        }
+        cb(null, response);
+      }
+      else {
+        //doctor is offline
+        let response = {
+          error: true,
+          message: 'User is busy on another call'
+        }
+        cb(null, response);
+      }
+    })
+  }
+
+  /***************************************************** ENDS ********************************************* */
+
+  /*************************************************  VIDEO CALL ACCEPT /REJECT/CALL_END BY INDIVIDUAL *********************************************** */
+  individual.remoteMethod('callactions', {
+    http: { path: '/callactions/:individualId/:doctorId/:token', verb: 'get' },
+    description: "  accept/reject/callend actions ",
+    accepts: [
+      { arg: 'actions', type: 'string', required: true },
+      { arg: 'individualId', type: 'string', required: true, http: { source: 'path' } },
+      { arg: 'doctorId', type: 'string', required: true, http: { source: 'path' } },
+      { arg: 'token', type: 'string', required: true, http: { source: 'path' } },
+    ],
+    returns: { arg: 'result', type: 'any' }
+  });
+
+
+  individual.callactions = function (actions, individualId, doctorId, token, cb) {
+    console.log('actions:' + actions, 'data:' + token, individualId, doctorId);
+    const doctor = app.models.doctor;
+    var socket = app.io;
+   
+    doctor.findOne({ where: { doctorId:doctorId } }, function (err, result) {
+      if (result != null && Object.keys(result).length != 0) {
+        if (actions == 'accept') {
+          //acept event emit
+          socket.to(result.socketId).emit("accept", {
+            individualId: data.individualId,
+            message:'Call accepted'
+          });
+          let response = {
+            error: false,
+            message: 'Call accepted'
+          }
+          cb(null, response);
+        }
+        else if (actions == 'reject') {
+          // reject event emit
+          socket.to(result.socketId).emit("reject", {
+            individualId: data.individualId,
+            message:'Call rejected'
+          });
+          let response = {
+            error: false,
+            message: 'Call rejected'
+          }
+          cb(null, response);
+        }
+        else if (actions == 'call_end') {
+          //end call event emit
+          socket.to(result.socketId).emit("call_end", {
+            individualId: data.individualId,
+            message:'Call ended'
+          });
+          let response = {
+            error: false,
+            message: 'Call ended'
+          }
+          cb(null, response);
+        }
+      }
+      else {
+        cb(null, 'user doesnot exists')
+      }
+    })
+    cb(null)
+  }
+  /************************************************* ENDS *************************************************** */
 };
   // individual.find({where:{family:{inq:['Father']}}},function(err,res){
 // individual.find({
