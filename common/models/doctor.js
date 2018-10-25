@@ -120,4 +120,69 @@ module.exports = function (doctor) {
     })
   }
 /******************************************** ENDS ****************************************** */
+
+/*************************************************  VIDEO CALL ACCEPT /REJECT/CALL_END BY INDIVIDUAL *********************************************** */
+doctor.remoteMethod('callactions', {
+  http: { path: '/callactions/:individualId/:doctorId/:token', verb: 'get' },
+  description: "  accept/reject/callend actions ",
+  accepts: [
+    { arg: 'actions', type: 'string', required: true },
+    { arg: 'individualId', type: 'string', required: true, http: { source: 'path' } },
+    { arg: 'doctorId', type: 'string', required: true, http: { source: 'path' } },
+    { arg: 'token', type: 'string', required: true, http: { source: 'path' } },
+  ],
+  returns: { arg: 'result', type: 'any' }
+});
+
+
+doctor.callactions = function (actions, individualId, doctorId, token, cb) {
+  console.log('actions:' + actions, 'data:' + token, individualId, doctorId);
+  const individual = app.models.individual;
+  var socket = app.io;
+ 
+  individual.findOne({ where: { individualId:individualId } }, function (err, result) {
+    if (result != null && Object.keys(result).length != 0) {
+      if (actions == 'accept') {
+        //acept event emit
+        socket.to(result.socketId).emit("accept", {
+          doctorId: data.doctorId,
+          message:'Call accepted'
+        });
+        let response = {
+          error: false,
+          message: 'Call accepted'
+        }
+        cb(null, response);
+      }
+      else if (actions == 'reject') {
+        // reject event emit
+        socket.to(result.socketId).emit("reject", {
+          doctorId: data.doctorId,
+          message:'Call rejected'
+        });
+        let response = {
+          error: false,
+          message: 'Call rejected'
+        }
+        cb(null, response);
+      }
+      else if (actions == 'call_end') {
+        //end call event emit
+        socket.to(result.socketId).emit("call_end", {
+          doctorId: data.doctorId,
+          message:'Call ended'
+        });
+        let response = {
+          error: false,
+          message: 'Call ended'
+        }
+        cb(null, response);
+      }
+    }
+    else {
+      cb(null, 'user doesnot exists')
+    }
+  });
+}
+/************************************************* ENDS *************************************************** */
 };

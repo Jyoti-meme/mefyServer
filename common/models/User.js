@@ -667,6 +667,128 @@ module.exports = function (User) {
     })
   }
 
+  /******************************************  ENDS  ************************************************* */
+
+
+
+  /********************** Individuals Edge LOGIN* STARTS ************************** */
+  User.remoteMethod('edgeLogin', {
+    http: { path: '/edgeLogin', verb: 'post' },
+    accepts: { arg: 'logindata', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'string' },
+  });
+
+  User.edgeLogin = function (logindata, cb) {
+    const Individual = app.models.individual;
+
+    User.findOne({ where: { and: [{ phoneNumber: logindata.phoneNumber }] } }, function (err, exists) {
+      console.log('user existence', exists)
+      // cb(null,exists)
+      if (exists != null && Object.keys(exists).length != 0) {
+
+        //user exists 
+        if (logindata.role == 'doctor') {
+          // send otp
+          var otpresponse = {
+            err: true,
+            message: 'This is not a registered Indididual'
+          }
+          cb(null, otpresponse)
+        }
+        else {
+          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, individual) {
+            console.log('in', individual)
+
+            //send otp
+            var otpresponse = {
+              err: false,
+              message: 'OTP sent to registered number'
+            }
+            cb(null, otpresponse)
+            // sendOtp(logindata.phoneNumber).then(function (result) {
+            //   console.log('RRESULT', result)
+            //   if (result.type == 'success') {
+            //     var otpresponse = {
+            //       err: false,
+            //       message: 'OTP sent to registered number'
+            //     }
+            //     cb(null, otpresponse)
+            //   }
+            //   else {
+            //     var otperror = {
+            //       error: true,
+            //       message: 'Otp sending falied',
+            //       details: result
+            //     }
+            //     cb(null, otperror)
+            //   }
+            // }).catch(err => {
+            //   cb(null, err)
+            // })
+
+          })
+        }
+
+      }
+      else {
+        //user not registered
+        let errMessage = {
+          error: true,
+          message: 'User not Registered'
+        }
+        cb(null, errMessage)
+      }
+    })
+  }
+
+
+
+  /************************************VERIFY OTP STARTS *********************************/
+
+  User.remoteMethod('edgeverifyotp', {
+    http: { path: '/edgeverifyotp', verb: 'post' },
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'any' },
+  });
+
+
+  // d
+  User.edgeverifyotp = function (data, cb) {
+    const Individual = app.models.individual;
+    verifyOtp(data.phoneNumber, data.otp).then(function (result) {
+      if (result) {
+
+        Individual.findOne({ where: { phoneNumber: data.phoneNumber } }, function (err, individual) {
+          console.log('in', individual)
+
+          //send otp
+          var userdata = {
+            err: false,
+            individualId: individual.individualId,
+            message: 'Got user successfully'
+          }
+          cb(null, userdata)
+        })
+      }
+      else {
+        var otperror = {
+          error: true,
+          message: 'Incorrect OTP ',
+        }
+        cb(null, otperror)
+      }
+    })
+      .catch(err => {
+        console.log(err)
+        var otperror1 = {
+          error: true,
+          message: 'OTP verification failed',
+        }
+        cb(null, otperror1)
+      })
+
+  }
+
 
 }
 

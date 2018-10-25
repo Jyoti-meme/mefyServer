@@ -86,7 +86,7 @@
       "required": false
     },
     "appointmentDate": {
-      "type": "date",
+      "type": "string",
       "required": false
     },
     "createdBy": {

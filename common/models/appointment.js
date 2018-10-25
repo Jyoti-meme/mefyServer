@@ -19,8 +19,11 @@ module.exports = function (appointment) {
     returns: { arg: 'result', type: 'any' },
   })
   appointment.bookAppointment = function (data, cb) {
-    console.log('dataaaaaaa',data)
-    appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { appointmentDate: data.appointmentDate },{ clinicId: 'resource:io.mefy.doctor.clinic#'+data.clinicId }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }] } }, function (err, exists) {
+
+    var comingDate = moment(data.appointmentDate).format('YYYY-MM-DD');
+    console.log(comingDate)
+    
+    appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { clinicId: 'resource:io.mefy.doctor.clinic#' + data.clinicId }, { appointmentDate: comingDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }] } }, function (err, exists) {
       console.log('data...', exists)
       if (exists != null && Object.keys(exists).length != 0) {
         console.log('BokKed....................appointment')
@@ -33,7 +36,7 @@ module.exports = function (appointment) {
       else {
         console.log('appointment')
         appointment.create({
-          doctorId: data.doctorId, individualId: data.individualId, clinicId: data.clinicId, eventName: data.eventName, eventDescription: data.eventDescription, status: data.status, appointmentType: data.appointmentType, appointmentTimeFrom: data.appointmentTimeFrom, appointmentTimeTo: data.appointmentTimeTo, appointmentDate: data.appointmentDate
+          doctorId: data.doctorId, individualId: data.individualId, clinicId: data.clinicId, eventName: data.eventName, eventDescription: data.eventDescription, status: data.status, appointmentType: data.appointmentType, appointmentTimeFrom: data.appointmentTimeFrom, appointmentTimeTo: data.appointmentTimeTo, appointmentDate: comingDate
         }, function (err, res) {
           if (err) {
             let errRes = {
