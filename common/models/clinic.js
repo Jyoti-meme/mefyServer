@@ -2,6 +2,7 @@
 
 const Composer = require('../lib/composer.js');
 const moment = require('moment');
+const app = require('../../server/server');
 
 module.exports = function (clinic) {
   const enabledRemoteMethods = ["findById", "deleteById", "find", "addClinic", "getClinicByDoctorId", "updateClinic", "clinicByDate", "getClinicSlot"];
@@ -280,42 +281,41 @@ module.exports = function (clinic) {
           if (duration[i].day == day) {
 
             let startMinutes = moment.duration(duration[i].startTime).asMinutes();
-            console.log('jhgh', startMinutes)
             let endMinutes = moment.duration(duration[i].endTime).asMinutes();
             let timediff = (endMinutes - startMinutes) / 10;
 
             let timeArray = [];
 
             var sTime;
-            var eTime;
+            const Appointment = app.models.appointment;
 
             for (let i = 0; i < timediff; i++) {
+              // console.log('dataaa')
               let hr = Math.floor(startMinutes / 60);
               let min = Math.floor(startMinutes % 60);
               let schTime;
               schTime = (hr < 10 ? '0' + hr : hr) + ':' + (min < 10 ? '0' + min : min);
               startMinutes = startMinutes + 10;
-//logic for dividing time slots
-              if (i != 0) {
-                let newtime = {
-                  sTime: sTime,
-                  eTime: schTime,
-                  status: 'enabled'
+              
+              Appointment.findOne({ where: { and: [{ appointmentTimeFrom: schTime }, { clinicId: 'resource:io.mefy.doctor.clinic#' + clinicId }] } }, function (err, exists) {
+                //  console.log('bb',exists)
+                if (exists != null && Object.keys(exists).length != 0) {
+                  console.log('exists..............', exists)
+
                 }
-                timeArray.push(newtime);
-                sTime = schTime;
-              } else {
-                sTime = schTime;
-              }
+                else{
+
+                }
+              });
 
             }
-
+            console.log('time', timeArray)
             var x = 'slot'.concat((i + 1).toString());
             let a = {
               [x]: timeArray
             }
             slot.push(a)
-            console.log('slot array', slot)
+            // console.log('slot array', slot)
           }
         };
         let success = {
@@ -332,7 +332,19 @@ module.exports = function (clinic) {
 
     })
   }
+          //logic for dividing time slots
+          // if (i != 0) {
+          //   let newtime = {
+          //     sTime: sTime,
+          //     eTime: schTime,
+          //     status: 'enabled'
 
+          //   }
+          //   timeArray.push(newtime);
+          //   sTime = schTime;
+          // } else {
+          //   sTime = schTime;
+          // }
   /*********************** END OF API Specific clinic's available slots for a day**********************/
 }
 
