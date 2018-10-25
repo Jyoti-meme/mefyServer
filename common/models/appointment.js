@@ -20,9 +20,9 @@ module.exports = function (appointment) {
   })
   appointment.bookAppointment = function (data, cb) {
     appointment.find({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { appointmentDate: data.appointmentDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }] } }, function (err, exists) {
-      console.log('individual...', exists)
+      console.log('data...', exists)
       if (exists != null && Object.keys(exists).length != 0) {
-        console.log('not....................appointment')
+        console.log('BokKed....................appointment')
         let response = {
           error: true,
           message: "Alredy have An Appointment"
