@@ -1,11 +1,12 @@
 'use strict';
 
 const Composer = require('../lib/composer.js');
+const app = require('../../server/server');
 
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -121,9 +122,9 @@ module.exports = function (individual) {
 
   individual.getfamily = function (userId, cb) {
     console.log(userId);
-    individual.find({include:"userId"},function(err,res){
+    individual.find({ include: "userId" }, function (err, res) {
       // console.log('response',res)
-      cb(null,res);
+      cb(null, res);
     })
     // individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, user) {
     //   if (user != null && Object.keys(user).length != 0) {
@@ -177,7 +178,92 @@ module.exports = function (individual) {
     })
   }
 
-  /************************************************************************************* */
+  /*************************************** ENDS ********************************************** */
+
+  /*********************************** SEARCH DOCTOR ON THE BASIS OF NAME,SPECIALITY,ONLINE ***************************** */
+ 
+  individual.remoteMethod('filterdoctor', {
+    http: { path: '/filterdoctor', verb: 'get' },
+    description: "filter doctor on the basis of name,speciality,online/offline",
+    accepts: [
+      { arg: 'name', type: 'string', required: false },
+      { arg: 'speciality', type: 'string', required: false },
+      { arg: 'availability', type: 'string', required: false }
+    ],
+    returns: { arg: 'result', type: 'any' },
+  });
+
+  // logic implementation
+  individual.filterdoctor = function (name, speciality, availability, cb) {
+    console.log('name:' + name, 'speciality:' + speciality, 'availability' + availability);
+    const Doctor = app.models.doctor;
+    if (name != undefined && availability == undefined && speciality == undefined) {
+      // search docotor by name  
+      // like not working
+      Doctor.find({ where: { name: name } }, function (err, list) {
+        console.log('name  filter', list);
+        console.log('error', err)
+        let result={
+          error:false,
+          result:list,
+          message:'List get successfully'
+        }
+        cb(null, result);
+      })
+    }
+    else if (name == undefined && availability != undefined && speciality == undefined) {
+      // search online doctors
+      Doctor.find({ where: { availability: 'Online' } }, function (err, list) {
+        console.log('online  filter', list);
+        console.log('error', err)
+        let result={
+          error:false,
+          result:list,
+          message:'List get successfully'
+        }
+        cb(null, result);
+      })
+    }
+    else if (name == undefined && availability == undefined && speciality != undefined) {
+      // search doctor by speciality
+     //  inq not working  
+      Doctor.find({ where: { speciality: { inq: [speciality] } } }, function (err, list) {
+        console.log('speciality  filter', list);
+        console.log('error', err)
+        let result={
+          error:false,
+          result:list,
+          message:'List get successfully'
+        }
+        cb(null, result);
+      })
+    }
+    else if (name != undefined && availability != undefined && speciality == undefined) {
+      //    //search doctor by availability and name 
+      Doctor.find({ where: { and: [{ availability: 'Online' }, { name: name }] } }, function (err, list) {
+        console.log('availabilty and name', list);
+        console.log('error', err);
+        let result={
+          error:false,
+          result:list,
+          message:'List get successfully'
+        }
+        cb(null, result);
+      })
+    }
+    //  else if(){
+    //   //  search by availability  and  specilaity
+    //  }
+    //  else if(){
+    //    //serach by name  and speciality
+    //  }
+    //  else if(){
+    //    // search by all name,availabilty and specility
+    //  }
+
+
+  }
+  /******************************************** ENDS ********************************************************************** */
 
 };
   // individual.find({where:{family:{inq:['Father']}}},function(err,res){
