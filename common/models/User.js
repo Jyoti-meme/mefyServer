@@ -667,7 +667,7 @@ module.exports = function (User) {
     })
   }
 
-/******************************************  ENDS  ************************************************* */
+  /******************************************  ENDS  ************************************************* */
 
 
 
@@ -739,6 +739,54 @@ module.exports = function (User) {
         cb(null, errMessage)
       }
     })
+  }
+
+
+
+  /************************************VERIFY OTP STARTS *********************************/
+
+  User.remoteMethod('edgeverifyotp', {
+    http: { path: '/edgeverifyotp', verb: 'post' },
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'any' },
+  });
+
+
+  // d
+  User.edgeverifyotp = function (data, cb) {
+    const Individual = app.models.individual;
+    verifyOtp(data.phoneNumber, data.otp).then(function (result) {
+      if (result) {
+
+        Individual.findOne({ where: { phoneNumber: data.phoneNumber } }, function (err, individual) {
+          console.log('in', individual)
+
+          //send otp
+          var userdata = {
+            err: false,
+            individualId: individual.individualId,
+            message: 'Got user successfully'
+          }
+          cb(null, userdata)
+        })
+      }
+      else {
+        var otperror = {
+          error: true,
+          message: 'Incorrect OTP ',
+        }
+        cb(null, otperror)
+      }
+    })
+      .catch(err => {
+        console.log(err)
+        var otperror1 = {
+          error: true,
+          message: 'OTP verification failed',
+        }
+        cb(null, otperror1)
+      })
+
   }
 
 
