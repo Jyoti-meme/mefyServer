@@ -51,7 +51,7 @@
   },
   "appointment": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "transaction": {
     "dataSource": "composer",

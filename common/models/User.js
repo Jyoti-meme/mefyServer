@@ -29,7 +29,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile","loginByScanner"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -63,7 +63,7 @@ module.exports = function (User) {
   User.registration = function (data, cb) {
     console.log('USER', data)
     User.find({ where: { and: [{ phoneNumber: data.phoneNumber }, { role: data.role }] } }, function (err, user) {
-     console.log('error',err)
+      console.log('error', err)
       console.log('user info', user)
       if (user.length != 0) {
         var response = {
@@ -162,17 +162,17 @@ module.exports = function (User) {
           User.create(
             { phoneNumber: data.phoneNumber, role: data.role, }, function (err, res) {
               console.log('user created response', res)
-              // send otp and verify it then create Doctor
+              // send otp and verify it then create individual
               Doctor.create({
-                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId, userId: res.userId, socketId: data.socketId ? data.socketId : ''
+                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId?data.deviceId:'', userId: res.userId, socketId: data.socketId ? data.socketId : ''
               }, function (err, res) {
-                console.log('created Doctor data', res)
-                var sucresponse = {
+                console.log('created doctor data', res,err)
+                var sucresponse1 = {
                   error: false,
                   user: res,
                   message: 'User created Successfully'
                 }
-                cb(null, sucresponse);
+                cb(null, sucresponse1);
               })
             }
           );
@@ -219,7 +219,7 @@ module.exports = function (User) {
 
 
   function verifyOtp(phoneNumber, otp) {
-    console.log('dataaaa', phoneNumber, otp)
+    console.log('dataaaaa', phoneNumber, otp)
     return new Promise((resolve, reject) => {
 
       if (otp == "8888") {
@@ -516,43 +516,61 @@ module.exports = function (User) {
     const Individual = app.models.individual;
     const Doctor = app.models.doctor;
     User.findOne({ where: { userId: data.userId } }, function (err, exists) {
-
-      if (exists != null && Object.keys(exists).length != 0) {
-        if (data.role == 'doctor') {
-          Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, doctor) {
-            console.log('exists doctor..........', data.socketId)
-
-            doctor.updateAttribute('socketId', data.socketId, function (err, result) {
-              console.log('result', result)
-              let successmessage = {
-                error: false,
-                result: result,
-                message: 'SocketId added Successfully'
-              }
-              cb(null, successmessage);
-            })
-          })
+      if (err) {
+        let errormessage = {
+          error: true,
+          message: "Something Weng Wrong"
         }
-        else {
-          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
-            individual.updateAttribute('socketId', data.socketId, function (err, result) {
-              console.log('resultttt', result)
-              let successmessage = {
-                error: false,
-                result: result,
-                message: 'SocketId added Successfully'
-              }
-              cb(null, successmessage);
-            })
-          })
-        }
+        cb(null, errormessage);
       }
       else {
-        let errMessage = {
-          error: true,
-          message: 'User not Exists'
+
+        if (exists != null && Object.keys(exists).length != 0) {
+          if (data.role == 'doctor') {
+            Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, doctor) {
+              console.log('exists doctor..........', data.socketId)
+
+              doctor.updateAttribute('socketId', data.socketId, function (err, result) {
+                if (err) {
+                  let errormessage = {
+                    error: true,
+                    message: "Something Weng Wrong"
+                  }
+                  cb(null, errormessage);
+                }
+                else {
+                  console.log('result', result)
+                  let successmessage = {
+                    error: false,
+                    result: result,
+                    message: 'SocketId added Successfully'
+                  }
+                  cb(null, successmessage);
+                }
+              })
+            })
+          }
+          else {
+            Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
+              individual.updateAttribute('socketId', data.socketId, function (err, result) {
+                console.log('resultttt', result)
+                let successmessage = {
+                  error: false,
+                  result: result,
+                  message: 'SocketId added Successfully'
+                }
+                cb(null, successmessage);
+              })
+            })
+          }
         }
-        cb(null, errMessage)
+        else {
+          let errMessage = {
+            error: true,
+            message: 'User not Exists'
+          }
+          cb(null, errMessage)
+        }
       }
     })
   }
@@ -573,13 +591,30 @@ module.exports = function (User) {
 
     User.findOne({ where: { userId: data.userId } }, function (err, exists) {
 
+      if (err) {
+        let errormessage = {
+          error: true,
+          message: "Something Weng Wrong"
+        }
+        cb(null, errormessage);
+       }
+       else{
+
+
       if (exists != null && Object.keys(exists).length != 0) {
 
         if (exists.role == 'individual') {
 
           Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
-
-            individual.updateAttributes({ 'socketId': data.socketId, 'availability': data.availability }, function (err, result) {
+     if(err){
+      let errormessage = {
+        error: true,
+        message: "Something Went Wrong",
+        err: err
+              }
+              cb(null, errormessage);
+         }else{
+            individual.updateAttributes({ socketId: data.socketId , availability: data.availability  }, function (err, result) {
               console.log('resultttt', result)
               let successmessage = {
                 error: false,
@@ -588,35 +623,45 @@ module.exports = function (User) {
               }
               cb(null, successmessage);
             })
+          }
           })
-        }
-        else {
+        
+        
+      }else {
+        
           Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, doctor) {
-
-            console.log('doctor', data.socketId)
-            console.log('exists ...socketId..............', doctor)
-            doctor.updateAttributes({ 'socketId': data.socketId, 'availability': data.availability }, function (err, result) {
-              console.log('result', result)
-              let successmessage = {
-                error: false,
-                result: result,
-                message: 'User Status Updated Successfully'
+            console.log('doctor....',data)
+            if (err) { 
+              let errormessage = {
+                error: true,
+                message: "Something Went Wrong",
+                err: err
               }
-              cb(null, successmessage);
-            })
+              cb(null, errormessage);
+            } else {
+              doctor.updateAttributes({ socketId: data.socketId , availability: data.availability }, function (err, result) {
+                console.log('result', result)
+                let successmessage = {
+                  error: false,
+                  result: data,
+                  message: 'User Status Updated Successfully'
+                }
+                cb(null, successmessage);
+              })
+            }
           })
         }
-      }
-      else {
+      } else {
         let errMessage = {
           error: true,
           message: 'User not Exists'
         }
         cb(null, errMessage)
       }
-
+      }
     })
   }
+
 
 }
 
