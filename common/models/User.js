@@ -533,8 +533,9 @@ module.exports = function (User) {
 
 
               socket.to(data.socketId).emit("loginByScanner", {
-                userId: data.userId
+                doctorId: doctor.doctorId
               });
+              cb(null)
               // doctor.updateAttribute('socketId', data.socketId, function (err, result) {
               //   if (err) {
               //     let errormessage = {
@@ -557,15 +558,19 @@ module.exports = function (User) {
           }
           else {
             Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + data.userId } }, function (err, individual) {
-              individual.updateAttribute('socketId', data.socketId, function (err, result) {
-                console.log('resultttt', result)
-                let successmessage = {
-                  error: false,
-                  result: result,
-                  message: 'SocketId added Successfully'
-                }
-                cb(null, successmessage);
-              })
+              // individual.updateAttribute('socketId', data.socketId, function (err, result) {
+              //   console.log('resultttt', result)
+              //   let successmessage = {
+              //     error: false,
+              //     result: result,
+              //     message: 'SocketId added Successfully'
+              //   }
+              //   cb(null, successmessage);
+              // })
+              socket.to(data.socketId).emit("loginByScanner", {
+                individualId: individual.individualId
+              });
+              cb(null)
             })
           }
         }
