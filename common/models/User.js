@@ -489,17 +489,17 @@ module.exports = function (User) {
   /*******************************   ENDS   ***********************************************/
 
   /************************ SOCKET CONNECT AT LOGIN******************* */
-  User.observe('after save', function (ctx, next) {
-    var socket = User.app.io;
-    //Now publishing the data..
+  // User.observe('after save', function (ctx, next) {
+  //   var socket = User.app.io;
+  //   //Now publishing the data..
 
-    sockConnection.publish(socket, {
-      collectionName: 'User',
-      data: ctx.instance,
-      method: 'POST'
-    });
-    next();
-  }); //after save..
+  //   sockConnection.publish(socket, {
+  //     collectionName: 'User',
+  //     data: ctx.instance,
+  //     method: 'POST'
+  //   });
+  //   next();
+  // }); //after save..
   /*******************************  ENDS **************************/
 
   /**************************** LOGIN BY SCANNER ***************************/

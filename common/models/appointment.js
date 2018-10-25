@@ -19,7 +19,8 @@ module.exports = function (appointment) {
     returns: { arg: 'result', type: 'any' },
   })
   appointment.bookAppointment = function (data, cb) {
-    appointment.find({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { appointmentDate: data.appointmentDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }] } }, function (err, exists) {
+    console.log('dataaaaaaa',data)
+    appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { appointmentDate: data.appointmentDate },{ clinicId: 'resource:io.mefy.doctor.clinic#'+data.clinicId }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }] } }, function (err, exists) {
       console.log('data...', exists)
       if (exists != null && Object.keys(exists).length != 0) {
         console.log('BokKed....................appointment')
