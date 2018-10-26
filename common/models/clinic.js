@@ -267,6 +267,7 @@ module.exports = function (clinic) {
     ],
     returns: { arg: 'result', type: 'string' },
   });
+  
   clinic.getClinicSlot = function (clinicId, date, cb) {
     var day = moment(date).format('dddd')
     console.log('day', day);
