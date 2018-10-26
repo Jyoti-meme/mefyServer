@@ -520,7 +520,7 @@ module.exports = function (User) {
       if (err) {
         let errormessage = {
           error: true,
-          message: "Something Weng Wrong"
+          message: "Something Weng Wrong. Please try again"
         }
         cb(null, errormessage);
       }
@@ -535,7 +535,12 @@ module.exports = function (User) {
               socket.to(data.socketId).emit("loginByScanner", {
                 doctorId: doctor.doctorId
               });
-              cb(null)
+
+              let response = {
+                error: false,
+                message: "Logged in sucessfully"
+              }
+              cb(null, response)
               // doctor.updateAttribute('socketId', data.socketId, function (err, result) {
               //   if (err) {
               //     let errormessage = {
@@ -570,7 +575,12 @@ module.exports = function (User) {
               socket.to(data.socketId).emit("loginByScanner", {
                 individualId: individual.individualId
               });
-              cb(null)
+
+              let response = {
+                error: false,
+                message: "Logged in sucessfully"
+              }
+              cb(null, response)
             })
           }
         }
