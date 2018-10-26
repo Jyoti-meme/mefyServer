@@ -24,20 +24,19 @@ module.exports = function (clinic) {
     clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId } }, function (err, list) {
       console.log('exists', list)
       if (list.length == 0) {
-        clinic.create(
-          {
-            doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
-            address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
-            availability: data.availability
-          }, function (err, res) {
-            console.log('eesult', res)
-            let cliniccreation = {
-              error: false,
-              clinic: res,
-              message: "clinic create successfully"
-            }
-            cb(null, cliniccreation);
-          })
+        clinic.create({
+          doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
+          address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
+          availability: data.availability
+        }, function (err, res) {
+          console.log('eesult', res)
+          let cliniccreation = {
+            error: false,
+            clinic: res,
+            message: "clinic create successfully"
+          }
+          cb(null, cliniccreation);
+        })
       }
       else {
         filterClinic(list, data).then(result => {
@@ -267,18 +266,18 @@ module.exports = function (clinic) {
     ],
     returns: { arg: 'result', type: 'string' },
   });
-  
+
   clinic.getClinicSlot = function (clinicId, date, cb) {
     var day = moment(date).format('dddd')
-    console.log('day', day);
+    // console.log('day', day);
     clinic.findOne({ where: { clinicId: clinicId } }, function (err, result) {
-      console.log('result....', result)
+      // console.log('result....', result)
 
       if (result != null && Object.keys(result).length != 0) {
         var slot = [];
         let duration = result.weekDays;
         for (let i = 0; i < duration.length; i++) {
-          console.log('duration', duration[i])
+          // console.log('duration', duration[i])
           if (duration[i].day == day) {
 
             let startMinutes = moment.duration(duration[i].startTime).asMinutes();
@@ -292,68 +291,99 @@ module.exports = function (clinic) {
             const Appointment = app.models.appointment;
 
             for (let i = 0; i < timediff; i++) {
-              // console.log('dataaa')
+              // console.log('dataaa::' + i)
               let hr = Math.floor(startMinutes / 60);
               let min = Math.floor(startMinutes % 60);
               let schTime;
               schTime = (hr < 10 ? '0' + hr : hr) + ':' + (min < 10 ? '0' + min : min);
               startMinutes = startMinutes + 10;
 
-              //logic for dividing time slots
-
+              //              
+              //logic for dividing time slot
               if (i != 0) {
-                Appointment.findOne({ where: { and: [{ appointmentTimeFrom: sTime }, { appointmentTimeTo: schTime }, { clinicId: 'resource:io.mefy.doctor.clinic#' + clinicId }] } }, function (err, exists) {
-                  //  console.log('bb',exists)
-                  if (exists != null && Object.keys(exists).length != 0) {
-                    console.log('exists..............', exists)
-                    let newtime = {
-                      sTime: sTime,
-                      eTime: schTime,
-                      status: 'Booked'
-                    }
-                    timeArray.push(newtime);
-                  }
-                  else {
-                    let newtime = {
-                      sTime: sTime,
-                      eTime: schTime,
-                      status: 'enabled'
-                    }
-                    // console.log('newtime', newtime)
-                    timeArray.push(newtime);
-                  }
-
-                });
+                let newtime = {
+                  sTime: sTime,
+                  eTime: schTime
+                  // status: 'NotBooked'
+                }
+                timeArray.push(newtime);
                 sTime = schTime;
               } else {
                 sTime = schTime;
               }
 
             }
-
-            console.log('time', timeArray)
-            var x = 'slot'.concat((i + 1).toString());
-            let a = {
-              [x]: timeArray
-            }
-            slot.push(a)
-            // console.log('slot array', slot)     
+            // change the status of clinic slot booking basrd on appointmnet bokked for that clinic
+            appointmentChecking(timeArray, clinicId).then(list => {
+              console.log('list of appoitnment checking:', list);
+              var x = 'slot'.concat((i + 1).toString());
+              let a = {
+                [x]: list
+              }
+              slot.push(a);
+              let success = {
+                error: false,
+                timeSlot1: slot,
+                message: 'Get Clinic slot Sucessfully'
+              }
+              cb(null, success)
+            });
           }
         };
-        let success = {
-          error: false,
-          timeSlot1: slot,
-          message: 'Get Clinic slot Sucessfully'
-        }
-        cb(null, success)
-
-      } else {
+      }
+      else {
         cb(null, 'data not found')
       }
 
     })
   }
 
+
+  async function appointmentChecking(timeArray, clinicId) {
+    console.log('inside functio', timeArray, clinicId);
+    let y = [];
+    for (const subs of timeArray) {
+      console.log('substitute data', subs)
+      await Promise.all([substitutedata(subs, clinicId)]).then(function (values) {
+        console.log('RETUNED VALUESSSS', values);
+        if (values[0] == false) {
+          let x = {
+            sTime: subs.sTime,
+            eTime: subs.eTime,
+            status: 'UnBooked'
+          }
+          y.push(x);
+        }
+        else if (values[0] == true) {
+          let x = {
+            sTime: subs.sTime,
+            eTime: subs.eTime,
+            status: 'Booked'
+          }
+          y.push(x);
+        }
+      });
+    }
+    console.log('ARRAY PUSHED METHOD', y)
+    return y;
+  }
+
+  async function substitutedata(item, clinicId) {
+    console.log('INSIDE SUBSTITIUE FUNCTION', item);
+    const appointment = app.models.appointment;
+    return new Promise((resolve) => {
+      appointment.findOne({ where: { and: [{ clinicId: 'resource:io.mefy.doctor.clinic#' + clinicId }, { appointmentTimeFrom: item.sTime }, { appointmentTimeTo: item.eTime }] } }, function (err, result) {
+        console.log('appointment checking result', result);
+        if (result == null) {
+          // if app not booked
+          resolve(false)
+        } else {
+          // if app booked
+          resolve(true)
+        }
+      })
+    })
+  }
   // /*********************** END OF API Specific clinic's available slots for a day**********************/
 }
 
