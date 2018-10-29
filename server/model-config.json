@@ -179,7 +179,7 @@
   },
   "allergies": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "TreatmentTaken": {
     "dataSource": "composer",

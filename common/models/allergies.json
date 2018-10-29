@@ -84,7 +84,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "individual": {
+      "type": "belongsTo",
+      "model": "individual",
+      "foreignKey": "individualId"
+    }
+  },
   "acls": [],
   "methods": {}
 }
