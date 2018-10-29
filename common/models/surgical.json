@@ -40,9 +40,10 @@
       "type": "string",
       "required": false
     },
-    "helathRecordType": {
+    "healthRecordType": {
       "type": "string",
-      "required": false
+      "required": false,
+      "default": "Surgical"
     },
     "currentStatus": {
       "type": "string",
@@ -86,7 +87,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "individual": {
+      "type": "belongsTo",
+      "model": "individual",
+      "foreignKey": "individualId"
+    }
+  },
   "acls": [],
   "methods": {}
 }
