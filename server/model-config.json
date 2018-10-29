@@ -187,7 +187,7 @@
   },
   "surgical": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "TreatmentDetails": {
     "dataSource": "composer",

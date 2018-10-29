@@ -6,7 +6,7 @@ const app = require('../../server/server');
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies","getsurgery"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -412,6 +412,42 @@ module.exports = function (individual) {
   }
 
   /****************************************** ENDS **************************************************************** */
+
+
+  /********************************************** GET INDV Surgery LIST *******************************************/
+
+  individual.remoteMethod('getsurgery', {
+    http: { path: '/surgery', verb: 'get' },
+    accepts: [
+      { arg: 'individualId', type: 'string', required: true }
+    ],
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.getsurgery = function (individuaId, cb) {
+    const surgical = app.models.surgical;
+    surgical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individuaId } }, function (err, res) {
+      console.log('kjh', res)
+      if (err) {
+        let result = {
+          error: true,
+          message: "something went wrong"
+        }
+        cb(null, result)
+      }
+      else {
+        let result = {
+          error: false,
+          result: res,
+          message: "surgical list get "
+        }
+        cb(null, result)
+      }
+    })
+  }
+
+  /****************************************** ENDS **************************************************************** */
+
 };
   // individual.find({where:{family:{inq:['Father']}}},function(err,res){
 // individual.find({

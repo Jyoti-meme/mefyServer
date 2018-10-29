@@ -5,7 +5,6 @@ const BusinessNetworkConnection = require('composer-client').BusinessNetworkConn
 const bizNetworkConnection = new BusinessNetworkConnection();
 const cardName = "admin@mefy";
 const app = require('../../server/server');
-var sockConnection = require('../../server/sockett.js');
 var loopback = require('loopback');
 
 module.exports = function (User) {
