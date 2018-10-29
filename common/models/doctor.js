@@ -2,10 +2,14 @@
 
 const Composer = require('../lib/composer.js');
 const server = require('../../server/server');
+const specialityList = require('../../speciality.json');
+const stateList = require('../../state.json');
+const educationList = require('../../education.json');
+const languageList = require('../../language.json');
 
 module.exports = function (doctor) {
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList"];
   doctor.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -93,7 +97,7 @@ module.exports = function (doctor) {
 
     doctor.findOne({ where: { doctorId: data.doctorId } }, function (err, exists) {
       console.log('existence', exists)
-      console.log('error',err)
+      console.log('error', err)
       if (err) {
         let errormessage = {
           error: true,
@@ -104,85 +108,141 @@ module.exports = function (doctor) {
       else {
         // if (exists != null && Object.keys(exists).length != 0) {
 
-          exists.updateAttributes({ socketId: data.socketId, availability: data.availability }, function (err, result) {
-            console.log('result', result)
-            let successmessage = {
-              error: false,
-              result: data,
-              message: 'Doctor Status Updated Successfully'
-            }
-            cb(null, successmessage);
-          })
+        exists.updateAttributes({ socketId: data.socketId, availability: data.availability }, function (err, result) {
+          console.log('result', result)
+          let successmessage = {
+            error: false,
+            result: data,
+            message: 'Doctor Status Updated Successfully'
+          }
+          cb(null, successmessage);
+        })
 
         // }
       }
 
     })
   }
-/******************************************** ENDS ****************************************** */
+  /******************************************** ENDS ****************************************** */
 
-/*************************************************  VIDEO CALL ACCEPT /REJECT/CALL_END BY INDIVIDUAL *********************************************** */
-doctor.remoteMethod('callactions', {
-  http: { path: '/callactions/:individualId/:doctorId/:token', verb: 'get' },
-  description: "  accept/reject/callend actions ",
-  accepts: [
-    { arg: 'actions', type: 'string', required: true },
-    { arg: 'individualId', type: 'string', required: true, http: { source: 'path' } },
-    { arg: 'doctorId', type: 'string', required: true, http: { source: 'path' } },
-    { arg: 'token', type: 'string', required: true, http: { source: 'path' } },
-  ],
-  returns: { arg: 'result', type: 'any' }
-});
-
-
-doctor.callactions = function (actions, individualId, doctorId, token, cb) {
-  console.log('actions:' + actions, 'data:' + token, individualId, doctorId);
-  const individual = app.models.individual;
-  var socket = app.io;
- 
-  individual.findOne({ where: { individualId:individualId } }, function (err, result) {
-    if (result != null && Object.keys(result).length != 0) {
-      if (actions == 'accept') {
-        //acept event emit
-        socket.to(result.socketId).emit("accept", {
-          doctorId: data.doctorId,
-          message:'Call accepted'
-        });
-        let response = {
-          error: false,
-          message: 'Call accepted'
-        }
-        cb(null, response);
-      }
-      else if (actions == 'reject') {
-        // reject event emit
-        socket.to(result.socketId).emit("reject", {
-          doctorId: data.doctorId,
-          message:'Call rejected'
-        });
-        let response = {
-          error: false,
-          message: 'Call rejected'
-        }
-        cb(null, response);
-      }
-      else if (actions == 'call_end') {
-        //end call event emit
-        socket.to(result.socketId).emit("call_end", {
-          doctorId: data.doctorId,
-          message:'Call ended'
-        });
-        let response = {
-          error: false,
-          message: 'Call ended'
-        }
-        cb(null, response);
-      }
-    }
-    else {
-      cb(null, 'user doesnot exists')
-    }
+  /*************************************************  VIDEO CALL ACCEPT /REJECT/CALL_END BY INDIVIDUAL *********************************************** */
+  doctor.remoteMethod('callactions', {
+    http: { path: '/callactions/:individualId/:doctorId/:token', verb: 'get' },
+    description: "  accept/reject/callend actions ",
+    accepts: [
+      { arg: 'actions', type: 'string', required: true },
+      { arg: 'individualId', type: 'string', required: true, http: { source: 'path' } },
+      { arg: 'doctorId', type: 'string', required: true, http: { source: 'path' } },
+      { arg: 'token', type: 'string', required: true, http: { source: 'path' } },
+    ],
+    returns: { arg: 'result', type: 'any' }
   });
-}
-/************************************************* ENDS *************************************************** */
+
+
+  doctor.callactions = function (actions, individualId, doctorId, token, cb) {
+    console.log('actions:' + actions, 'data:' + token, individualId, doctorId);
+    const individual = app.models.individual;
+    var socket = app.io;
+
+    individual.findOne({ where: { individualId: individualId } }, function (err, result) {
+      if (result != null && Object.keys(result).length != 0) {
+        if (actions == 'accept') {
+          //acept event emit
+          socket.to(result.socketId).emit("accept", {
+            doctorId: data.doctorId,
+            message: 'Call accepted'
+          });
+          let response = {
+            error: false,
+            message: 'Call accepted'
+          }
+          cb(null, response);
+        }
+        else if (actions == 'reject') {
+          // reject event emit
+          socket.to(result.socketId).emit("reject", {
+            doctorId: data.doctorId,
+            message: 'Call rejected'
+          });
+          let response = {
+            error: false,
+            message: 'Call rejected'
+          }
+          cb(null, response);
+        }
+        else if (actions == 'call_end') {
+          //end call event emit
+          socket.to(result.socketId).emit("call_end", {
+            doctorId: data.doctorId,
+            message: 'Call ended'
+          });
+          let response = {
+            error: false,
+            message: 'Call ended'
+          }
+          cb(null, response);
+        }
+      }
+      else {
+        cb(null, 'user doesnot exists')
+      }
+    });
+  }
+  /************************************************* ENDS *************************************************** */
+  /*************************** GET List OF Specility,State,Language ,Education********************************/
+  doctor.remoteMethod('getList', {
+    http: { path: '/getList', verb: 'get' },
+    accepts: [{ arg: 'speciality', type: 'string' }, { arg: 'state', type: 'string' }, { arg: 'language', type: 'string' }, { arg: 'education', type: 'string' }],
+    description: "get list of Specility,State,Language,Education",
+    returns: { arg: 'result', type: 'any' },
+  });
+  doctor.getList = function (speciality, state, language, education, cb) {
+    if (speciality || state || language || education != null && Object.keys(speciality || state || language || education).length != 0) {
+      if (speciality == 'speciality') {
+        console.log('specialityyy')
+        let specialityResponse = {
+          error: false,
+          result: specialityList,
+          message: 'Getting All List Of Speciality'
+        }
+        cb(null, specialityResponse);
+      }
+      if (state == 'state') {
+        console.log('state')
+        let stateResponse = {
+          error: false,
+          result: stateList,
+          message: 'Getting All List Of State'
+        }
+        cb(null, stateResponse);
+      }
+      if (language == 'language') {
+        console.log('language')
+        let languageResponse = {
+          error: false,
+          result: languageList,
+          message: 'Getting All List Of Language'
+        }
+        cb(null, languageResponse);
+      }
+      if (education == 'education') {
+        console.log('education')
+        let educationResponse = {
+          error: false,
+          result: educationList,
+          message: 'Getting All List Of Education'
+        }
+        cb(null, educationResponse);
+      }
+      else {
+        cb(null, 'NotFound')
+      }
+    }
+
+    else {
+      cb(null, 'NotFound')
+    }
+  }
+  /************************************************* ENDS *************************************************** */
+
 };
