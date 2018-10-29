@@ -6,7 +6,7 @@ const app = require('../../server/server');
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -328,15 +328,15 @@ module.exports = function (individual) {
     console.log('actions:' + actions, 'data:' + token, individualId, doctorId);
     const doctor = app.models.doctor;
     var socket = app.io;
-   
-    doctor.findOne({ where: { doctorId:doctorId } }, function (err, result) {
+
+    doctor.findOne({ where: { doctorId: doctorId } }, function (err, result) {
       if (result != null && Object.keys(result).length != 0) {
         if (actions == 'accept') {
           //acept event emit
           socket.to(result.socketId).emit("accept", {
             individualId: data.individualId,
-            message:'Call accepted',
-         
+            message: 'Call accepted',
+
           });
           let response = {
             error: false,
@@ -348,7 +348,7 @@ module.exports = function (individual) {
           // reject event emit
           socket.to(result.socketId).emit("reject", {
             individualId: data.individualId,
-            message:'Call rejected'
+            message: 'Call rejected'
           });
           let response = {
             error: false,
@@ -360,7 +360,7 @@ module.exports = function (individual) {
           //end call event emit
           socket.to(result.socketId).emit("call_end", {
             individualId: data.individualId,
-            message:'Call ended'
+            message: 'Call ended'
           });
           let response = {
             error: false,
@@ -373,9 +373,45 @@ module.exports = function (individual) {
         cb(null, 'user doesnot exists')
       }
     })
-  
+
   }
   /************************************************* ENDS *************************************************** */
+
+
+
+  /********************************************** GET INDV ALLERGIES LIST *******************************************/
+
+  individual.remoteMethod('getallergies', {
+    http: { path: '/allergy', verb: 'get' },
+    accepts: [
+      { arg: 'individualId', type: 'string', required: true }
+    ],
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.getallergies = function (individuaId, cb) {
+    const allergies = app.models.allergies;
+    allergies.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individuaId } }, function (err, res) {
+      console.log('kjh', res)
+      if (err) {
+        let result = {
+          error: true,
+          message: "something went wrong"
+        }
+        cb(null, result)
+      }
+      else {
+        let result = {
+          error: false,
+          result: res,
+          message: "Allergy list get "
+        }
+        cb(null, result)
+      }
+    })
+  }
+
+  /****************************************** ENDS **************************************************************** */
 };
   // individual.find({where:{family:{inq:['Father']}}},function(err,res){
 // individual.find({
