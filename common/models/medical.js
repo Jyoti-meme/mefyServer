@@ -32,6 +32,7 @@ module.exports = function (medical) {
     data.sufferingDate = {
       start: startDate
     }
+    if(data.healthRecordType=='currentComplaint')
     medical.create(
       {
         individualId: data.individualId, healthRecordType: data.healthRecordType, sympton: data.sympton, duration: data.duration,
@@ -45,6 +46,21 @@ module.exports = function (medical) {
         }
         cb(null, result);
       })
+      else{
+        medical.create(
+          {
+            individualId: data.individualId, healthRecordType: data.healthRecordType, sympton: data.sympton, duration: data.duration,
+            sufferingDate: data.sufferingDate,status: 'solved'
+          }, function (err, res) {
+            console.log('eesult', res)
+            let result = {
+              error: false,
+              clinic: res,
+              message: " Medical Record Created  successfully"
+            }
+            cb(null, result);
+          })
+      }
   }
 
   /***************************************  END  ************************************************ */
