@@ -6,7 +6,7 @@ const app = require('../../server/server');
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies","getsurgery"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -442,6 +442,44 @@ module.exports = function (individual) {
           message: "surgical list get "
         }
         cb(null, result)
+      }
+    })
+  }
+  /****************************************** ENDS **************************************************************** */
+
+  /*******************GET MEDICAL HISTORY BY INDIVIDUALID************************* */
+  individual.remoteMethod('getMedicalHistory', {
+    http: { path: '/getMedicalHistory', verb: 'get' },
+    description: "Get all medical history by Individual id",
+    accepts: { arg: 'individualId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' }
+
+  });
+  individual.getMedicalHistory = function (individualId, cb) {
+    console.log('individualId', individualId)
+    const Medical = app.models.medical
+    Medical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, response) {
+      if (err) {
+        let result = {
+          error: true,
+          message: "something went wrong"
+        }
+        cb(null, result)
+      }
+      else {
+        if (response != null && Object.keys(response).length != 0) {
+          console.log('response', response)
+          let medicalList = {
+            error: false,
+            result: response,
+            message: "All Medical History of Individual"
+          }
+          cb(null, medicalList)
+        }
+
+        else {
+          cb(null, 'Not Found')
+        }
       }
     })
   }
