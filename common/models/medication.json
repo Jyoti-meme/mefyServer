@@ -37,6 +37,10 @@
       "type": "string",
       "required": false
     },
+    "medicationDate": {
+      "type": "string",
+      "required": false
+    },
     "dosage": {
       "type": "string",
       "required": false
@@ -61,7 +65,7 @@
       "type": "string",
       "required": false
     },
-    "currentStus": {
+    "currentStatus": {
       "type": "string",
       "required": false,
       "enum": [
