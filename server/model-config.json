@@ -175,7 +175,7 @@
   },
   "immunization": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "allergies": {
     "dataSource": "composer",
