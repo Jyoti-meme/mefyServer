@@ -62,8 +62,12 @@
       "required": false
     },
     "currentStus": {
-      "type": "number",
-      "required": false
+      "type": "string",
+      "required": false,
+      "enum": [
+        "On",
+        "Off"
+            ]
     },
     "createdBy": {
       "type": "string",
