@@ -26,7 +26,7 @@ module.exports = function (clinic) {
       if (list.length == 0) {
         clinic.create(
           {
-            doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
+            doctorId: data.doctorId, type: data.type, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
             address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
             availability: data.availability
           }, function (err, res) {
@@ -47,7 +47,7 @@ module.exports = function (clinic) {
             //clinic create
             clinic.create(
               {
-                doctorId: data.doctorId, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
+                doctorId: data.doctorId, type: data.type, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
                 address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
                 availability: data.availability
               }, function (err, res) {
@@ -267,7 +267,7 @@ module.exports = function (clinic) {
     ],
     returns: { arg: 'result', type: 'string' },
   });
-  
+
   clinic.getClinicSlot = function (clinicId, date, cb) {
     var day = moment(date).format('dddd')
     console.log('day', day);

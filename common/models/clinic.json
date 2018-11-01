@@ -33,6 +33,11 @@
       "required": true,
       "description": "The identifier of an instance of doctorId"
     },
+    "type": {
+      "type": "string",
+      "required": true,
+      "default": "actual"
+    },
     "clinicName": {
       "type": "string",
       "required": true
