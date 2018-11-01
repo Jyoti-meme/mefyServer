@@ -274,7 +274,7 @@ module.exports = function (doctor) {
             }
             let dashboardData = {
               error: false,
-              message: 'Dashboard Detail',
+              message: "Doctor's Dashboard Detail",
               clinic: exists.length,
               clincVistPatient: clinicVisitData.length,
               eConsultPatient: eConsultData.length,
@@ -284,7 +284,7 @@ module.exports = function (doctor) {
           }else {
             let Appointmentmsg = {
               error: false,
-              message: 'Dashboard Detail',
+              message: "Doctor's Dashboard Detail",
               clinic: exists.length,
               credit: 0,
               clincVistPatient: 0,
@@ -297,7 +297,7 @@ module.exports = function (doctor) {
       } else {
        let clinicmsg = {
           error: false,
-          message: 'Dashboard Detail',
+          message: "Doctor's Dashboard Detail",
           clinic: 0,
           credit: 0,
           clincVistPatient: 0,
