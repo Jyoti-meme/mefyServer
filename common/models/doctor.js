@@ -1,7 +1,7 @@
 'use strict';
 
 const Composer = require('../lib/composer.js');
-const server = require('../../server/server');
+const app = require('../../server/server');
 const specialityList = require('../../speciality.json');
 const stateList = require('../../state.json');
 const educationList = require('../../education.json');
@@ -9,7 +9,7 @@ const languageList = require('../../language.json');
 
 module.exports = function (doctor) {
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList", "doctorDashboard"];
   doctor.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -243,6 +243,70 @@ module.exports = function (doctor) {
       cb(null, 'NotFound')
     }
   }
-  /************************************************* ENDS *************************************************** */
+  /************************************************* END*************************************************** */
+  /***********************************DOCTOR'S DASHBOARD*************************************/
+  doctor.remoteMethod('doctorDashboard', {
+    http: { path: '/doctorDashboard', verb: 'get' },
+    description: "Doctor's dashboard data",
+    accepts: { arg: 'doctorId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' }
+  })
+  doctor.doctorDashboard = function (doctorId, cb) {
+    const Clinic = app.models.clinic
+    const Appointment = app.models.appointment
+
+    Clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, exists) {
+      if (exists != null && Object.keys(exists).length != 0) {
+        // console.log('number', exists.length)
+        var eConsultData = []
+        var clinicVisitData = []
+        Appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (er, appointment) {
+          if (appointment != null && Object.keys(appointment).length != 0) {
+            for (let i = 0; i < appointment.length; i++) {
+              if (appointment[i].appointmentType == 'eConsult') {
+                eConsultData.push(appointment[i])
+                console.log('appppointment', eConsultData.length)
+              }
+              else {
+                clinicVisitData.push(appointment[i])
+                console.log('clinicVisitData', clinicVisitData.length)
+              }
+            }
+            let dashboardData = {
+              error: false,
+              message: 'Dashboard Detail',
+              clinic: exists.length,
+              clincVistPatient: clinicVisitData.length,
+              eConsultPatient: eConsultData.length,
+              credit: 0
+            }
+            cb(null, dashboardData)
+          }else {
+            let Appointmentmsg = {
+              error: false,
+              message: 'Dashboard Detail',
+              clinic: exists.length,
+              credit: 0,
+              clincVistPatient: 0,
+              eConsultPatient: 0,
+            }
+            cb(null, Appointmentmsg)
+          }
+        })
+
+      } else {
+       let clinicmsg = {
+          error: false,
+          message: 'Dashboard Detail',
+          clinic: 0,
+          credit: 0,
+          clincVistPatient: 0,
+          eConsultPatient: 0,
+        }
+        cb(null, clinicmsg)
+      }
+  })
+}
+  /************************************************* END *************************************************** */
 
 };
