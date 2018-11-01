@@ -28,7 +28,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -427,6 +427,82 @@ module.exports = function (User) {
 
 
   /*********************************  END  ********************************************* */
+
+
+  /**************************************VERIFY OTP FOR LOGIN ************************************** */
+  User.remoteMethod('verifyotplogin', {
+    http: { path: '/verifyotp', verb: 'post' },
+    accepts: { arg: 'otpdata', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'string' },
+  });
+
+
+  User.verifyotplogin = function (otpdata, cb) {
+    console.log('data received', otpdata);
+    verifyOtp(otpdata.phoneNumber, otpdata.otp).then(function (otpresult) {
+      console.log('result', otpresult)
+      if (otpresult) {
+        //matched
+        User.findOne({ where: { phoneNumber: otpdata.phoneNumber } }, function (err, response) {
+          console.log('response', response);
+          if (response != null && Object.keys(response).length != 0) {
+          
+            if(otpdata.role==='doctor'){
+              //get profile of doctor
+              const doctor=app.models.doctor;
+              doctor.findOne({where:{userId:'resource:io.mefy.commonModel.User#'+response.userId}},function(err,doctor){
+                console.log('dcotor detail',doctor);
+                let data={
+                  error:false,
+                  result:doctor,
+                  message:'doctor profile detail'
+                }
+                cb(null,data)
+              })
+            }
+            else{
+              // get profile of individual
+              const individual=app.models.individual
+              individual.findOne({where:{userId:'resource:io.mefy.commonModel.User#'+response.userId}},function(err,individual){
+                console.log('dcotor detail',individual);
+                let data={
+                  error:false,
+                  result:individual,
+                  message:'individual profile detail'
+                }
+                cb(null,data)
+              })
+            }
+          }
+          else {
+            let data = {
+              error: true,
+              message: 'User not found'
+            }
+            cb(null, data);
+          }
+        })
+
+      }
+      else {
+        //not matched
+        let data = {
+          error: true,
+          message: 'imcorrect otp'
+        }
+        cb(null, data);
+      }
+    }).catch(err => {
+      let data = {
+        error: true,
+        message: 'imcorrect otp'
+      }
+      cb(null, data);
+    })
+
+  }
+  /************************************************************************************************** */
+
 
   /*************** GET USER PROFILE FOR DOCTOR/INDIVIDUAL  STARTS ************************ */
   User.remoteMethod('profile', {
