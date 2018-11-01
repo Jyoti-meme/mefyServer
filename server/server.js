@@ -68,7 +68,7 @@ boot(app, __dirname, function (err) {
       socket.on('disconnect', function () {
         console.log('user disconnected', socket.id);
 
-         new Promise(() => {
+        new Promise(() => {
           app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
             console.log('Doctor Socket Id...', exists)
             if (exists != null && Object.keys(exists).length != 0) {
@@ -102,7 +102,7 @@ boot(app, __dirname, function (err) {
       });
     })
 
-    
+
 
   }
 });

@@ -2,9 +2,10 @@
 
 const Composer = require('../lib/composer.js');
 const moment = require('moment');
+const app = require('../../server/server');
 
 module.exports = function (appointment) {
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "bookAppointment", "cancelAppointment", "doctorAppointment", "individualAppointment"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "bookAppointment", "cancelAppointment", "doctorAppointment", "individualAppointment", "getDoctorEvents"];
   appointment.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -22,7 +23,7 @@ module.exports = function (appointment) {
 
     var comingDate = moment(data.appointmentDate).format('YYYY-MM-DD');
     console.log(comingDate)
-    
+
     appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { clinicId: 'resource:io.mefy.doctor.clinic#' + data.clinicId }, { appointmentDate: comingDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }] } }, function (err, exists) {
       console.log('data...', exists)
       if (exists != null && Object.keys(exists).length != 0) {
@@ -173,6 +174,46 @@ module.exports = function (appointment) {
     })
   }
   /****************  END OF API FOR INDIVIDUAL'S APPOINTMENT LIST BY DATE AND DOCTORID */
+  /********************* API FOR GETTING DOCTOR'S  CURRENT SCHEDULE********************/
+  appointment.remoteMethod('getDoctorEvents', {
+    http: { path: '/getDoctorEvents', verb: 'get' },
+    description: "Get doctor's appoitnment for specific date",
+    accepts: { arg: 'doctorId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' }
+  })
+  appointment.getDoctorEvents = function (doctorId, cb) {
+    // var now = moment(new Date()); //todays date
+    var now = moment().format('YYYY-MM-DD');
+    console.log('currentDate', now)
+
+    appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, exists) {
+      let appointmentList = []
+      if (exists != null && Object.keys(exists).length != 0) {
+        // console.log('exists',exists)
+        for (let i = 0; i < exists.length; i++) {
+          console.log('length', exists.length)
+          if (moment(exists[i].appointmentDate).isSame(now) || moment(exists[i].appointmentDate).isAfter(now)) {
+            appointmentList.push(exists[i])
+            console.log('apppp', appointmentList)
+            var upcomingAppointment = {
+              error: false,
+              result: appointmentList,
+              message: 'Get Upcoming Appontment List'
+            }
+          }
+        }
+        if (appointmentList != null && Object.keys(appointmentList).length != 0) {
+          cb(null, upcomingAppointment)
+        }
+        else {
+          cb(null, 'No Any Appointment')
+        }
+      } else {
+        cb(null, 'Not Found')
+      }
+    })
+  }
+  /****************  END OF API FOR UPCOMING DOCTOR'SAPPOINTMENT LIST *************/
 
 
 
