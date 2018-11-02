@@ -6,6 +6,7 @@ const specialityList = require('../../speciality.json');
 const stateList = require('../../state.json');
 const educationList = require('../../education.json');
 const languageList = require('../../language.json');
+const medicineList = require('../../medicine.json');
 
 module.exports = function (doctor) {
   // HIDE UNUSED REMORE METHODS
@@ -189,15 +190,16 @@ module.exports = function (doctor) {
     });
   }
   /************************************************* ENDS *************************************************** */
+
   /*************************** GET List OF Specility,State,Language ,Education********************************/
   doctor.remoteMethod('getList', {
     http: { path: '/getList', verb: 'get' },
-    accepts: [{ arg: 'speciality', type: 'string' }, { arg: 'state', type: 'string' }, { arg: 'language', type: 'string' }, { arg: 'education', type: 'string' }],
-    description: "get list of Specility,State,Language,Education",
+    accepts: [{ arg: 'speciality', type: 'string' }, { arg: 'state', type: 'string' }, { arg: 'language', type: 'string' }, { arg: 'education', type: 'string' },{ arg: 'medicine', type: 'string' }],
+    description: "get list of Specility,State,Language,Education,medicine",
     returns: { arg: 'result', type: 'any' },
   });
-  doctor.getList = function (speciality, state, language, education, cb) {
-    if (speciality || state || language || education != null && Object.keys(speciality || state || language || education).length != 0) {
+  doctor.getList = function (speciality, state, language, education,medicine, cb) {
+    if (speciality || state || language || education||medicine != null && Object.keys(speciality || state || language || education ||medicine).length != 0) {
       if (speciality == 'speciality') {
         console.log('specialityyy')
         let specialityResponse = {
@@ -233,6 +235,15 @@ module.exports = function (doctor) {
           message: 'Getting All List Of Education'
         }
         cb(null, educationResponse);
+      }
+      if (medicine == 'medicine') {
+        console.log('medicine')
+        let medicineResponse = {
+          error: false,
+          result: medicineList,
+          message: 'Getting All List Of medicine'
+        }
+        cb(null, medicineResponse);
       }
       else {
         cb(null, 'NotFound')
