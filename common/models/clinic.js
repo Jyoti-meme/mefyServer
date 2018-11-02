@@ -21,6 +21,7 @@ module.exports = function (clinic) {
   });
 
   clinic.addClinic = function (data, cb) {
+    
     clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId } }, function (err, list) {
       console.log('exists', list)
       if (list.length == 0) {
@@ -51,7 +52,7 @@ module.exports = function (clinic) {
                 address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
                 availability: data.availability
               }, function (err, res) {
-                console.log('eesult', res)
+                console.log('reesult', res)
                 let cliniccreation = {
                   error: false,
                   clinic: res,
@@ -158,35 +159,60 @@ module.exports = function (clinic) {
   /**********************************  END  ************************************** */
 
 
-  /*********************  CLINIC BY DATE AND DOCTORID  *********************************** */
+  /*********************  CLINIC BY DATE ,TYPE AND DOCTORID  *********************************** */
 
   clinic.remoteMethod('clinicByDate', {
     http: { path: '/clinicbydate', verb: 'get' },
     description: " Get Clinic By DoctorId",
-    accepts: [{ arg: 'doctorId', type: 'string' }, { arg: 'date', type: 'string' }],
+    accepts: [{ arg: 'doctorId', type: 'string' }, { arg: 'date', type: 'string' }, { arg: 'type', type: 'string' }],
     returns: { arg: 'result', type: 'string' },
   })
 
   //logic for filtration
-  clinic.clinicByDate = function (doctorId, date, cb) {
+  clinic.clinicByDate = function (doctorId,date,type, cb) {
+    console.log('date',date)
     var day = moment(date).format('dddd')
     console.log('day', day);
-    clinic.find({ where: { and: [{ 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId }, { 'weekDays.day': { $in: ["Monday"] } }] } }, function (err, res) {
-      console.log('Response from find', res);
-      var returnResult = filterClinics(res, day)
-      let sucessResponse = {
-        eror: false,
-        clinic: returnResult[0],
-        message: "clinic fetched according to date"
-      }
-      cb(null, sucessResponse)
+    if (type == 'clinicVisit') {
+      console.log('type',type)
+      clinic.find({ where: { 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId  } }, function (err, res) {
+        console.log('Response from find', res);
+        var returnResult = filterClinics(res, day)
+        let sucessResponse = {
+          eror: false,
+          clinic: returnResult[0],
+          message: "clinic fetched according to date"
+        }
+        cb(null, sucessResponse)
 
 
-    })
+      })
+    }
+    else {
+      let x = []
+      clinic.find({ where:{ 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, res) {
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].type == "virtual") {
+            x.push(res[i])
+          }
+        }
+        console.log('Response from find', x);
+        var returnResult = filterClinics(x, day)
+        let sucessResponse = {
+          eror: false,
+          clinic: returnResult[0],
+          message: "clinic fetched according to date"
+        }
+        cb(null, sucessResponse)
+
+
+      })
+    }
   }
 
   //create new array of filtered result
   function filterClinics(arr, day) {
+    console.log('aaaaa',arr,day)
     let newarray = [];
     var result = filterViaDay(arr, day)
     // console.log('NRE RESULT',result)
@@ -196,6 +222,8 @@ module.exports = function (clinic) {
 
   // filter by day
   function filterViaDay(arr, day) {
+    console.log('bbbb',arr,day)
+
     return arr.filter((obj) => {
       for (let i = 0, length = obj.weekDays.length; i < length; i++) {
         if (obj.weekDays[i].day === day) {
@@ -282,7 +310,7 @@ module.exports = function (clinic) {
           // main array shoul be returned here
           let success = {
             error: false,
-             response,
+            response,
             message: 'Get Clinic slot Sucessfully'
           }
           cb(null, success)
@@ -301,10 +329,10 @@ module.exports = function (clinic) {
   async function weekdays(duration, clinicId, day) {
     var slot = [];
     for (const instance of duration) {
-      console.log('index of',duration.indexOf(instance))
+      console.log('index of', duration.indexOf(instance))
       await Promise.all([slotdivide(instance, day, clinicId)]).then(function (values) {
         console.log('SLOT DEIVIDE RETURNED VALUES', values[0])
-        var x = 'slot'.concat(duration.indexOf(instance)+1);
+        var x = 'slot'.concat(duration.indexOf(instance) + 1);
         // .concat((i + 1).toString());
         let a = {
           [x]: values[0]
@@ -312,24 +340,24 @@ module.exports = function (clinic) {
         slot.push(a)
       })
 
-    } 
+    }
     return slot
   }
 
   async function slotdivide(instance, day, clinicId) {
     // console.log('instance', instance)
-    var newarray=[];
-    return  new Promise((resolve,reject)=>{
+    var newarray = [];
+    return new Promise((resolve, reject) => {
       if (instance.day == day) {
 
         let startMinutes = moment.duration(instance.startTime).asMinutes();
         let endMinutes = moment.duration(instance.endTime).asMinutes();
         let timediff = (endMinutes - startMinutes) / 10;
-  
+
         let timeArray = [];
-  
+
         var sTime;
-  
+
         for (let i = 0; i < timediff; i++) {
           // console.log('dataaa::' + i)
           let hr = Math.floor(startMinutes / 60);
@@ -337,7 +365,7 @@ module.exports = function (clinic) {
           let schTime;
           schTime = (hr < 10 ? '0' + hr : hr) + ':' + (min < 10 ? '0' + min : min);
           startMinutes = startMinutes + 10;
-  
+
           //              
           //logic for dividing time slot
           if (i != 0) {
@@ -351,7 +379,7 @@ module.exports = function (clinic) {
           } else {
             sTime = schTime;
           }
-  
+
         }
         // change the status of clinic slot booking basrd on appointmnet bokked for that clinic
         appointmentChecking(timeArray, clinicId).then(list => {
@@ -370,13 +398,14 @@ module.exports = function (clinic) {
           // }
           // cb(null, success)
         });
-        
+
       }
 
-else{
-  reject('error')
-}    })
-   
+      else {
+        reject('error')
+      }
+    })
+
   }
 
   async function appointmentChecking(timeArray, clinicId) {
