@@ -10,7 +10,7 @@ const medicineList = require('../../medicine.json');
 
 module.exports = function (doctor) {
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList", "doctorDashboard"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList", "doctorDashboard","findIndividual","createIndividual"];
   doctor.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -365,4 +365,37 @@ module.exports = function (doctor) {
     })
   }
   /****************************************************ENDS ******************************************* */
-};
+/************************************* DOCTOR FIND INDIVIDUAL ************************************************ */
+doctor.remoteMethod('findIndividual', {
+  http: { path: '/findindividual', verb: 'get' },
+  description: "Doctor create individual",
+  accepts: { arg: 'phoneNumber', type: 'string', required: true},  //doctorId,phonenumber,role,name
+  returns: { arg: 'result', type: 'any' }
+});
+
+doctor.findIndividual=function(phoneNumber,cb){
+  console.log('phoneNumber',phoneNumber);
+  const individual=app.models.individual;
+  individual.findOne({where:{phoneNumber:phoneNumber}},function(err,result){
+    console.log('result',result);
+    console.log('err',err);
+    if(result!==null&& Object.keys(result).length!=0){
+      let response={
+        error:false,
+        result:result,
+        message:'User detail'
+      }
+      cb(null,response);
+    }
+   else{
+     let response={
+       error:true,
+       message:'user not found'
+     }
+    cb(null,response);
+   }
+
+  })
+}
+
+/************************************************* ENDS *********************************************** */};
