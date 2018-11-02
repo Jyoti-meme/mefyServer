@@ -3,7 +3,7 @@
 const Composer = require('../lib/composer.js');
 const moment = require('moment');
 const app = require('../../server/server');
-const medicineList = require('../../medicine.json');
+
 
 module.exports = function (medication) {
   const enabledRemoteMethods = ["findById", "deleteById", "find", "Medication", "getMedicineList", "getMedicineNameList"];
@@ -77,22 +77,6 @@ module.exports = function (medication) {
         }
       }
     })
-  }
-  /************************END ******************************/
-
-  /***********************GET MECINIE NAME LIST FORM JSON FILE**************************/
-  medication.remoteMethod('getMedicineNameList', {
-    http: { path: '/medicineList', verb: 'get' },
-    description: 'get medicine name list',
-    returns: { arg: 'result', type: 'any' }
-  })
-  medication.getMedicineNameList = function (cb) {
-    let medicineName = {
-      error: false,
-      result: medicineList,
-      message: 'Get  List Of Medicine Name',
-    }
-    cb(null, medicineName)
   }
   /************************END ******************************/
 
