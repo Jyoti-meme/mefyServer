@@ -281,7 +281,7 @@ module.exports = function (doctor) {
               credit: 0
             }
             cb(null, dashboardData)
-          }else {
+          } else {
             let Appointmentmsg = {
               error: false,
               message: "Doctor's Dashboard Detail",
@@ -295,7 +295,7 @@ module.exports = function (doctor) {
         })
 
       } else {
-       let clinicmsg = {
+        let clinicmsg = {
           error: false,
           message: "Doctor's Dashboard Detail",
           clinic: 0,
@@ -305,8 +305,53 @@ module.exports = function (doctor) {
         }
         cb(null, clinicmsg)
       }
-  })
-}
+    })
+  }
   /************************************************* END *************************************************** */
 
+  /*****************************************  DOCTOR CREATE INDIVIDUAL ****************************************************** */
+  doctor.remoteMethod('createIndividual', {
+    http: { path: '/createindividual', verb: 'post' },
+    description: "Doctor create individual",
+    accepts: { arg: 'data', type: 'obj', required: true, http: { source: 'body' } },  //doctorId,phonenumber,role,name
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  doctor.createIndividual = function (data, cb) {
+    console.log('data', data);
+    const User = app.models.User;
+    const individual = app.models.individual;
+    User.find({where:{ phoneNumber: data.phoneNumber }}, function (err, exists) {
+      console.log('exists', exists);
+      if (exists.length != 0) {
+        // individual created
+        let result = {
+          error: true,
+          message: 'Individual exists'
+        }
+        cb(null,result)
+      }
+      else {
+        //create user and individual
+       
+        User.create({
+          phoneNumber: data.phoneNumber, role: data.role
+        }, function (err, user) {
+          console.log('user created', user);
+          console.log('errr',err)
+          individual.create({ phoneNumber: data.phoneNumber, name: data.name, userId: user.userId }, function (err, indv) {
+            console.log('individual', indv)
+            console.log('er',err)
+            let response={
+              err:false,
+              result:indv,
+              message:'indv created'
+            }
+            cb(null,response);
+          })
+        })
+      }
+    })
+  }
+  /****************************************************ENDS ******************************************* */
 };
