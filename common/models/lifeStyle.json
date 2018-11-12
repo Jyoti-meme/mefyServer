@@ -28,6 +28,11 @@
       "description": "The instance identifier for this type",
       "defaultFn": "uuidv4"
     },
+    "advice":{
+      "type":"string",
+      "required": true
+    }
+    ,
     "createdBy": {
       "type": "string",
       "required": false

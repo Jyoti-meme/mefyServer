@@ -44,38 +44,45 @@
       "description": "The identifier of an instance of individualId"
     },
     "adviceId": {
-      "type": "any",
+      "type": 
+        "string" ,
       "required": false,
       "description": "The identifier of an instance of adviceId"
     },
     "lifeStyleId": {
-      "type": "any",
+      "type": 
+        "string",
       "required": false,
       "description": "The identifier of an instance of lifeStyleId"
     },
     "medicineId": {
-      "type": "any",
+      "type": 
+        "string" ,
       "required": false,
       "description": "The identifier of an instance of medicineId"
     },
     "diagnosisId": {
-      "type": "any",
+      "type": 
+        "string",
       "required": false,
       "description": "The identifier of an instance of diagnosisId"
     },
     "specificInstructionId": {
-      "type": "any",
+      "type":
+        "string" ,
       "required": false,
       "description": "The identifier of an instance of specificInstructionId"
     },
     "recommendedId": {
-      "type": "any",
+      "type": 
+        "string",
       "required": false,
       "description": "The identifier of an instance of recommendedId"
     },
     "status": {
       "type": "string",
       "required": false,
+      "default":"Consulting",
       "enum": [
         "Consulting",
         "Inprogress",
