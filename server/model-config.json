@@ -39,7 +39,7 @@
   },
   "bill": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "billInfo": {
     "dataSource": "composer",

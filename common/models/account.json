@@ -54,6 +54,14 @@
       "type": "string",
       "required": false
     },
+    "status":{
+      "type": "string",
+      "required": true,
+      "enum": [
+        "Active",
+        "Inactive"
+      ]
+    },
     "kycDoc": {
       "type": [
         "kyc"
