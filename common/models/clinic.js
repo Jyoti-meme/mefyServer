@@ -331,7 +331,7 @@ module.exports = function (clinic) {
     for (const instance of duration) {
       console.log('index of', duration.indexOf(instance))
       await Promise.all([slotdivide(instance, day, clinicId)]).then(function (values) {
-        console.log('SLOT DEIVIDE RETURNED VALUES', values[0])
+        console.log('SLOT DIVIDE RETURNED VALUES', values[0])
         var x = 'slot'.concat(duration.indexOf(instance) + 1);
         // .concat((i + 1).toString());
         let a = {

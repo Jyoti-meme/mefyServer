@@ -7,7 +7,7 @@ module.exports = function (prescription) {
   Composer.restrictModelMethods(prescription);
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "create"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "create", "prescriptionbyindividualId"];
   prescription.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -229,4 +229,228 @@ module.exports = function (prescription) {
   }
   /**************************************************** ENDS **************************************************** */
 
+
+  /********************************************************* GET PRESCRIPTION BY INDIVIDUALID ********************* */
+
+  prescription.remoteMethod('prescriptionbyindividualId', {
+    http: { path: '/individualprescription', verb: 'get' },
+    description: "get prescription by individalId",
+    accepts: { arg: 'individualId', type: 'string' },
+    returns: { arg: 'result', type: 'any' },
+  });
+
+  // LOGIC FOR GETTING DETAILS
+  prescription.prescriptionbyindividualId = function (individualId, cb) {
+    prescription.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, list) {
+
+      fetchDetail(list).then(function (result) {
+        // console.log('FETCH DETAIL RETURNED VALUE', result);
+        let response = {
+          error: false,
+          result: result,
+          message: 'Prescription detail get successfull'
+        }
+        cb(null, response)
+      }).catch(err => {
+
+      })
+    })
+  }
+
+  // FORM  DATA IN A WAY TO FETCH DETAILS 
+  async function fetchDetail(preslist) {
+    // console.log('INSIDE FETCHDETAIL FUNCTION', preslist)
+    let dataarray = [];
+    for (const instance of preslist) {
+      // console.log('instance',instance)
+      let fulldata = [];
+
+      if (instance.doctorId) {
+        let data1 = {
+          doctorId: instance.doctorId
+        }
+        fulldata.push(data1)
+      }
+      if (instance.medicineId) {
+        let data2 = {
+          medicineId: instance.medicineId
+        }
+        fulldata.push(data2)
+      }
+      if (instance.adviceId) {
+        let data3 = {
+          adviceId: instance.adviceId
+        }
+        fulldata.push(data3)
+      }
+      if (instance.recommendedId) {
+        let data4 = {
+          recommendedId: instance.recommendedId
+        }
+        fulldata.push(data4)
+      }
+      if (instance.specificInstructionId) {
+        let data5 = {
+          specificInstructionId: instance.specificInstructionId
+        }
+        fulldata.push(data5)
+      }
+      if (instance.lifeStyleId) {
+        let data6 = {
+          lifeStyleId: instance.lifeStyleId
+        }
+        fulldata.push(data6)
+      }
+      if (instance.diagnosisId) {
+        let data7 = {
+          diagnosisId: instance.diagnosisId
+        }
+        fulldata.push(data7)
+      }
+      if (instance.prescriptionId) {
+        let data8 = {
+          prescriptionId: instance.prescriptionId
+        }
+        fulldata.push(data8)
+      }
+
+      await getDetails(fulldata).then(function (values) {
+        console.log('GET DETAILS RETURNED VALUE', values)
+        dataarray.push(values);
+      })
+    }
+    // console.log('xxxxx',dataarray)
+    return dataarray;
+  }
+
+  // ARRANGE DATA RECEIVED
+  async function getDetails(data) {
+    console.log('INSIDE GET DETAILS FUNCTIONS', data)
+    let prescriptiondata = {};
+    for (const item of data) {
+      await Promise.all([getspecificdetails(item)]).then(function (values) {
+        if (values[0].type == 'doctor') {
+          prescriptiondata.doctor = values[0].data
+        }
+        else if (values[0].type == 'advice') {
+          prescriptiondata.advice = values[0].data
+        }
+        else if (values[0].type == 'medicine') {
+          prescriptiondata.medicine = values[0].data
+        }
+        else if (values[0].type == 'diagnosis') {
+          prescriptiondata.diagnosis = values[0].data
+        }
+        else if (values[0].type == 'instruction') {
+          prescriptiondata.instruction = values[0].data
+        }
+        else if (values[0].type == 'recommended') {
+          prescriptiondata.recommended = values[0].data
+        }
+        else if (values[0].type == 'lifestyle') {
+          prescriptiondata.lifestyle = values[0].data
+        }
+        else if (values[0].type == 'prescription') {
+          prescriptiondata.prescriptionId = values[0].data
+        }
+      })
+    }
+    return prescriptiondata
+
+
+  }
+
+  // FIND DETAIL OF DOCTOR ,PRESCRIPTIONS INDIVIDUALLY
+  async function getspecificdetails(item) {
+    // console.log('INSIDE GETSPECIFIC DETAIL FUNCTION ', item);
+    const doctor = app.models.doctor;
+    const medicine = app.models.prescribeMedicine;
+    const advice = app.models.advice;
+    const lifestyle = app.models.lifeStyle;
+    const instruction = app.models.instruction;
+    const diagnosis = app.models.diagnosis;
+    const recommended = app.models.recommended;
+    return new Promise((resolve) => {
+      if (item.doctorId) {
+        doctor.findOne({ where: { doctorId: item.doctorId.split('#')[1] } }, function (err, doctordetails) {
+          // console.log('doctor details', doctordetails)
+          let data1 = {
+            type: 'doctor',
+            data: doctordetails
+          }
+          resolve(data1)
+        })
+      }
+      else if (item.medicineId) {
+        medicine.findOne({ where: { prescribeMedicineId: item.medicineId.split('#')[1] } }, function (err, meddetails) {
+          // console.log('medicine details', meddetails)
+          let data2 = {
+            type: 'medicine',
+            data: meddetails
+          }
+          resolve(data2);
+        })
+      }
+      else if (item.adviceId) {
+        advice.findOne({ where: { adviceId: item.adviceId.split('#')[1] } }, function (err, advdetails) {
+          // console.log('advic details', advdetails);
+
+          let data3 = {
+            type: 'advice',
+            data: advdetails
+          }
+          resolve(data3);
+        })
+      }
+      else if (item.diagnosisId) {
+        diagnosis.findOne({ where: { diagnosisId: item.diagnosisId.split('#')[1] } }, function (err, diagnosisdetails) {
+          // console.log('diagnosisdetails details', diagnosisdetails);
+          let data4 = {
+            type: 'diagnosis',
+            data: diagnosisdetails
+          }
+          resolve(data4);
+        })
+      }
+      else if (item.lifeStyleId) {
+        lifestyle.findOne({ where: { lifeStyleId: item.lifeStyleId.split('#')[1] } }, function (err, lifedetails) {
+          // console.log('liefdetails details', lifedetails);
+          let data5 = {
+            type: 'lifestyle',
+            data: lifedetails
+          }
+          resolve(data5);
+        })
+      }
+      else if (item.specificInstructionId) {
+        instruction.findOne({ where: { specificInstructionId: item.specificInstructionId.split('#')[1] } }, function (err, instructiondetails) {
+          // console.log('instructiondetails details', instructiondetails);
+
+          let data6 = {
+            type: 'instruction',
+            data: instructiondetails
+          }
+          resolve(data6);
+        })
+      }
+      else if (item.recommendedId) {
+        recommended.findOne({ where: { recommendedId: item.recommendedId.split('#')[1] } }, function (err, recommendeddetails) {
+          // console.log('recommendeddetails details', recommendeddetails);
+          let data7 = {
+            type: 'recommended',
+            data: recommendeddetails
+          }
+          resolve(data7);
+        })
+      }
+      else if (item.prescriptionId) {
+        let data8 = {
+          type: 'prescription',
+          data: item.prescriptionId
+        }
+        resolve(data8)
+      }
+    })
+  }
+  /**************************************************** ENDS ****************************************************** */
 };

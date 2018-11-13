@@ -235,7 +235,7 @@
   },
   "advice": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "lifeStyle": {
     "dataSource": "composer",
@@ -243,11 +243,11 @@
   },
   "prescribeMedicine": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "diagnosis": {
     "dataSource": "composer",
-    "public": false
+    "public": true
   },
   "recommended": {
     "dataSource": "composer",
