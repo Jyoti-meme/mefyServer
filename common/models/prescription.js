@@ -313,7 +313,12 @@ module.exports = function (prescription) {
         }
         fulldata.push(data8)
       }
-
+      if (instance.individualId) {
+        let data9 = {
+          individualId: instance.individualId
+        }
+        fulldata.push(data9)
+      }
       await getDetails(fulldata).then(function (values) {
         console.log('GET DETAILS RETURNED VALUE', values)
         dataarray.push(values);
@@ -352,6 +357,9 @@ module.exports = function (prescription) {
         }
         else if (values[0].type == 'prescription') {
           prescriptiondata.prescriptionId = values[0].data
+        }
+        else if (values[0].type == 'individual') {
+          prescriptiondata.individualId = values[0].data
         }
       })
     }
@@ -450,7 +458,45 @@ module.exports = function (prescription) {
         }
         resolve(data8)
       }
+      else if (item.individualId) {
+        let data9 = {
+          type: 'individual',
+          data: item.individualId
+        }
+        resolve(data9)
+      }
     })
   }
   /**************************************************** ENDS ****************************************************** */
+
+  /************************************ GET PRESCRIPTION DETAILS BY PRESCRIPTION ID ****************************** */
+  prescription.remoteMethod('prescriptionbyprescriptionId', {
+    http: { path: '/prescriptiondetail', verb: 'get' },
+    description: "get prescription by prescriptionId",
+    accepts: { arg: 'prescriptionId', type: 'string' },
+    returns: { arg: 'result', type: 'any' },
+  });
+
+  //LOGIC FOR GETTING PRESCRIPTION DETAILS BY PRESCRIPTIONID
+  prescription.prescriptionbyprescriptionId = function (prescriptionId, cb) {
+    let x = [];
+    prescription.findOne({ where: { prescriptionId: prescriptionId } }, function (err, pres) {
+      console.log('prescriptionid', pres);
+      x.push(pres)
+      fetchDetail(x).then(function (result) {
+        // console.log('FETCH DETAIL RETURNED VALUE', result);
+        let response = {
+          error: false,
+          result: result,
+          message: 'Prescription detail get successfull'
+        }
+        cb(null, response)
+      }).catch(err => {
+
+      })
+    })
+  }
+
+  /********************************************************* ENDS ********************************************* */
+
 };
