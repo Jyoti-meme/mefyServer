@@ -163,7 +163,7 @@ module.exports = function (User) {
               console.log('user created response', res)
               // send otp and verify it then create individual
               Doctor.create({
-                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId, socketId: data.socketId ? data.socketId : ''
+                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId, socketId: data.socketId ? data.socketId : '',language:data.language?data.language:[],education:data.education?data.education:[],speciality:data.speciality?data.speciality:[]
               }, function (err, res) {
                 console.log('created doctor data', res, err)
                 var sucresponse1 = {
