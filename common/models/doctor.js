@@ -199,7 +199,8 @@ module.exports = function (doctor) {
     returns: { arg: 'result', type: 'any' },
   });
   doctor.getList = function (speciality, state, language, education,medicine, cb) {
-    if (speciality || state || language || education||medicine != null && Object.keys(speciality || state || language || education ||medicine).length != 0) {
+    console.log('data',language)
+    if (speciality || state || language || education || medicine != null && Object.keys(speciality || state || language || education || medicine).length != 0) {
       if (speciality == 'speciality') {
         console.log('specialityyy')
         let specialityResponse = {
@@ -209,7 +210,7 @@ module.exports = function (doctor) {
         }
         cb(null, specialityResponse);
       }
-      if (state == 'state') {
+     else  if (state == 'state') {
         console.log('state')
         let stateResponse = {
           error: false,
@@ -218,7 +219,7 @@ module.exports = function (doctor) {
         }
         cb(null, stateResponse);
       }
-      if (language == 'language') {
+      else if (language == 'language') {
         console.log('language')
         let languageResponse = {
           error: false,
@@ -227,7 +228,7 @@ module.exports = function (doctor) {
         }
         cb(null, languageResponse);
       }
-      if (education == 'education') {
+      else if (education == 'education') {
         console.log('education')
         let educationResponse = {
           error: false,
@@ -236,7 +237,7 @@ module.exports = function (doctor) {
         }
         cb(null, educationResponse);
       }
-      if (medicine == 'medicine') {
+     else if (medicine == 'medicine') {
         console.log('medicine')
         let medicineResponse = {
           error: false,
