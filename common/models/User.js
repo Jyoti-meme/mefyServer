@@ -28,7 +28,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin","doctorWebLogin"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -163,7 +163,7 @@ module.exports = function (User) {
               console.log('user created response', res)
               // send otp and verify it then create individual
               Doctor.create({
-                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId, socketId: data.socketId ? data.socketId : '',language:data.language?data.language:[],education:data.education?data.education:[],speciality:data.speciality?data.speciality:[],practicingSince:data.practicingSince?data.practicingSince:'',email:data.email?data.email:''
+                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId, socketId: data.socketId ? data.socketId : '',language:data.language?data.language:[],education:data.education?data.education:[],speciality:data.speciality?data.speciality:[],practicingSince:data.practicingSince?data.practicingSince:'',email:data.email?data.email:'',token:data.token?data.token:''
               }, function (err, res) {
                 console.log('created doctor data', res, err)
                 var sucresponse1 = {
@@ -878,9 +878,59 @@ module.exports = function (User) {
       })
 
   }
+  /***************************DOCTOR WEB LOGIN************************/
+  User.remoteMethod('doctorWebLogin',{
+    http:{path:'/doctorWebLogin',verb:'post'},
+    description:"Doctor's Web Login",
+    accepts:{arg:'webdata',type:'object',http:{source:'body'}},
+    returns:{arg:'result',type:'any'} 
+  });
+User.doctorWebLogin=function(webdata,cb){
+  console.log(webdata)
+    const Doctor = app.models.doctor;
+  User.findOne({ where: { and: [{ phoneNumber: webdata.phoneNumber }, { role: webdata.role }] } }, function (err, exists) {
+      console.log('user existence', exists)
+      if (exists != null && Object.keys(exists).length != 0) {
+        //user exists 
+        if (webdata.role == 'doctor') {
+          console.log(exists.userId)
+          Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, doctor) {
+            console.log('doctor', doctor)
+            if (doctor.token == webdata.token) {
+              console.log('device id matched')
+              // login
+              let dloggedin = {
+                error: false,
+                user: doctor,
+                message: 'Doctor loggedIn successfully'
+              }
+              cb(null, dloggedin)
+            }
+            else {
+              // send otp
+              var otpresponse = {
+                err: false,
+                message: 'OTP sent to registered number'
+              }
+              cb(null, otpresponse)
+            }
+          })
+        }
+      }else{
+          let errMessage = {
+            error: true,
+            message: 'User not Registered'
+          }
+          cb(null, errMessage)
+        }
+      })
+    }
+
+  }
+        
 
 
-}
+
 
 
 
