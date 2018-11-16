@@ -163,7 +163,14 @@ module.exports = function (User) {
               console.log('user created response', res)
               // send otp and verify it then create individual
               Doctor.create({
-                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId, socketId: data.socketId ? data.socketId : '',language:data.language?data.language:[],education:data.education?data.education:[],speciality:data.speciality?data.speciality:[],practicingSince:data.practicingSince?data.practicingSince:'',email:data.email?data.email:'',token:data.token?data.token:''
+                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, 
+                city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId, 
+                socketId: data.socketId ? data.socketId : '',language:data.language?data.language:[],
+                education:data.education?data.education:[],speciality:data.speciality?data.speciality:[],
+                practicingSince:data.practicingSince?data.practicingSince:'',email:data.email?data.email:'',
+                token:data.token?data.token:'',issuingAuthority:data.issuingAuthority?data.issuingAuthority:'',
+                state:data.state?data.state:'',registrationNumber:data.registrationNumber?data.registrationNumber:'',
+                address:data.address?data.address:''
               }, function (err, res) {
                 console.log('created doctor data', res, err)
                 var sucresponse1 = {
