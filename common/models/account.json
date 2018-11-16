@@ -42,6 +42,10 @@
       "type": "string",
       "required": false
     },
+    "accountNumber": {
+      "type": "string",
+      "required": false
+    },
     "ifscCode": {
       "type": "string",
       "required": false
