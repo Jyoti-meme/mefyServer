@@ -64,7 +64,8 @@
       "enum": [
         "Active",
         "Inactive"
-      ]
+      ],
+      "default": "Active"
     },
     "kycDoc": {
       "type": [
