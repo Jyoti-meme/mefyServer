@@ -56,7 +56,7 @@
     },
     "pin": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "fee": {
       "type": "string",
