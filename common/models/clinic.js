@@ -35,7 +35,7 @@ module.exports = function (clinic) {
             let cliniccreation = {
               error: false,
               clinic: res,
-              message: "clinic create successfully"
+              message: "Clinic Created Successfully"
             }
             cb(null, cliniccreation);
           })
@@ -56,7 +56,7 @@ module.exports = function (clinic) {
                 let cliniccreation = {
                   error: false,
                   clinic: res,
-                  message: "clinic create successfully"
+                  message: "Clinic Created Successfully"
                 }
                 cb(null, cliniccreation);
               })
