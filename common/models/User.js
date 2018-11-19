@@ -903,24 +903,13 @@ User.doctorWebLogin=function(webdata,cb){
           console.log(exists.userId)
           Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, doctor) {
             console.log('doctor', doctor)
-            if (doctor.token == webdata.token) {
-              console.log('device id matched')
-              // login
-              let dloggedin = {
-                error: false,
-                user: doctor,
-                message: 'Doctor loggedIn successfully'
-              }
-              cb(null, dloggedin)
-            }
-            else {
               // send otp
               var otpresponse = {
                 err: false,
                 message: 'OTP sent to registered number'
               }
               cb(null, otpresponse)
-            }
+            
           })
         }
       }else{

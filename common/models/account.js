@@ -22,7 +22,7 @@ module.exports = function (account) {
   account.addBankAccount = function (data, cb) {
     if (data != null && Object.keys(data).length != 0) {
       if (data.doctorId) {
-        account.create({ doctorId: data.doctorId, accountHolderName: data.accountHolderName, ifscCode: data.ifscCode, accountName: data.accountName, accountType: data.accountType,accountNumber:data.accountNumber }, function (err, account) {
+        account.create({ doctorId: data.doctorId, accountHolderName: data.accountHolderName, ifscCode: data.ifscCode, accountType: data.accountType,accountNumber:data.accountNumber }, function (err, account) {
           console.log(' Doctor account', account)
           let accountSucess = {
             error: false,
@@ -33,7 +33,7 @@ module.exports = function (account) {
         })
       }
       else {
-        account.create({ individualId: data.individualId, accountHolderName: data.accountHolderName, ifscCode: data.ifscCode, accountName: data.accountName, accountType: data.accountType,accountNumber:data.accountNumber }, function (err, account) {
+        account.create({ individualId: data.individualId, accountHolderName: data.accountHolderName, ifscCode: data.ifscCode, accountType: data.accountType,accountNumber:data.accountNumber }, function (err, account) {
           console.log(' Individual account', account)
           let accountSucess = {
             error: false,
