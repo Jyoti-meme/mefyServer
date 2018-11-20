@@ -83,17 +83,27 @@ boot(app, __dirname, function (err) {
               })
 
             } else {
+              // exist
               app.models.individual.findOne({ where: { socketId: socket.id } }, function (err, exists) {
                 console.log('Individual Socket Id...', exists)
-                exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
-                  console.log('resultttt', result)
-                  let successmessage = {
-                    error: false,
-                    result: result,
-                    message: 'Now User is offline'
+                if(exists!=null && Object.keys(exists).length!=0){
+                  exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
+                    console.log('resultttt', result)
+                    let successmessage = {
+                      error: false,
+                      result: result,
+                      message: 'Now User is offline'
+                    }
+                    return successmessage
+                  })
+                }
+                else {
+                  let errormessage={
+                    error:true,
+                    message:'User disconnected'
                   }
-                  return successmessage
-                })
+                }
+               
               })
             }
           })
