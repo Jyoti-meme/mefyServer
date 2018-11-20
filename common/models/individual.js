@@ -6,7 +6,7 @@ const app = require('../../server/server');
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory","getimmunization"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory", "getimmunization", "allergieslist", "filterallergies"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -383,6 +383,7 @@ module.exports = function (individual) {
 
   individual.remoteMethod('getallergies', {
     http: { path: '/allergy', verb: 'get' },
+    description: "GET ALERGIES OF INDIVIDUAL",
     accepts: [
       { arg: 'individualId', type: 'string', required: true }
     ],
@@ -488,40 +489,97 @@ module.exports = function (individual) {
 
 
 
-/********************************************** GET INDV Immunization LIST *******************************************/
+  /********************************************** GET INDV Immunization LIST *******************************************/
 
-individual.remoteMethod('getimmunization', {
-  http: { path: '/immunization', verb: 'get' },
-  accepts: [
-    { arg: 'individualId', type: 'string', required: true }
-  ],
-  returns: { arg: 'result', type: 'any' }
-});
+  individual.remoteMethod('getimmunization', {
+    http: { path: '/immunization', verb: 'get' },
+    accepts: [
+      { arg: 'individualId', type: 'string', required: true }
+    ],
+    returns: { arg: 'result', type: 'any' }
+  });
 
-individual.getimmunization = function (individuaId, cb) {
-  const immunization = app.models.immunization;
-  immunization.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individuaId } }, function (err, res) {
-    console.log('kjh', res)
-    if (err) {
-      let result = {
-        error: true,
-        message: "something went wrong"
+  individual.getimmunization = function (individuaId, cb) {
+    const immunization = app.models.immunization;
+    immunization.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individuaId } }, function (err, res) {
+      console.log('kjh', res)
+      if (err) {
+        let result = {
+          error: true,
+          message: "something went wrong"
+        }
+        cb(null, result)
       }
-      cb(null, result)
+      else {
+        let result = {
+          error: false,
+          result: res,
+          message: "immunization list get "
+        }
+        cb(null, result)
+      }
+    })
+  }
+
+  /****************************************** ENDS **************************************************************** */
+
+  /*************************************************  ALLERGIES  LIST *********************************************** */
+
+  individual.remoteMethod('allergieslist', {
+    http: { path: '/allergies', verb: 'get' },
+    description: "GET LIST OF ALL ALLERGIES",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.allergieslist = function (cb) {
+    let allergiesarray = [
+      "Medicine",
+      "Food",
+      "Dust",
+      "Skin",
+      "Insect Sting",
+      "Cockraches",
+      "Animal (Dog, Cat)",
+      "Eye",
+      "Hey Fever",
+      "Latex",
+      "Mold",
+      "Sinusitis"
+    ]
+    cb(null, allergiesarray)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
+
+  /*******************************************  FILTER ALLERGIES   ************************************************* */
+
+  individual.remoteMethod('filterallergies', {
+    http: { path: '/sortallergies', verb: 'get' },
+    description: "GET SORTED ALLERGIES LIST ACCORDING TO TYPE",
+    accepts:
+      { arg: 'type', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' }
+  })
+
+  individual.filterallergies = function (type, cb) {
+    console.log('type', type)
+    if (type == 'Food') {
+      console.log('inside food if');
+      let foodarray = ["Curd", "Egg", "Milk", "Wheat", "Corn", "Peanut", "Soy", "Garlic", "Chilli", "Fruit"];
+      cb(null, foodarray);
+    }
+    else if (type == 'Medicine') {
+      // get list of medicine form medicinemaster of pharmacy
     }
     else {
-      let result = {
-        error: false,
-        result: res,
-        message: "immunization list get "
-      }
-      cb(null, result)
+      cb(null, [])
     }
-  })
-}
 
-/****************************************** ENDS **************************************************************** */
+  }
 
+
+
+  /************************************************** ENDS ******************************************************** */
 
 };
   // individual.find({where:{family:{inq:['Father']}}},function(err,res){
