@@ -18,9 +18,6 @@
       "Language": "Tamil"
     },
     {
-      "Language": "Urdu"
-    },
-    {
       "Language": "Gujarati"
     },
     {
@@ -35,58 +32,36 @@
     {
       "Language": "Punjabi"
     },
+  
     {
-      "Language": "Assamese"
+      "Language": "Thai"
+    },
+    
+    {
+      "Language": "French"
     },
     {
-      "Language": "Maithili"
+      "Language": "Arabic"
     },
     {
-      "Language": "Bhili/Bhilodi"
+      "Language": "German"
     },
     {
-      "Language": "Santali"
+      "Language": "Indonesian"
     },
     {
-      "Language": "Kashmiri"
+      "Language": "Chinese"
     },
-    {
-      "Language": "Nepali"
-    },
-    {
-      "Language": "Gondi"
-    },
-    {
-      "Language": "Sindhi"
-    },
-    {
-      "Language": "Konkani"
-    },
-    {
-      "Language": "Dogri"
-    },
-    {
-      "Language": "Khandeshi"
-    },
-    {
-      "Language": "Kurukh"
-    },
-    {
-      "Language": "Tulu"
-    },
-    {
-      "Language": "Meitei(Manipuri)"
-    },
-    {
-      "Language": "Bodo"
-    },
-    {
-      "Language": "Khasi"
-    },
-    {
-      "Language": "Mundari"
-    },
-    {
-      "Language": "Ho"
-    }
+  
+  {
+    "Language": "Spanish"
+  },
+  {
+    "Language": "Russian"
+  },
+  {
+    "Language": "Portuguese"
+  }
+  
   ]
+  

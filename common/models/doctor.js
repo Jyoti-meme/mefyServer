@@ -7,6 +7,8 @@ const stateList = require('../../state.json');
 const educationList = require('../../education.json');
 const languageList = require('../../language.json');
 const medicineList = require('../../medicine.json');
+const issueAuthorityList = require('../../issuingAuthority.json');
+
 
 module.exports = function (doctor) {
   // HIDE UNUSED REMORE METHODS
@@ -194,13 +196,13 @@ module.exports = function (doctor) {
   /*************************** GET List OF Specility,State,Language ,Education********************************/
   doctor.remoteMethod('getList', {
     http: { path: '/getList', verb: 'get' },
-    accepts: [{ arg: 'speciality', type: 'string' }, { arg: 'state', type: 'string' }, { arg: 'language', type: 'string' }, { arg: 'education', type: 'string' },{ arg: 'medicine', type: 'string' }],
-    description: "get list of Specility,State,Language,Education,medicine",
+    accepts: [{ arg: 'speciality', type: 'string' }, { arg: 'state', type: 'string' }, { arg: 'language', type: 'string' }, { arg: 'education', type: 'string' },{ arg: 'medicine', type: 'string' },{ arg: 'issuingAuthority', type: 'string' }],
+    description: "get list of Specility,State,Language,Education,medicine,issuingAuthority",
     returns: { arg: 'result', type: 'any' },
   });
-  doctor.getList = function (speciality, state, language, education,medicine, cb) {
+  doctor.getList = function (speciality, state, language, education,medicine,issuingAuthority, cb) {
     console.log('data',language)
-    if (speciality || state || language || education || medicine != null && Object.keys(speciality || state || language || education || medicine).length != 0) {
+    if (speciality || state || language || education || medicine ||issuingAuthority!= null && Object.keys(speciality || state || language || education || medicine ||issuingAuthority).length != 0) {
       if (speciality == 'speciality') {
         console.log('specialityyy')
         let specialityResponse = {
@@ -245,6 +247,15 @@ module.exports = function (doctor) {
           message: 'Getting All List Of medicine'
         }
         cb(null, medicineResponse);
+      }
+      else if (issuingAuthority == 'issuingAuthority') {
+        console.log('issuingAuthority')
+        let issueAuthorityResponse = {
+          error: false,
+          result: issueAuthorityList,
+          message: 'Getting All List Of issue Authority'
+        }
+        cb(null, issueAuthorityResponse);
       }
       else {
         cb(null, 'NotFound')
