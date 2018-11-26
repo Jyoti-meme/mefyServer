@@ -11,10 +11,10 @@ module.exports = function (User) {
 
   /***CHECK THE EXISTENCE OF EMAIL AND PHONENUMBER */
   // User.validatesUniquenessOf('email', { message: 'email already exists' });
-  // User.validatesUniquenessOf('phoneNumber', { message: 'phoneNumber already exists' });
+  User.validatesUniquenessOf('phoneNumber', { message: 'phoneNumber already exists' });
 
 
-  /*** AFTER REMOTE METHOD  */
+  // /*** AFTER REMOTE METHOD  */
   // User.afterRemote('**', function (context, user, next) {
   //   var status = context.res.statusCode;
   //   context.result = {
@@ -42,7 +42,7 @@ module.exports = function (User) {
 
   /*** CATCH ERORRS */
   User.afterRemoteError('create', function (ctx, next) {
-    console.log(ctx.error.details)
+    console.log('jyoti mala',ctx.error.details)
     var objectname = Object.keys(ctx.error.details.messages)[0]
     ctx.error.message = ctx.error.details.messages[objectname][0];
     delete ctx.error['details'];
@@ -61,7 +61,8 @@ module.exports = function (User) {
   // USER REGISTRATION API
   User.registration = function (data, cb) {
     console.log('USER', data)
-    User.find({ where: { and: [{ phoneNumber: data.phoneNumber }, { role: data.role }] } }, function (err, user) {
+    // where: { and: [{ phoneNumber: data.phoneNumber }, { role: data.role }]
+    User.find({ where: { phoneNumber: data.phoneNumber } }, function (err, user) {
       console.log('error', err)
       console.log('user info', user)
       if (user.length != 0) {

@@ -6,7 +6,7 @@ const app = require('../../server/server');
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory","getimmunization"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory", "getimmunization", "allergieslist", "filterallergies", "diseaseslist", "relations", "medicalconditions", "vaccinegroup","currentsymptom"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -383,6 +383,7 @@ module.exports = function (individual) {
 
   individual.remoteMethod('getallergies', {
     http: { path: '/allergy', verb: 'get' },
+    description: "GET ALERGIES OF INDIVIDUAL",
     accepts: [
       { arg: 'individualId', type: 'string', required: true }
     ],
@@ -418,6 +419,7 @@ module.exports = function (individual) {
 
   individual.remoteMethod('getsurgery', {
     http: { path: '/surgery', verb: 'get' },
+    description: "SURGERY OF INDIVIDUAL",
     accepts: [
       { arg: 'individualId', type: 'string', required: true }
     ],
@@ -488,40 +490,307 @@ module.exports = function (individual) {
 
 
 
-/********************************************** GET INDV Immunization LIST *******************************************/
+  /********************************************** GET INDV Immunization LIST *******************************************/
 
-individual.remoteMethod('getimmunization', {
-  http: { path: '/immunization', verb: 'get' },
-  accepts: [
-    { arg: 'individualId', type: 'string', required: true }
-  ],
-  returns: { arg: 'result', type: 'any' }
-});
+  individual.remoteMethod('getimmunization', {
+    http: { path: '/immunization', verb: 'get' },
+    accepts: [
+      { arg: 'individualId', type: 'string', required: true }
+    ],
+    returns: { arg: 'result', type: 'any' }
+  });
 
-individual.getimmunization = function (individuaId, cb) {
-  const immunization = app.models.immunization;
-  immunization.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individuaId } }, function (err, res) {
-    console.log('kjh', res)
-    if (err) {
-      let result = {
-        error: true,
-        message: "something went wrong"
+  individual.getimmunization = function (individuaId, cb) {
+    const immunization = app.models.immunization;
+    immunization.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individuaId } }, function (err, res) {
+      console.log('kjh', res)
+      if (err) {
+        let result = {
+          error: true,
+          message: "something went wrong"
+        }
+        cb(null, result)
       }
-      cb(null, result)
+      else {
+        let result = {
+          error: false,
+          result: res,
+          message: "immunization list get "
+        }
+        cb(null, result)
+      }
+    })
+  }
+
+  /****************************************** ENDS **************************************************************** */
+
+  /*************************************************  ALLERGIES  LIST *********************************************** */
+
+  individual.remoteMethod('allergieslist', {
+    http: { path: '/allergies', verb: 'get' },
+    description: "GET LIST OF ALL ALLERGIES",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.allergieslist = function (cb) {
+    let allergiesarray = [
+      "Medicine",
+      "Food",
+      "Dust",
+      "Skin",
+      "Insect Sting",
+      "Cockraches",
+      "Animal (Dog, Cat)",
+      "Eye",
+      "Hey Fever",
+      "Latex",
+      "Mold",
+      "Sinusitis"
+    ]
+    cb(null, allergiesarray)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
+
+  /*******************************************  FILTER ALLERGIES   ************************************************* */
+
+  individual.remoteMethod('filterallergies', {
+    http: { path: '/sortallergies', verb: 'get' },
+    description: "GET SORTED ALLERGIES LIST ACCORDING TO TYPE",
+    accepts:
+      { arg: 'type', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' }
+  })
+
+  individual.filterallergies = function (type, cb) {
+    console.log('type', type)
+    if (type == 'Food') {
+      console.log('inside food if');
+      let foodarray = ["Curd", "Egg", "Milk", "Wheat", "Corn", "Peanut", "Soy", "Garlic", "Chilli", "Fruit"];
+      cb(null, foodarray);
+    }
+    else if (type == 'Medicine') {
+      // get list of medicine form medicinemaster of pharmacy
     }
     else {
-      let result = {
-        error: false,
-        result: res,
-        message: "immunization list get "
-      }
-      cb(null, result)
+      cb(null, [])
     }
-  })
-}
 
-/****************************************** ENDS **************************************************************** */
+  }
+  /************************************************** ENDS ******************************************************** */
+  /*************************************************  DISEASES  LIST *********************************************** */
 
+  individual.remoteMethod('diseaseslist', {
+    http: { path: '/diseaseslist', verb: 'get' },
+    description: "GET LIST OF ALL DISEASES",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.diseaseslist = function (cb) {
+    let diseasesarray = [
+      "Respiratory",
+      "Cardiovascular",
+      "Disabilities",
+      "Cancer",
+      "Gastrointestinal system",
+      "Hepatic diseases",
+      "Nervous system",
+      // Respiratory system
+      // Cardiovascular system,
+      "Auto immune conditions",
+      "Oncology",
+      "Metabolic disorders",
+      "Endocrinology",
+      "Allergies",
+      "Dermatological conditions",
+      "Psychiatric diseases",
+      "Musculoskeletal system",
+      "Rheumatology",
+      "Genitourinary system",
+      "Gynecology and Obstetric history",
+      "Sexual wellbeing",
+      "ENT",
+      "Ophthalmology"
+      // Disabilities
+    ]
+    cb(null, diseasesarray)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
+
+
+
+
+
+  /*************************************************  RELATIONSHIP  LIST *********************************************** */
+
+  individual.remoteMethod('relations', {
+    http: { path: '/relationship', verb: 'get' },
+    description: "GET LIST OF ALL RELATIONSHIP",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.relations = function (cb) {
+    let relationsarray = [
+      "Mother",
+      "Father",
+      "Maternal Grandfather",
+      "Maternal Grandmother",
+      "Paternal Grandfather",
+      "Paternal Grandfather",
+      "Brother",
+      "Sister",
+      "Spouse/Partner"
+    ]
+    cb(null, relationsarray)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
+
+
+  /*************************************************  SURGERY  LIST *********************************************** */
+
+  individual.remoteMethod('surgerylist', {
+    http: { path: '/surgerylist', verb: 'get' },
+    description: "GET LIST OF ALL SURGERY",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.surgerylist = function (cb) {
+    let surgeryarray = [
+      "hernia repair",
+      "stomach surgery",
+      "hemorrhoids",
+      "removal of the appendix",
+      "removal of the gall bladder",
+      "breast surgery",
+      "colonoscopy"
+    ]
+    cb(null, surgeryarray)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
+
+  /*************************************************  MEDICAL CONDITIONS  LIST *********************************************** */
+
+  individual.remoteMethod('medicalconditions', {
+    http: { path: '/medicalconditions', verb: 'get' },
+    description: "GET LIST OF ALL MEDICAL CONDITIONS",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.medicalconditions = function (cb) {
+    let medicalarray = [
+      "Heart disease",
+      "High blood pressure",
+      "Diabetes",
+      "Stroke",
+      "Dementia",
+      "Mental illness",
+      "Osteoporosis"
+    ]
+    cb(null, medicalarray)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
+
+  /*************************************************  VACCINES AGE GROUP LIST *********************************************** */
+
+  individual.remoteMethod('vaccinegroup', {
+    http: { path: '/vaccinegroup', verb: 'get' },
+    description: "GET LIST OF VACCINE AGE GROUP",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.vaccinegroup = function (cb) {
+    let vaccinetype = [
+      "Birth",
+      "0 - 6 Months",
+      "6 - 9 Months",
+      "1 Year",
+      "7 Year",
+      "9 Year"
+    ]
+
+
+    cb(null, vaccinetype)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
+
+
+  /*************************************************  CURRENT COMPLAINT LIST *********************************************** */
+
+  individual.remoteMethod('currentsymptom', {
+    http: { path: '/currentsymptom', verb: 'get' },
+    description: "GET LIST OF CURRENT COMPLAINT SYMPTOM",
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.currentsymptom = function (cb) {
+    let currentsymptoms = [
+      "Coughing",
+      " A tight sensation in the chest",
+      " Being out of breath regularly",
+      "severe headaches and anxiety, chest pain and an irregular heartbeat",
+      "High Blood Pressure",
+      "Joint pain, tenderness and stiffness",
+      "Restricted movement of joints",
+      " Inflammation in and around the joints",
+      " Finding an unexpected lump",
+      " Unexplained weight loss",
+      " Unexplained blood in the stool, urine, when coughing or when vomiting",
+      "A sore throat",
+      "Headaches",
+      "A runny or blocked nose",
+      "Fatigue",
+      "Aches and pains in your chest",
+      "Difficulty remembering recent events",
+      "Problems in conversation – struggling to follow along or to find the right words",
+      "Difficulty judging distance",
+      "Forgetting where you are or what date it is",
+      "Difficulty swallowing (and sometimes excessive drooling",
+      "A weakened grip, usually first noticed in one hand",
+      "Small twitches and flickers of movement, known as ‘fasciculations",
+      "Difficulty speaking or slurred speech, known as ‘dysarthria",
+      "Blurred vision",
+      "Muscle stiffness",
+      "Balance problems",
+      "Difficulty walking",
+      "Fatigue",
+      "Constant, dull bone pain",
+      "Shooting pain that travels along or across the body",
+      "Numbness and tingling",
+      "Loss of movement in a part of the body",
+      "Involuntary shaking of particular parts of the body (tremor)",
+      "Slow movement",
+      "Stiff and inflexible muscles",
+      " unable to smile and their face may have dropped on one side, with their",
+      "mouth or eye drooping",
+      "unable to lift both arms and keep them there due to weakness in one arm",
+      "slurred or garbled speech",
+      "Shortness of breath",
+      "Feeling sick",
+      "Blood in your urine",
+      "Swollen ankles, feet or hands",
+      "Tiredness",
+      "Pain, swelling and tenderness in one of your legs",
+      " A heavy ache in the affected area",
+      "Red skin – particularly at the back of your leg, below the knee",
+      "Warm skin in the area of the clot",
+      "A mild fever",
+      "sharp stabbing pains every now and then",
+      "burning and tingling feeling",
+      "high temperature",
+      "Not Well",
+      "extremely itchy"
+]
+
+
+    cb(null, currentsymptoms)
+  }
+
+  /*********************************************************** ENDS ***************************************************** */
 
 };
   // individual.find({where:{family:{inq:['Father']}}},function(err,res){

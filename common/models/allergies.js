@@ -27,7 +27,7 @@ module.exports = function (allergies) {
 
   allergies.addallergies = function (data, cb) {
     allergies.create({
-      individualId: data.individualId, startDate: data.startDate, allergyCondition: data.allergyCondition,
+      individualId: data.individualId, allergySince: data.allergySince,allergyType: data.allergyType,allergyWith: data.allergyWith, allergyCondition: data.allergyCondition,
       healthRecordType: data.healthRecordType, severity: data.severity, treatmentTaken: data.treatmentTaken
     }, function (err, res) {
       console.log('response', res, err);

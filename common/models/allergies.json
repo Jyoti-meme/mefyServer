@@ -37,7 +37,15 @@
       "required": false,
       "description": "The identifier of an instance of medicineId"
     },
-    "startDate": {
+    "allergySince": {
+      "type": "string",
+      "required": false
+    },
+    "allergyType": {
+      "type": "string",
+      "required": false
+    },
+    "allergyWith": {
       "type": "string",
       "required": false
     },

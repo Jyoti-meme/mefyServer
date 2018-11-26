@@ -21,7 +21,7 @@ module.exports = function (clinic) {
   });
 
   clinic.addClinic = function (data, cb) {
-    
+
     clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId } }, function (err, list) {
       console.log('exists', list)
       if (list.length == 0) {
@@ -31,13 +31,24 @@ module.exports = function (clinic) {
             address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
             availability: data.availability
           }, function (err, res) {
-            console.log('eesult', res)
-            let cliniccreation = {
-              error: false,
-              clinic: res,
-              message: "Clinic Created Successfully"
+            console.log('eesult', res,err)
+            if(!err){
+              let cliniccreation = {
+                error: false,
+                clinic: res,
+                message: "Clinic Created Successfully"
+              }
+              cb(null, cliniccreation);
             }
-            cb(null, cliniccreation);
+            else{
+              let error = {
+                error: true,
+                message: err.message
+    
+              }
+              cb(null, error)
+            }
+           
           })
       }
       else {
@@ -49,16 +60,26 @@ module.exports = function (clinic) {
             clinic.create(
               {
                 doctorId: data.doctorId, type: data.type, clinicName: data.clinicName, phoneNumber: data.phoneNumber, city: data.city,
-                address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
+                address: data.address, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
                 availability: data.availability
               }, function (err, res) {
                 console.log('reesult', res)
-                let cliniccreation = {
-                  error: false,
-                  clinic: res,
-                  message: "Clinic Created Successfully"
+                if(!err){
+                  let cliniccreation = {
+                    error: false,
+                    clinic: res,
+                    message: "Clinic Created Successfully"
+                  }
+                  cb(null, cliniccreation);
                 }
-                cb(null, cliniccreation);
+                else{
+                  let error = {
+                    error: true,
+                    message: err.message
+        
+                  }
+                  cb(null, error)
+                }
               })
           } else {
             ///time collapsed
@@ -169,13 +190,13 @@ module.exports = function (clinic) {
   })
 
   //logic for filtration
-  clinic.clinicByDate = function (doctorId,date,type, cb) {
-    console.log('date',date)
+  clinic.clinicByDate = function (doctorId, date, type, cb) {
+    console.log('date', date)
     var day = moment(date).format('dddd')
     console.log('day', day);
     if (type == 'clinicVisit') {
-      console.log('type',type)
-      clinic.find({ where: { 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId  } }, function (err, res) {
+      console.log('type', type)
+      clinic.find({ where: { 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, res) {
         console.log('Response from find', res);
         var returnResult = filterClinics(res, day)
         let sucessResponse = {
@@ -190,7 +211,7 @@ module.exports = function (clinic) {
     }
     else {
       let x = []
-      clinic.find({ where:{ 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, res) {
+      clinic.find({ where: { 'doctorId': 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, res) {
         for (let i = 0; i < res.length; i++) {
           if (res[i].type == "virtual") {
             x.push(res[i])
@@ -212,7 +233,7 @@ module.exports = function (clinic) {
 
   //create new array of filtered result
   function filterClinics(arr, day) {
-    console.log('aaaaa',arr,day)
+    console.log('aaaaa', arr, day)
     let newarray = [];
     var result = filterViaDay(arr, day)
     // console.log('NRE RESULT',result)
@@ -222,7 +243,7 @@ module.exports = function (clinic) {
 
   // filter by day
   function filterViaDay(arr, day) {
-    console.log('bbbb',arr,day)
+    console.log('bbbb', arr, day)
 
     return arr.filter((obj) => {
       for (let i = 0, length = obj.weekDays.length; i < length; i++) {
