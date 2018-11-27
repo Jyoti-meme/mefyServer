@@ -319,9 +319,9 @@ module.exports = function (clinic) {
 
   clinic.getClinicSlot = function (clinicId, date, cb) {
     var day = moment(date).format('dddd')
-    // console.log('day', day);
+    console.log('day', day);
     clinic.findOne({ where: { clinicId: clinicId } }, function (err, result) {
-      // console.log('result....', result)
+      console.log('result....', result)
 
       if (result != null && Object.keys(result).length != 0) {
 
