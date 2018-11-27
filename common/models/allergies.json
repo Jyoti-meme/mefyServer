@@ -33,7 +33,9 @@
       "required": false
     },
     "medicineId": {
-      "type": "any",
+      "type": [
+        "any"
+      ],
       "required": false,
       "description": "The identifier of an instance of medicineId"
     },

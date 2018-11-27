@@ -27,7 +27,7 @@ surgical.addsurgical = function (data, cb) {
   surgical.create({
     individualId: data.individualId, disease: data.disease, dateOfDiagnosis: data.dateOfDiagnosis,
     healthRecordType: data.healthRecordType, currentStatus: data.currentStatus, signsAndSympton: data.signsAndSympton,otherInformation:data.otherInformation,
-    treatmentDetails: data.treatmentDetails
+    treatmentDetails: data.treatmentDetails,surgery:data.surgery
   }, function (err, res) {
     console.log('response', res, err);
     if (err) {

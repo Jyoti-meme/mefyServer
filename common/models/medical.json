@@ -41,7 +41,7 @@
       "required": true,
       "default":"currentComplaint"
     },
-    "sympton": {
+    "symptoms": {
       "type": "string",
       "required": false
     },
@@ -56,8 +56,8 @@
       "required": false,
       "description": "The identifier of an instance of medicineId"
     },
-    "sufferingDate": {
-      "type": "SufferingDate",
+    "sufferingSince": {
+      "type": "string",
       "required": false
     },
     "medicine": {

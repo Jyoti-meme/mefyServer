@@ -29,14 +29,15 @@ module.exports = function (medical) {
     // calculate startdate from duration duration
     var startDate = moment().subtract(data.duration.years, 'year').subtract(data.duration.months, 'month').subtract(data.duration.days, 'day').toISOString()
     console.log(moment().subtract(1, 'year').subtract(0, 'month').subtract(1, 'day').toISOString())
-    data.sufferingDate = {
+  // changed need to be done accorfding to new chanf=ges in suffering date
+    data.sufferingSince = {
       start: startDate
     }
     if(data.healthRecordType=='currentComplaint')
     medical.create(
       {
-        individualId: data.individualId, healthRecordType: data.healthRecordType, sympton: data.sympton, duration: data.duration,
-        sufferingDate: data.sufferingDate, status: 'unsolved'
+        individualId: data.individualId, healthRecordType: data.healthRecordType, symptoms: data.symptoms, duration: data.duration,
+        sufferingSince: data.sufferingSince, status: 'unsolved'
       }, function (err, res) {
         console.log('eesult', res)
         let result = {
@@ -49,7 +50,7 @@ module.exports = function (medical) {
       else{
         medical.create(
           {
-            individualId: data.individualId, healthRecordType: data.healthRecordType, sympton: data.sympton, duration: data.duration,
+            individualId: data.individualId, healthRecordType: data.healthRecordType, symptoms: data.symptoms, duration: data.duration,
             sufferingDate: data.sufferingDate,status: 'solved'
           }, function (err, res) {
             console.log('eesult', res)
