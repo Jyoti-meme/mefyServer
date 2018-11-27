@@ -353,8 +353,8 @@ console.log('err.....',err)
       console.log('index of', duration.indexOf(instance))
       await Promise.all([slotdivide(instance, day, clinicId)]).then(function (values) {
         console.log('SLOT DIVIDE RETURNED VALUES', values[0])
-        var x = 'slot'.concat(duration.indexOf(instance) + 1);
-        // .concat((i + 1).toString());
+        var x = 'slot';
+        // concat(duration.indexOf(instance) + 1);
         let a = {
           [x]: values[0]
         }
