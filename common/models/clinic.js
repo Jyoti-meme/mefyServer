@@ -359,6 +359,8 @@ console.log('err.....',err)
           [x]: values[0]
         }
         slot.push(a)
+      }).catch(err=>{
+        console.log('error::::',err)
       })
 
     }
