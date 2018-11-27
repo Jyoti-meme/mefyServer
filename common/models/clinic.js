@@ -322,7 +322,7 @@ module.exports = function (clinic) {
     console.log('day', day);
     clinic.findOne({ where: { clinicId: clinicId } }, function (err, result) {
       console.log('result....', result)
-
+console.log('err.....',err)
       if (result != null && Object.keys(result).length != 0) {
 
         let duration = result.weekDays;
