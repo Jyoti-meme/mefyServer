@@ -407,7 +407,7 @@ console.log('err.....',err)
         // change the status of clinic slot booking basrd on appointmnet bokked for that clinic
         appointmentChecking(timeArray, clinicId).then(list => {
           console.log('list of appoitnment checking:', list);
-          var x = 'slot234'
+          var x = 'slot'
           // .concat((i + 1).toString());
           let a = {
             [x]: list
@@ -454,7 +454,9 @@ console.log('err.....',err)
           }
           y.push(x);
         }
-      });
+      }).catch(err=>{
+        console.log('error 458',err)
+      })
     }
     // console.log('ARRAY PUSHED METHOD', y)
     return y;
