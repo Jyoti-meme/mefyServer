@@ -41,6 +41,14 @@
       "type": "string",
       "required": false
     },
+    "startDate": {
+      "type": "string",
+      "required": false
+    },
+    "endDate": {
+      "type": "string",
+      "required": false
+    },
     "dosage": {
       "type": "string",
       "required": false
