@@ -192,7 +192,7 @@ module.exports = function (clinic) {
   //logic for filtration
   clinic.clinicByDate = function (doctorId, date, type, cb) {
     console.log('date', date)
-    var day = moment(date).format('dddd')
+    var day = moment(date).format('dddd');
     console.log('day', day);
     if (type == 'clinicVisit') {
       console.log('type', type)
