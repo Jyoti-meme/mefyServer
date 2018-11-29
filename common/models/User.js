@@ -217,7 +217,7 @@ module.exports = function (User) {
         console.log(err)
         var otperror1 = {
           error: true,
-          message: '  Otp verification failed',
+          message: 'Otp verification failed',
         }
         cb(null, otperror1)
       })
@@ -496,14 +496,14 @@ module.exports = function (User) {
         //not matched
         let data = {
           error: true,
-          message: 'imcorrect otp'
+          message: 'Otp verification failed'
         }
         cb(null, data);
       }
     }).catch(err => {
       let data = {
         error: true,
-        message: 'imcorrect otp'
+        message: 'Otp verification failed'
       }
       cb(null, data);
     })
