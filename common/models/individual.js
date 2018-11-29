@@ -550,6 +550,7 @@ module.exports = function (individual) {
       "Mold",
       "Sinusitis"
     ]
+    //*** */
     cb(null, allergiesarray)
   }
 
