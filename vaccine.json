@@ -2,7 +2,7 @@
         {
             "vaccineName ": "BCG",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"Birth",
             "givenMonth": "0",
             "Dose": "0.1 ml",
             "Route": "Intra-dermal ",
@@ -11,7 +11,7 @@
         {
             "vaccineName ": "Chickenpox(varicella)",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"1Year",
             "givenMonth": "12",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -20,7 +20,7 @@
         {
             "vaccineName ": "Chickenpox(varicella)",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"1Year",
             "givenMonth": "15",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -29,7 +29,7 @@
         {
             "vaccineName ": "DTP",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "1.5",
             "Dose": ".5 ml",
             "Route": "Intra-mascular",
@@ -38,7 +38,7 @@
         {
             "vaccineName ": "DTP",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "2.5",
             "Dose": ".5 ml",
             "Route": "Intra-mascular",
@@ -47,7 +47,7 @@
         {
             "vaccineName ": "DTP",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "3.5",
             "Dose": ".5 ml",
             "Route": "Intra-mascular",
@@ -56,7 +56,7 @@
         {
             "vaccineName ": "DTP(BOOSTER 1)",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"6-9Months",
             "givenMonth": "9.5",
             "Dose": ".5 ml",
             "Route": "Intra-mascular",
@@ -65,7 +65,7 @@
         {
             "vaccineName ": "DTP(BOOSTER 2)",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"1Year",
             "givenMonth": "45.5",
             "Dose": ".5 ml",
             "Route": "Intra-mascular",
@@ -74,7 +74,7 @@
         {
             "vaccineName ": "Hepatitis A",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"1Year",
             "givenMonth": "12",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -83,7 +83,7 @@
         {
             "vaccineName ": "Hepatitis A",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"1Year",
             "givenMonth": "18",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -92,7 +92,7 @@
         {
             "vaccineName ": "HepB",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"Birth",
             "givenMonth": "0",
             "Dose": "0.5 ml",
             "Route": "Intra-mascular",
@@ -101,7 +101,7 @@
         {
             "vaccineName ": "HepB",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "1",
             "Dose": "0.5 ml",
             "Route": "Intra-mascular",
@@ -110,7 +110,7 @@
         {
             "vaccineName ": "HepB",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "3",
             "Dose": "0.5 ml",
             "Route": "Intra-mascular",
@@ -119,7 +119,7 @@
         {
             "vaccineName ": "HIB",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "1.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -128,7 +128,7 @@
         {
             "vaccineName ": "HIB",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "2.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -137,7 +137,7 @@
         {
             "vaccineName ": "HIB",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "3.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -146,7 +146,7 @@
         {
             "vaccineName ": "HIB (BOOSTER 1)",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"6-9Months",
             "givenMonth": "9.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -155,7 +155,7 @@
         {
             "vaccineName ": "HPV ",
             "toWhom": "Female",
-            "ageGroup":"",
+            "ageGroup":"9Year",
             "givenMonth": "108",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -164,7 +164,7 @@
         {
             "vaccineName ": "HPV ",
             "toWhom": "Female",
-            "ageGroup":"",
+            "ageGroup":"9Year",
             "givenMonth": "114",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -173,7 +173,7 @@
         {
             "vaccineName ": "MMR",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"6-9Months",
             "givenMonth": "9",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -182,7 +182,7 @@
         {
             "vaccineName ": "MMR",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"1Year",
             "givenMonth": "15",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -191,7 +191,7 @@
         {
             "vaccineName ": "PCV",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "1.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -200,7 +200,7 @@
         {
             "vaccineName ": "PCV",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "2.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -209,7 +209,7 @@
         {
             "vaccineName ": "PCV",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "3.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -218,7 +218,7 @@
         {
             "vaccineName ": "PCV",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"6-9Months",
             "givenMonth": "9.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -227,7 +227,7 @@
         {
             "vaccineName ": "Poliovirus",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"Birth",
             "givenMonth": "0",
             "Dose": "2 drops",
             "Route": "Oral",
@@ -236,7 +236,7 @@
         {
             "vaccineName ": "Poliovirus",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "1",
             "Dose": "2 drops",
             "Route": "Oral",
@@ -245,7 +245,7 @@
         {
             "vaccineName ": "Poliovirus",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "2",
             "Dose": "2 drops",
             "Route": "Oral",
@@ -254,7 +254,7 @@
         {
             "vaccineName ": "Rotavirus",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "1.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -263,7 +263,7 @@
         {
             "vaccineName ": "Rotavirus",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"0-6Months",
             "givenMonth": "2.5",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -272,7 +272,7 @@
         {
             "vaccineName ": "Tdap/DPT",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"7Year",
             "givenMonth": "84",
             "Dose": ".5ml",
             "Route": "Intra-mascular",
@@ -281,7 +281,7 @@
         {
             "vaccineName ": "Typhoid",
             "toWhom": "Infant",
-            "ageGroup":"",
+            "ageGroup":"6-9Months",
             "givenMonth": "9",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
@@ -290,7 +290,7 @@
         {
             "vaccineName ": "Typhoid",
             "toWhom": "Children",
-            "ageGroup":"",
+            "ageGroup":"1Year",
             "givenMonth": "24",
             "Dose": "1Dose",
             "Route": "Intra-mascular",
