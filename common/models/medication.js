@@ -26,7 +26,8 @@ module.exports = function (medication) {
     var comingDate = moment(data.medicationDate).format('YYYY-MM-DD');
     console.log('comingDate', comingDate)
     medication.create({
-      individualId: data.individualId, medicineName: data.medicineName, dosage: data.dosage, days: data.days, medicationDate: comingDate, healthRecordType: "Medicine Details", frequency: data.frequency, adverseEffects: data.adverseEffects, currentStatus: data.currentStatus
+      individualId: data.individualId, medicineName: data.medicineName, dosage: data.dosage, days: data.days, medicationDate: comingDate, healthRecordType: "Medicine Details", frequency: data.frequency, adverseEffects: data.adverseEffects, currentStatus: data.currentStatus,
+      startDate:data.startDate?data.startDate:'',endDate:data.endDate?data.endDate:''
     }, function (err, res) {
       if (err) {
         let errmsg = {
