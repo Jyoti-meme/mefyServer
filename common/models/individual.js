@@ -542,13 +542,15 @@ module.exports = function (individual) {
       "Skin",
       "Insect Sting",
       "Cockraches",
-      "Animal (Dog, Cat)",
+      "Dog",
+      "Cat",
       "Eye",
       "Hey Fever",
       "Latex",
       "Mold",
       "Sinusitis"
     ]
+    //*** */
     cb(null, allergiesarray)
   }
 
