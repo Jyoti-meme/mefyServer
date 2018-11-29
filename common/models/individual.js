@@ -3,10 +3,12 @@
 const Composer = require('../lib/composer.js');
 const app = require('../../server/server');
 
+const vaccineList = require('../../vaccine.json');       //GET VACCINE LIST JSON FILE
+
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory", "getimmunization", "allergieslist", "filterallergies", "diseaseslist", "relations", "medicalconditions", "vaccinegroup","currentsymptom"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory", "getimmunization", "allergieslist", "filterallergies", "diseaseslist", "relations", "medicalconditions", "vaccinegroup", "currentsymptom", "filterVaccine"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -711,12 +713,31 @@ module.exports = function (individual) {
       "7 Year",
       "9 Year"
     ]
-
-
     cb(null, vaccinetype)
   }
 
   /*********************************************************** ENDS ***************************************************** */
+
+
+  /************************************************** FILTER VACCINES BY AGEGROUP ********************************************** */
+
+  individual.remoteMethod('filterVaccine', {
+    http: { path: '/filterVaccine', verb: 'get' },
+    description: "LIST VACCINE ACCORDING TO AGEGROUP",
+    accepts: { arg: 'ageGroup', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  individual.filterVaccine = function (ageGroup, cb) {
+    console.log('vaccinelist', vaccineList);
+
+    let vaccineArray = vaccineList.filter(instance => instance.ageGroup == ageGroup);   //FILTER VACCINE ACCORDING TO AGEGROUP
+    console.log('filtered array list', vaccineArray);
+
+    cb(null, vaccineArray)
+  }
+  
+  /****************************************************** ENDS ***************************************************************** */
 
 
   /*************************************************  CURRENT COMPLAINT LIST *********************************************** */
@@ -784,7 +805,7 @@ module.exports = function (individual) {
       "high temperature",
       "Not Well",
       "extremely itchy"
-]
+    ]
 
 
     cb(null, currentsymptoms)

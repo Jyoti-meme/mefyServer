@@ -24,13 +24,13 @@ module.exports = function (appointment) {
     var comingDate = moment(data.appointmentDate).format('YYYY-MM-DD');
     console.log(comingDate)
 
-    appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { clinicId: 'resource:io.mefy.doctor.clinic#' + data.clinicId }, { appointmentDate: comingDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }] } }, function (err, exists) {
+    appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { clinicId: 'resource:io.mefy.doctor.clinic#' + data.clinicId }, { appointmentDate: comingDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId },{appointmentTimeFrom:data.appointmentTimeFrom},{appointmentTimeTo:data.appointmentTimeTo}] } }, function (err, exists) {
       console.log('data...', exists)
       if (exists != null && Object.keys(exists).length != 0) {
         console.log('BokKed....................appointment')
         let response = {
           error: true,
-          message: "Alredy have An Appointment"
+          message: "Already have An Appointment"
         }
         cb(null, response)
       }

@@ -32,7 +32,18 @@
       "type": "string",
       "required": false
     },
+    "medicineId": {
+      "type": [
+        "any"
+      ],
+      "required": false,
+      "description": "The identifier of an instance of medicineId"
+    },
     "disease": {
+      "type": "string",
+      "required": false
+    },
+    "surgery": {
       "type": "string",
       "required": false
     },
@@ -63,6 +74,10 @@
       ],
       "required": false,
       "default": []
+    },
+    "treatmentDetailsFile": {
+      "type": "string",
+      "required": false
     },
     "createdBy": {
       "type": "string",

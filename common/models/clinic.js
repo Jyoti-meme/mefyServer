@@ -192,7 +192,7 @@ module.exports = function (clinic) {
   //logic for filtration
   clinic.clinicByDate = function (doctorId, date, type, cb) {
     console.log('date', date)
-    var day = moment(date).format('dddd')
+    var day = moment(date).format('dddd');
     console.log('day', day);
     if (type == 'clinicVisit') {
       console.log('type', type)
@@ -319,10 +319,10 @@ module.exports = function (clinic) {
 
   clinic.getClinicSlot = function (clinicId, date, cb) {
     var day = moment(date).format('dddd')
-    // console.log('day', day);
+    console.log('day', day);
     clinic.findOne({ where: { clinicId: clinicId } }, function (err, result) {
-      // console.log('result....', result)
-
+      console.log('result....', result)
+console.log('err.....',err)
       if (result != null && Object.keys(result).length != 0) {
 
         let duration = result.weekDays;
@@ -353,12 +353,14 @@ module.exports = function (clinic) {
       console.log('index of', duration.indexOf(instance))
       await Promise.all([slotdivide(instance, day, clinicId)]).then(function (values) {
         console.log('SLOT DIVIDE RETURNED VALUES', values[0])
-        var x = 'slot'.concat(duration.indexOf(instance) + 1);
-        // .concat((i + 1).toString());
+        var x = 'slot';
+        // concat(duration.indexOf(instance) + 1);
         let a = {
           [x]: values[0]
         }
         slot.push(a)
+      }).catch(err=>{
+        console.log('error::::',err)
       })
 
     }
@@ -405,7 +407,7 @@ module.exports = function (clinic) {
         // change the status of clinic slot booking basrd on appointmnet bokked for that clinic
         appointmentChecking(timeArray, clinicId).then(list => {
           console.log('list of appoitnment checking:', list);
-          var x = 'slot234'
+          var x = 'slot'
           // .concat((i + 1).toString());
           let a = {
             [x]: list
@@ -452,7 +454,9 @@ module.exports = function (clinic) {
           }
           y.push(x);
         }
-      });
+      }).catch(err=>{
+        console.log('error 458',err)
+      })
     }
     // console.log('ARRAY PUSHED METHOD', y)
     return y;

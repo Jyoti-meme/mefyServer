@@ -402,6 +402,7 @@ doctor.findIndividual=function(phoneNumber,cb){
    else{
      let response={
        error:true,
+       result:{},
        message:'user not found'
      }
     cb(null,response);
