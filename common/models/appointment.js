@@ -133,7 +133,12 @@ module.exports = function (appointment) {
           cb(null, successmessage)
         }
         else {
-          cb(null, 'data not found')
+          let errormessage = {
+            error: false,
+            result: exists,
+            message:"No Any Appointment"
+          }
+          cb(null, errormessage)
         }
       }
 
