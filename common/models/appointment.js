@@ -64,11 +64,11 @@ module.exports = function (appointment) {
   /*************** API FOR CANCEL APPOINTMENT*********************/
   appointment.remoteMethod('cancelAppointment', {
     http: { path: '/cancelAppointment', verb: 'post' },
-    accepts: { arg: 'appointmentId', type: 'string' },
+    accepts:  { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
     returns: { arg: 'result', type: 'any' }
   })
-  appointment.cancelAppointment = function (appointmentId, cb) {
-    appointment.findOne({ where: { appointmentId: appointmentId } }, function (err, exists) {
+  appointment.cancelAppointment = function (data, cb) {
+    appointment.findOne({ where: { appointmentId: data.appointmentId } }, function (err, exists) {
       if (err) {
         let errResponse = {
           error: true,
