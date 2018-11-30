@@ -286,11 +286,11 @@ module.exports = function (doctor) {
         Appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (er, appointment) {
           if (appointment != null && Object.keys(appointment).length != 0) {
             for (let i = 0; i < appointment.length; i++) {
-              if (appointment[i].appointmentType == 'eConsult') {
+              if (appointment[i].appointmentType == 'eConsult'&& appointment[i].status=='Active' ) {
                 eConsultData.push(appointment[i])
                 console.log('appppointment', eConsultData.length)
               }
-              else {
+              else if(appointment[i].appointmentType == 'clinicVisit' && appointment[i].status=='Active' ){
                 clinicVisitData.push(appointment[i])
                 console.log('clinicVisitData', clinicVisitData.length)
               }
