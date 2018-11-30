@@ -19,4 +19,10 @@ module.exports = function(server) {
   var router = server.loopback.Router();
   router.get('/', server.loopback.status());
   server.use(router);
+  var remotes = server.remotes();
+  // modify all returned values
+  remotes.after('**', function (ctx, next) {
+    ctx.result = ctx.result;
+    next();
+  });
 };
