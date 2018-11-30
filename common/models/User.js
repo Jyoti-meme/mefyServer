@@ -891,7 +891,7 @@ module.exports = function (User) {
     http:{path:'/doctorWebLogin',verb:'post'},
     description:"Doctor's Web Login",
     accepts:{arg:'webdata',type:'object',http:{source:'body'}},
-    returns:{arg:'result',type:'any',root:true} 
+    returns:{arg:'result',type:'any'} 
   });
 User.doctorWebLogin=function(webdata,cb){
   console.log(webdata)
