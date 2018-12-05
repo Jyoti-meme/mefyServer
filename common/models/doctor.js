@@ -2,6 +2,7 @@
 
 const Composer = require('../lib/composer.js');
 const app = require('../../server/server');
+const moment = require('moment');
 const specialityList = require('../../speciality.json');
 const stateList = require('../../state.json');
 const educationList = require('../../education.json');
@@ -277,7 +278,8 @@ module.exports = function (doctor) {
   doctor.doctorDashboard = function (doctorId, cb) {
     const Clinic = app.models.clinic
     const Appointment = app.models.appointment
-
+    var now = moment().format('YYYY-MM-DD');
+    console.log('currentDate', now) //Current date
     Clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, exists) {
       if (exists != null && Object.keys(exists).length != 0) {
         // console.log('number', exists.length)
@@ -286,11 +288,11 @@ module.exports = function (doctor) {
         Appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (er, appointment) {
           if (appointment != null && Object.keys(appointment).length != 0) {
             for (let i = 0; i < appointment.length; i++) {
-              if (appointment[i].appointmentType == 'eConsult'&& appointment[i].status=='Active' ) {
+              if (appointment[i].appointmentType == 'eConsult'&& appointment[i].status=='Active' && moment(appointment[i].appointmentDate).isSame(now) ) {
                 eConsultData.push(appointment[i])
                 console.log('appppointment', eConsultData.length)
               }
-              else if(appointment[i].appointmentType == 'clinicVisit' && appointment[i].status=='Active' ){
+              else if(appointment[i].appointmentType == 'clinicVisit' && appointment[i].status=='Active' && moment(appointment[i].appointmentDate).isSame(now) ){
                 clinicVisitData.push(appointment[i])
                 console.log('clinicVisitData', clinicVisitData.length)
               }
