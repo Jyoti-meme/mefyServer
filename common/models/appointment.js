@@ -37,7 +37,7 @@ module.exports = function (appointment) {
       else {
         console.log('appointment')
         appointment.create({
-          doctorId: data.doctorId, individualId: data.individualId, clinicId: data.clinicId, eventName: data.eventName, eventDescription: data.eventDescription, status: data.status, appointmentType: data.appointmentType, appointmentTimeFrom: data.appointmentTimeFrom, appointmentTimeTo: data.appointmentTimeTo, appointmentDate: comingDate
+          doctorId: data.doctorId, individualId: data.individualId, clinicId: data.clinicId, eventName: data.eventName, eventDescription: data.eventDescription, status: data.status, appointmentType: data.appointmentType, appointmentTimeFrom: data.appointmentTimeFrom, appointmentTimeTo: data.appointmentTimeTo, appointmentDate: comingDate,clinicName:data.clinicName
         }, function (err, res) {
           if (err) {
             let errRes = {
