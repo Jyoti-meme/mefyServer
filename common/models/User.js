@@ -28,7 +28,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin","doctorWebLogin"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -42,7 +42,7 @@ module.exports = function (User) {
 
   /*** CATCH ERORRS */
   User.afterRemoteError('create', function (ctx, next) {
-    console.log('jyoti mala',ctx.error.details)
+    console.log('jyoti mala', ctx.error.details)
     var objectname = Object.keys(ctx.error.details.messages)[0]
     ctx.error.message = ctx.error.details.messages[objectname][0];
     delete ctx.error['details'];
@@ -164,14 +164,14 @@ module.exports = function (User) {
               console.log('user created response', res)
               // send otp and verify it then create individual
               Doctor.create({
-                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob, 
-                city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId, 
-                socketId: data.socketId ? data.socketId : '',language:data.language?data.language:[],
-                education:data.education?data.education:[],speciality:data.speciality?data.speciality:[],
-                practicingSince:data.practicingSince?data.practicingSince:'',email:data.email?data.email:'',
-                token:data.token?data.token:'',issuingAuthority:data.issuingAuthority?data.issuingAuthority:'',
-                state:data.state?data.state:'',registrationNumber:data.registrationNumber?data.registrationNumber:'',
-                address:data.address?data.address:''
+                name: data.name, phoneNumber: data.phoneNumber, gender: data.gender, dob: data.dob,
+                city: data.city, deviceId: data.deviceId ? data.deviceId : '', userId: res.userId,
+                socketId: data.socketId ? data.socketId : '', language: data.language ? data.language : [],
+                education: data.education ? data.education : [], speciality: data.speciality ? data.speciality : [],
+                practicingSince: data.practicingSince ? data.practicingSince : '', email: data.email ? data.email : '',
+                token: data.token ? data.token : '', issuingAuthority: data.issuingAuthority ? data.issuingAuthority : '',
+                state: data.state ? data.state : '', registrationNumber: data.registrationNumber ? data.registrationNumber : '',
+                address: data.address ? data.address : ''
               }, function (err, res) {
                 console.log('created doctor data', res, err)
                 var sucresponse1 = {
@@ -454,31 +454,31 @@ module.exports = function (User) {
         User.findOne({ where: { phoneNumber: otpdata.phoneNumber } }, function (err, response) {
           console.log('response', response);
           if (response != null && Object.keys(response).length != 0) {
-          
-            if(otpdata.role==='doctor'){
+
+            if (otpdata.role === 'doctor') {
               //get profile of doctor
-              const doctor=app.models.doctor;
-              doctor.findOne({where:{userId:'resource:io.mefy.commonModel.User#'+response.userId}},function(err,doctor){
-                console.log('dcotor detail',doctor);
-                let data={
-                  error:false,
-                  result:doctor,
-                  message:'doctor profile detail'
+              const doctor = app.models.doctor;
+              doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + response.userId } }, function (err, doctor) {
+                console.log('dcotor detail', doctor);
+                let data = {
+                  error: false,
+                  result: doctor,
+                  message: 'doctor profile detail'
                 }
-                cb(null,data)
+                cb(null, data)
               })
             }
-            else{
+            else {
               // get profile of individual
-              const individual=app.models.individual
-              individual.findOne({where:{userId:'resource:io.mefy.commonModel.User#'+response.userId}},function(err,individual){
-                console.log('dcotor detail',individual);
-                let data={
-                  error:false,
-                  result:individual,
-                  message:'individual profile detail'
+              const individual = app.models.individual
+              individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + response.userId } }, function (err, individual) {
+                console.log('dcotor detail', individual);
+                let data = {
+                  error: false,
+                  result: individual,
+                  message: 'individual profile detail'
                 }
-                cb(null,data)
+                cb(null, data)
               })
             }
           }
@@ -886,17 +886,18 @@ module.exports = function (User) {
       })
 
   }
-  /***************************DOCTOR WEB LOGIN************************/
-  User.remoteMethod('doctorWebLogin',{
-    http:{path:'/doctorWebLogin',verb:'post'},
-    description:"Doctor's Web Login",
-    accepts:{arg:'webdata',type:'object',http:{source:'body'}},
-    returns:{arg:'result',type:'any'} 
+
+  /********************************* DOCTOR WEB LOGIN  *****************************************************/
+  User.remoteMethod('doctorWebLogin', {
+    http: { path: '/doctorWebLogin', verb: 'post' },
+    description: "Doctor's Web Login",
+    accepts: { arg: 'webdata', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'any' }
   });
-User.doctorWebLogin=function(webdata,cb){
-  console.log(webdata)
+  User.doctorWebLogin = function (webdata, cb) {
+    console.log(webdata)
     const Doctor = app.models.doctor;
-  User.findOne({ where: { and: [{ phoneNumber: webdata.phoneNumber }, { role: webdata.role }] } }, function (err, exists) {
+    User.findOne({ where: { and: [{ phoneNumber: webdata.phoneNumber }, { role: webdata.role }] } }, function (err, exists) {
       console.log('user existence', exists)
       if (exists != null && Object.keys(exists).length != 0) {
         //user exists 
@@ -904,27 +905,66 @@ User.doctorWebLogin=function(webdata,cb){
           console.log(exists.userId)
           Doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, doctor) {
             console.log('doctor', doctor)
-              // send otp
-              var otpresponse = {
-                err: false,
-                message: 'OTP sent to registered number'
-              }
-              cb(null, otpresponse)
-            
+            // send otp
+            var otpresponse = {
+              err: false,
+              message: 'OTP sent to registered number'
+            }
+            cb(null, otpresponse)
+
           })
         }
-      }else{
-          let errMessage = {
-            error: true,
-            message: 'User not Registered'
-          }
-          cb(null, errMessage)
+      } else {
+        let errMessage = {
+          error: true,
+          message: 'User not Registered'
         }
-      })
-    }
-
+        cb(null, errMessage)
+      }
+    })
   }
-        
+  /******************************************************************************************************* ***/
+
+  /********************************************** USER VERIFY NUMBER  AT TIME OF REGISTRATION ******************************************************** */
+  User.remoteMethod('verifynumber', {
+    http: { path: '/verifyNumber', verb: 'post' },
+    accepts: { arg: 'phoneNumber', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'any', root: true },
+  });
+
+  User.verifynumber = function (phoneNumber, cb) {
+    console.log('phonenumber', phoneNumber)
+    User.findOne({ where: { phoneNumber: phoneNumber.phoneNumber } }, function (err, existence) {
+      console.log('retruende result', existence)
+      console.log('err', err)
+      if (!err) {
+        if (existence !=null && Object.keys(existence).length != 0) {
+          let response = {
+            error: false,
+            message: "User Already Registered!Please Login"
+          }
+          cb(null, response);
+        }
+        else {
+          let response = {
+            error: false,
+            message: "User Not Registered"
+          }
+          cb(null, response)
+        }
+      }
+      else {
+        let response = {
+          error: true,
+          message: "Something went wrong"
+        }
+        cb(null, response);
+      }
+    })
+  }
+  /********************************************************************************************************** */
+}
+
 
 
 
