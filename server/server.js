@@ -65,6 +65,7 @@ boot(app, __dirname, function (err) {
     // });
     app.io.on('connection', function (socket) {
       console.log('a user connected');
+      console.log('socket id',socket.id)
       socket.on('disconnect', function () {
         console.log('user disconnected', socket.id);
 
