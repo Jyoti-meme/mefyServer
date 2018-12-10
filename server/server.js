@@ -66,7 +66,7 @@ boot(app, __dirname, function (err) {
     app.io.on('connection', function (socket) {
       console.log('a user connected');
       console.log('socket id',socket.id)
-      socket.on('disconnect', function () {
+      socket.on('disconnect', function (socket) {
         console.log('user disconnected', socket.id);
         
 
@@ -75,8 +75,9 @@ boot(app, __dirname, function (err) {
           app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
             console.log('Doctor Socket Id...', exists)
             console.log('doctor Socket error',err)
-            socket.to(socket.id).emit('Doctor went offline');
-            // if (exists != null && Object.keys(exists).length != 0) {
+            // socket.to(socket.id).emit('Doctor went offline');
+            if (exists != null && Object.keys(exists).length != 0) {
+              console.log('DOCTOR WITH THAT ID EXIST')
             //   exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
             //     console.log('resultttt', result)
             //     // let successmessage = {
@@ -88,10 +89,10 @@ boot(app, __dirname, function (err) {
             //     socket.to(socket.id).emit('Doctor went offline');
             //   })
 
-            // } 
-            // else{
-            //   console.log('DOCTOR WITH THAT SOCKET NOT FOUND')
-            // }
+            } 
+            else{
+              console.log('DOCTOR WITH THAT SOCKET NOT FOUND')
+            }
           // else {
           //     // exist
           //     app.models.individual.findOne({ where: { socketId: socket.id } }, function (err, exists) {
