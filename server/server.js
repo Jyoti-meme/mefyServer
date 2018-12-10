@@ -17,7 +17,7 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var app = module.exports = loopback();
-
+var Doctor = app.models.doctor;
 
 
 app.start = function () {
@@ -65,59 +65,68 @@ boot(app, __dirname, function (err) {
     // });
     app.io.on('connection', function (socket) {
       console.log('a user connected');
-      console.log('socket id',socket.id)
-      socket.on('disconnect', function (socket) {
+      console.log('socket id', socket.id)
+      socket.on('disconnect', function () {
         console.log('user disconnected', socket.id);
-        
+
 
         // new Promise(() => {
-    
-          app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
-            console.log('Doctor Socket Id...', exists)
-            console.log('doctor Socket error',err)
-            // socket.to(socket.id).emit('Doctor went offline');
-            if (exists != null && Object.keys(exists).length != 0) {
-              console.log('DOCTOR WITH THAT ID EXIST')
-            //   exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
-            //     console.log('resultttt', result)
-            //     // let successmessage = {
-            //     //   error: false,
-            //     //   result: result,
-            //     //   message: 'Now User is offline'
-            //     // }
-            //     // return successmessage
-            //     socket.to(socket.id).emit('Doctor went offline');
-            //   })
+        Doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
+          console.log('Doctor Socket Id...', exists)
+          console.log('doctor Socket error', err)
+          if (exists != null && Object.keys(exists).length != 0) {
+            console.log('DOCTOR WITH THAT ID EXIST')
+          }
+          else {
+            console.log('DOCTOR WITH THAT SOCKET NOT FOUND')
+          }
+        })
+        // Doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
+        //   console.log('Doctor Socket Id...', exists)
+        //   console.log('doctor Socket error',err)
+        //   // socket.to(socket.id).emit('Doctor went offline');
+        //   if (exists != null && Object.keys(exists).length != 0) {
+        //     console.log('DOCTOR WITH THAT ID EXIST')
+        //   //   exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
+        //   //     console.log('resultttt', result)
+        //   //     // let successmessage = {
+        //   //     //   error: false,
+        //   //     //   result: result,
+        //   //     //   message: 'Now User is offline'
+        //   //     // }
+        //   //     // return successmessage
+        //   //     socket.to(socket.id).emit('Doctor went offline');
+        //   //   })
 
-            } 
-            else{
-              console.log('DOCTOR WITH THAT SOCKET NOT FOUND')
-            }
-          // else {
-          //     // exist
-          //     app.models.individual.findOne({ where: { socketId: socket.id } }, function (err, exists) {
-          //       console.log('Individual Socket Id...', exists)
-          //       if(exists!=null && Object.keys(exists).length!=0){
-          //         exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
-          //           console.log('resultttt', result)
-          //           let successmessage = {
-          //             error: false,
-          //             result: result,
-          //             message: 'Now User is offline'
-          //           }
-          //           return successmessage
-          //         })
-          //       }
-          //       else {
-          //         let errormessage={
-          //           error:true,
-          //           message:'User disconnected'
-          //         }
-          //       }
-               
-          //     })
-          //   }
-          })
+        //   } 
+        //   else{
+        //     console.log('DOCTOR WITH THAT SOCKET NOT FOUND')
+        //   }
+        // // else {
+        // //     // exist
+        // //     app.models.individual.findOne({ where: { socketId: socket.id } }, function (err, exists) {
+        // //       console.log('Individual Socket Id...', exists)
+        // //       if(exists!=null && Object.keys(exists).length!=0){
+        // //         exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
+        // //           console.log('resultttt', result)
+        // //           let successmessage = {
+        // //             error: false,
+        // //             result: result,
+        // //             message: 'Now User is offline'
+        // //           }
+        // //           return successmessage
+        // //         })
+        // //       }
+        // //       else {
+        // //         let errormessage={
+        // //           error:true,
+        // //           message:'User disconnected'
+        // //         }
+        // //       }
+
+        // //     })
+        // //   }
+        // })
         // });
 
       });
