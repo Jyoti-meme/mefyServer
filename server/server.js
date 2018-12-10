@@ -74,6 +74,7 @@ boot(app, __dirname, function (err) {
     
           app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
             console.log('Doctor Socket Id...', exists)
+            conssole.log('doctor Socket error',err)
             if (exists != null && Object.keys(exists).length != 0) {
               exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
                 console.log('resultttt', result)
