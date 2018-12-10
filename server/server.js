@@ -71,21 +71,22 @@ boot(app, __dirname, function (err) {
         
 
         new Promise(() => {
-          return 'userdisconnected'
-          // app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
-          //   console.log('Doctor Socket Id...', exists)
-          //   if (exists != null && Object.keys(exists).length != 0) {
-          //     exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
-          //       console.log('resultttt', result)
-          //       let successmessage = {
-          //         error: false,
-          //         result: result,
-          //         message: 'Now User is offline'
-          //       }
-          //       return successmessage
-          //     })
+    
+          app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
+            console.log('Doctor Socket Id...', exists)
+            if (exists != null && Object.keys(exists).length != 0) {
+              exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
+                console.log('resultttt', result)
+                let successmessage = {
+                  error: false,
+                  result: result,
+                  message: 'Now User is offline'
+                }
+                return successmessage
+              })
 
-          //   } else {
+            } 
+          // else {
           //     // exist
           //     app.models.individual.findOne({ where: { socketId: socket.id } }, function (err, exists) {
           //       console.log('Individual Socket Id...', exists)
@@ -109,7 +110,7 @@ boot(app, __dirname, function (err) {
                
           //     })
           //   }
-          // })
+          })
         });
 
       });
