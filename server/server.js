@@ -76,7 +76,7 @@ boot(app, __dirname, function (err) {
           console.log('doctor Socket error', err)
           if (exists != null && Object.keys(exists).length != 0) {
             console.log('DOCTOR WITH THAT ID EXIST')
-            exists.updateAttribute({'availability':'Offline'},function(err,result){
+            exists.updateAttribute('availability','Offline',function(err,result){
               console.log('avaialbility update',result);
               console.log('availability update error',err)
             })
