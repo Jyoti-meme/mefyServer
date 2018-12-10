@@ -17,7 +17,7 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var app = module.exports = loopback();
-var Doctor = app.models.doctor;
+
 
 
 app.start = function () {
@@ -71,7 +71,7 @@ boot(app, __dirname, function (err) {
 
 
         // new Promise(() => {
-        Doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
+          app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
           console.log('Doctor Socket Id...', exists)
           console.log('doctor Socket error', err)
           if (exists != null && Object.keys(exists).length != 0) {
