@@ -68,47 +68,48 @@ boot(app, __dirname, function (err) {
       console.log('socket id',socket.id)
       socket.on('disconnect', function () {
         console.log('user disconnected', socket.id);
+        socket.emit('user disconnected',{socketdisconnected:'that socket has been disconeected'});
 
-        new Promise(() => {
-          app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
-            console.log('Doctor Socket Id...', exists)
-            if (exists != null && Object.keys(exists).length != 0) {
-              exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
-                console.log('resultttt', result)
-                let successmessage = {
-                  error: false,
-                  result: result,
-                  message: 'Now User is offline'
-                }
-                return successmessage
-              })
+        // new Promise(() => {
+        //   app.models.doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
+        //     console.log('Doctor Socket Id...', exists)
+        //     if (exists != null && Object.keys(exists).length != 0) {
+        //       exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
+        //         console.log('resultttt', result)
+        //         let successmessage = {
+        //           error: false,
+        //           result: result,
+        //           message: 'Now User is offline'
+        //         }
+        //         return successmessage
+        //       })
 
-            } else {
-              // exist
-              app.models.individual.findOne({ where: { socketId: socket.id } }, function (err, exists) {
-                console.log('Individual Socket Id...', exists)
-                if(exists!=null && Object.keys(exists).length!=0){
-                  exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
-                    console.log('resultttt', result)
-                    let successmessage = {
-                      error: false,
-                      result: result,
-                      message: 'Now User is offline'
-                    }
-                    return successmessage
-                  })
-                }
-                else {
-                  let errormessage={
-                    error:true,
-                    message:'User disconnected'
-                  }
-                }
+        //     } else {
+        //       // exist
+        //       app.models.individual.findOne({ where: { socketId: socket.id } }, function (err, exists) {
+        //         console.log('Individual Socket Id...', exists)
+        //         if(exists!=null && Object.keys(exists).length!=0){
+        //           exists.updateAttribute({ 'availability': 'Offline' }, function (err, result) {
+        //             console.log('resultttt', result)
+        //             let successmessage = {
+        //               error: false,
+        //               result: result,
+        //               message: 'Now User is offline'
+        //             }
+        //             return successmessage
+        //           })
+        //         }
+        //         else {
+        //           let errormessage={
+        //             error:true,
+        //             message:'User disconnected'
+        //           }
+        //         }
                
-              })
-            }
-          })
-        });
+        //       })
+        //     }
+        //   })
+        // });
 
       });
     })
