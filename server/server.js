@@ -79,10 +79,10 @@ boot(app, __dirname, function (err) {
             exists.updateAttribute('availability','Offline',function(err,result){
               console.log('avaialbility update',result);
               console.log('availability update error',err)
-            })
+            });
           }
           else {
-            console.log('DOCTOR WITH THAT SOCKET NOT FOUND')
+            console.log('DOCTOR WITH THAT SOCKET NOT FOUND CHECKING ');
           }
         })
         // Doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {

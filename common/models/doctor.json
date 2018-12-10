@@ -133,7 +133,8 @@
         "Online",
         "Offline",
         "Busy"
-      ]
+      ],
+      "default":"Offline"
     },
     "credit": {
       "type": "string",
