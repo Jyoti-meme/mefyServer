@@ -777,65 +777,89 @@ module.exports = function (User) {
   });
 
   User.edgeLogin = function (logindata, cb) {
-    const Individual = app.models.individual;
+    console.log('data',logindata)
+    // const Individual = app.models.individual;
 
-    User.findOne({ where: { and: [{ phoneNumber: logindata.phoneNumber }] } }, function (err, exists) {
-      console.log('user existence', exists)
-      // cb(null,exists)
-      if (exists != null && Object.keys(exists).length != 0) {
-
-        //user exists 
-        if (logindata.role == 'doctor') {
-          // send otp
+    User.findOne({ where: { and: [{ phoneNumber: logindata.phoneNumber }, { role: logindata.role }] } }, function (err, exists) {
+      console.log('user existence', exists, err);
+      if (!err) {
+        if (exists != null && Object.keys(exists).length != 0) {
           var otpresponse = {
-            err: true,
-            message: 'This is not a registered Indididual'
+            err: false,
+            message: 'OTP sent to registered number'
           }
           cb(null, otpresponse)
         }
         else {
-          Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, individual) {
-            console.log('in', individual)
-
-            //send otp
-            var otpresponse = {
-              err: false,
-              message: 'OTP sent to registered number'
-            }
-            cb(null, otpresponse)
-            // sendOtp(logindata.phoneNumber).then(function (result) {
-            //   console.log('RRESULT', result)
-            //   if (result.type == 'success') {
-            //     var otpresponse = {
-            //       err: false,
-            //       message: 'OTP sent to registered number'
-            //     }
-            //     cb(null, otpresponse)
-            //   }
-            //   else {
-            //     var otperror = {
-            //       error: true,
-            //       message: 'Otp sending falied',
-            //       details: result
-            //     }
-            //     cb(null, otperror)
-            //   }
-            // }).catch(err => {
-            //   cb(null, err)
-            // })
-
-          })
+          var otpresponse = {
+            err: true,
+            message: 'This is not a registered Individual'
+          }
+          cb(null, otpresponse)
         }
-
       }
       else {
-        //user not registered
-        let errMessage = {
-          error: true,
-          message: 'User not Registered'
+        var otpresponse = {
+          err: true,
+          message: 'Something went wrong'
         }
-        cb(null, errMessage)
+        cb(null, otpresponse);
       }
+      // cb(null,exists)
+      // if (exists != null && Object.keys(exists).length != 0) {
+
+      //   //user exists 
+      //   if (logindata.role == 'doctor') {
+      //     // send otp
+      //     var otpresponse = {
+      //       err: true,
+      //       message: 'This is not a registered Indididual'
+      //     }
+      //     cb(null, otpresponse)
+      //   }
+      //   else {
+      //     Individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + exists.userId } }, function (err, individual) {
+      //       console.log('in', individual)
+
+      //       //send otp
+      //       var otpresponse = {
+      //         err: false,
+      //         message: 'OTP sent to registered number'
+      //       }
+      //       cb(null, otpresponse)
+      //       // sendOtp(logindata.phoneNumber).then(function (result) {
+      //       //   console.log('RRESULT', result)
+      //       //   if (result.type == 'success') {
+      //       //     var otpresponse = {
+      //       //       err: false,
+      //       //       message: 'OTP sent to registered number'
+      //       //     }
+      //       //     cb(null, otpresponse)
+      //       //   }
+      //       //   else {
+      //       //     var otperror = {
+      //       //       error: true,
+      //       //       message: 'Otp sending falied',
+      //       //       details: result
+      //       //     }
+      //       //     cb(null, otperror)
+      //       //   }
+      //       // }).catch(err => {
+      //       //   cb(null, err)
+      //       // })
+
+      //     })
+      //   }
+
+      // }
+      // else {
+      //   //user not registered
+      //   let errMessage = {
+      //     error: true,
+      //     message: 'User not Registered'
+      //   }
+      //   cb(null, errMessage)
+      // }
     })
   }
 
@@ -938,7 +962,7 @@ module.exports = function (User) {
       console.log('retruende result', existence)
       console.log('err', err)
       if (!err) {
-        if (existence !=null && Object.keys(existence).length != 0) {
+        if (existence != null && Object.keys(existence).length != 0) {
           let response = {
             error: false,
             message: "User Already Registered!Please Login"

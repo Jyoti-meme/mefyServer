@@ -192,14 +192,19 @@ module.exports = function (appointment) {
     console.log('currentDate', now)
 
     appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, exists) {
+      console.log('appointment list',exists);
+      console.log('error'+err);
       let appointmentList = []
-      if (exists != null && Object.keys(exists).length != 0) {
+      if (exists != null && exists.length!= 0) {
         // console.log('exists',exists)
         for (let i = 0; i < exists.length; i++) {
           console.log('length', exists.length)
           if (moment(exists[i].appointmentDate).isSame(now) || moment(exists[i].appointmentDate).isAfter(now)) {
             appointmentList.push(exists[i])
             console.log('apppp', appointmentList)
+            // app.models.individual.findOne({where:{individualId:exists[i].individualId}},function(err,indvinfo){
+
+            // })
             var upcomingAppointment = {
               error: false,
               result: appointmentList,

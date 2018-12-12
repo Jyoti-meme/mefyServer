@@ -23,7 +23,7 @@
     "loopback-component-explorer": "^6.0.0",
     "loopback-connector-composer": "0.20.0",
     "moment": "^2.22.2",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.18.8",
     "serve-favicon": "^2.0.1",
     "socket.io": "^2.1.1",
     "socketio-auth": "^0.1.1",
