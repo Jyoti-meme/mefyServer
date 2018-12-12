@@ -85,6 +85,7 @@ module.exports = function (appointment) {
             console.log('err' + err, 'result' + result)
             if (err) {
               let x = {
+                error:true,
                 err: err,
                 msg: "Sometiong Went Wrong.."
               }
