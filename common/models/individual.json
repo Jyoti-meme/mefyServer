@@ -136,6 +136,14 @@
       "type": "string",
       "required": false
     },
+    "webtoken": {
+      "type": "string",
+      "required": false
+    },
+    "mobiletoken": {
+      "type": "string",
+      "required": false
+    },
     "family": {
       "type": [
         {}
@@ -150,30 +158,30 @@
       "required": false,
       "default": []
     },
-    "allergy":{
-     "type":"Boolean",
-     "required":false
+    "allergy": {
+      "type": "Boolean",
+      "required": false
     },
-    "surgery":{
-      "type":"Boolean",
-      "required":false
-     },
-     "disease":{
-      "type":"Boolean",
-      "required":false
-     },
-     "familyMedical":{
-      "type":"Boolean",
-      "required":false
-     },
-     "city":{
-     "type":"String",
-     "required":false
-     },
-     "pin":{
-      "type":"String",
-      "required":false
-      },
+    "surgery": {
+      "type": "Boolean",
+      "required": false
+    },
+    "disease": {
+      "type": "Boolean",
+      "required": false
+    },
+    "familyMedical": {
+      "type": "Boolean",
+      "required": false
+    },
+    "city": {
+      "type": "String",
+      "required": false
+    },
+    "pin": {
+      "type": "String",
+      "required": false
+    },
     "createdBy": {
       "type": "string",
       "required": false

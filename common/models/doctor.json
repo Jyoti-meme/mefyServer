@@ -149,6 +149,14 @@
       "type": "string",
       "required": false
     },
+    "webtoken": {
+      "type": "string",
+      "required": false
+    },
+    "mobiletoken": {
+      "type": "string",
+      "required": false
+    },
     "createdBy": {
       "type": "string",
       "required": false
