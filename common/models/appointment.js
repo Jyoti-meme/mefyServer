@@ -5,7 +5,7 @@ const moment = require('moment');
 const app = require('../../server/server');
 
 module.exports = function (appointment) {
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "bookAppointment", "cancelAppointment", "doctorAppointment", "individualAppointment", "getDoctorEvents"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "bookAppointment", "appointmentstatus", "doctorAppointment", "individualAppointment", "getDoctorEvents"];
   appointment.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -62,37 +62,40 @@ module.exports = function (appointment) {
   /********************************************** END OF API FOR BOOK APPOINTMENT ****************************************/
 
   /********************************************* API FOR CANCEL APPOINTMENT *************************************************/
-  appointment.remoteMethod('cancelAppointment', {
-    http: { path: '/cancelAppointment', verb: 'post' },
+  appointment.remoteMethod('appointmentstatus', {
+    http: { path: '/appointmentstatus', verb: 'put' },
     accepts: { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
     returns: { arg: 'result', type: 'any' }
   })
-  appointment.cancelAppointment = function (data, cb) {
+  appointment.appointmentstatus = function (data, cb) {
+    console.log('data', data)
     appointment.findOne({ where: { appointmentId: data.appointmentId } }, function (err, exists) {
+      console.log('err', err, 'exists' + exists)
       if (err) {
         let errResponse = {
           error: true,
           err: err,
-          message: "Sometiong Went Wrong."
+          message: "Something Went Wrong"
         }
         cb(null, errResponse)
       }
       else {
         if (exists != null && Object.keys(exists).length != 0) {
-          exists.updateAttribute('status', 'Cancelled', function (err, result) {
+          exists.updateAttribute('status', data.status, function (err, result) {
+            console.log('err' + err, 'result' + result)
             if (err) {
               let x = {
                 err: err,
                 msg: "Sometiong Went Wrong.."
               }
-              cb(null, msg)
+              cb(null, x)
             }
             else {
               console.log('resultttt', result)
               let successmessage = {
                 error: false,
                 result: result,
-                message: 'Appointment cancelled Successfully'
+                message: 'Appointment Status Updated Successfully'
               }
               cb(null, successmessage);
             }
@@ -100,7 +103,11 @@ module.exports = function (appointment) {
 
         }
         else {
-          cb(null, 'data not found')
+          let response = {
+            error: false,
+            message: 'No Appointment Found'
+          }
+          cb(null, response)
         }
       }
     })
@@ -230,12 +237,18 @@ module.exports = function (appointment) {
 
     // FETCH INDIVIDUAL DETAILS
     console.log('contextdata', context.data.individualId)
-    Individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (err, indv) {
-      console.log(indv);
-      context.data.individual = indv;
-      delete context.data['individualId'];
+    if (context.data.individualId) {
+      Individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (err, indv) {
+        console.log(indv);
+        context.data.individual = indv;
+        delete context.data['individualId'];
+        next();
+      })
+    }
+    else {
       next();
-    })
+    }
+
   });
   /*********************************************************** ENDS ******************************************************** */
 
