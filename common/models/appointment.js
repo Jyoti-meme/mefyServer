@@ -13,7 +13,7 @@ module.exports = function (appointment) {
     }
   });
 
-  /************** API FOR BOOK APPOINTMENT***************/
+  /************************************* API FOR BOOK APPOINTMENT ************************************************i********/
   appointment.remoteMethod('bookAppointment', {
     http: { path: '/bookAppointment', verb: 'post' },
     accepts: { arg: 'data', type: 'object', http: { source: 'body' } },
@@ -24,7 +24,7 @@ module.exports = function (appointment) {
     var comingDate = moment(data.appointmentDate).format('YYYY-MM-DD');
     console.log(comingDate)
 
-    appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { clinicId: 'resource:io.mefy.doctor.clinic#' + data.clinicId }, { appointmentDate: comingDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId },{appointmentTimeFrom:data.appointmentTimeFrom},{appointmentTimeTo:data.appointmentTimeTo}] } }, function (err, exists) {
+    appointment.findOne({ where: { and: [{ individualId: 'resource:io.mefy.individual.individual#' + data.individualId }, { clinicId: 'resource:io.mefy.doctor.clinic#' + data.clinicId }, { appointmentDate: comingDate }, { doctorId: 'resource:io.mefy.doctor.doctor#' + data.doctorId }, { appointmentTimeFrom: data.appointmentTimeFrom }, { appointmentTimeTo: data.appointmentTimeTo }] } }, function (err, exists) {
       console.log('data...', exists)
       if (exists != null && Object.keys(exists).length != 0) {
         console.log('BokKed....................appointment')
@@ -37,7 +37,7 @@ module.exports = function (appointment) {
       else {
         console.log('appointment')
         appointment.create({
-          doctorId: data.doctorId, individualId: data.individualId, clinicId: data.clinicId, eventName: data.eventName, eventDescription: data.eventDescription, status: data.status, appointmentType: data.appointmentType, appointmentTimeFrom: data.appointmentTimeFrom, appointmentTimeTo: data.appointmentTimeTo, appointmentDate: comingDate,clinicName:data.clinicName
+          doctorId: data.doctorId, individualId: data.individualId, clinicId: data.clinicId, eventName: data.eventName, eventDescription: data.eventDescription, status: data.status, appointmentType: data.appointmentType, appointmentTimeFrom: data.appointmentTimeFrom, appointmentTimeTo: data.appointmentTimeTo, appointmentDate: comingDate, clinicName: data.clinicName
         }, function (err, res) {
           if (err) {
             let errRes = {
@@ -59,12 +59,12 @@ module.exports = function (appointment) {
       }
     })
   }
-  /************** END OF API FOR BOOK APPOINTMENT***************/
+  /********************************************** END OF API FOR BOOK APPOINTMENT ****************************************/
 
-  /*************** API FOR CANCEL APPOINTMENT*********************/
+  /********************************************* API FOR CANCEL APPOINTMENT *************************************************/
   appointment.remoteMethod('cancelAppointment', {
     http: { path: '/cancelAppointment', verb: 'post' },
-    accepts:  { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
+    accepts: { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
     returns: { arg: 'result', type: 'any' }
   })
   appointment.cancelAppointment = function (data, cb) {
@@ -105,9 +105,9 @@ module.exports = function (appointment) {
       }
     })
   }
-  /*************** END OF API FOR CANCEL APPOINTMENT*********************/
+  /********************************************* END OF API FOR CANCEL APPOINTMENT ******************-*************************/
 
-  /**************** API FOR DOCTOR"S APPOINTMENT LIST BY DATE AND DOCTORID */
+  /******************************** API FOR DOCTOR"S APPOINTMENT LIST BY DATE AND DOCTORID *************************************/
   appointment.remoteMethod('doctorAppointment', {
     http: { path: '/doctorAppointmentList', verb: 'get' },
     accepts: [{ arg: 'doctorId', type: 'string' }, { arg: 'appointmentDate', type: 'string' }],
@@ -136,7 +136,7 @@ module.exports = function (appointment) {
           let errormessage = {
             error: false,
             result: exists,
-            message:"No Any Appointment"
+            message: "No Any Appointment"
           }
           cb(null, errormessage)
         }
@@ -144,9 +144,9 @@ module.exports = function (appointment) {
 
     })
   }
-  /****************  END OF API FOR DOCTOR"S APPOINTMENT LIST BY DATE AND DOCTORID */
+  /****************  END OF API FOR DOCTOR"S APPOINTMENT LIST BY DATE AND DOCTORID ***********************************************/
 
-  /**************** API FOR Individual's  APPOINTMENT LIST BY DATE AND INDIVIDUALID******************* */
+  /**************** API FOR Individual's  APPOINTMENT LIST BY DATE AND INDIVIDUALID*********************************************** */
   appointment.remoteMethod('individualAppointment', {
     http: { path: '/individualAppointmentList', verb: 'get' },
     accepts: [{ arg: 'individualId', type: 'string' }, { arg: 'appointmentDate', type: 'string' }],
@@ -178,8 +178,9 @@ module.exports = function (appointment) {
 
     })
   }
-  /****************  END OF API FOR INDIVIDUAL'S APPOINTMENT LIST BY DATE AND DOCTORID */
-  /********************* API FOR GETTING DOCTOR'S  CURRENT SCHEDULE********************/
+  /***********************************  END OF API FOR INDIVIDUAL'S APPOINTMENT LIST BY DATE AND DOCTORID ************************/
+
+  /**************************************  API FOR GETTING DOCTOR'S  CURRENT SCHEDULE  ***********************************/
   appointment.remoteMethod('getDoctorEvents', {
     http: { path: '/getDoctorEvents', verb: 'get' },
     description: "Get doctor's appoitnment for specific date",
@@ -189,22 +190,19 @@ module.exports = function (appointment) {
   appointment.getDoctorEvents = function (doctorId, cb) {
     // var now = moment(new Date()); //todays date
     var now = moment().format('YYYY-MM-DD');
-    console.log('currentDate', now)
+    console.log('currentDate', now);
 
     appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, exists) {
-      console.log('appointment list',exists);
-      console.log('error'+err);
-      let appointmentList = []
-      if (exists != null && exists.length!= 0) {
+      console.log('appointment list', exists);
+      console.log('error' + err);
+      let appointmentList = [];
+      if (exists != null && exists.length != 0) {
         // console.log('exists',exists)
         for (let i = 0; i < exists.length; i++) {
-          console.log('length', exists.length)
+          console.log('length', exists.length);
           if (moment(exists[i].appointmentDate).isSame(now) || moment(exists[i].appointmentDate).isAfter(now)) {
-            appointmentList.push(exists[i])
-            console.log('apppp', appointmentList)
-            // app.models.individual.findOne({where:{individualId:exists[i].individualId}},function(err,indvinfo){
-
-            // })
+            appointmentList.push(exists[i]);
+            console.log('apppp', appointmentList);
             var upcomingAppointment = {
               error: false,
               result: appointmentList,
@@ -213,19 +211,33 @@ module.exports = function (appointment) {
           }
         }
         if (appointmentList != null && Object.keys(appointmentList).length != 0) {
-          cb(null, upcomingAppointment)
+          cb(null, upcomingAppointment);
         }
         else {
-          cb(null, 'No Any Appointment')
+          cb(null, 'No Any Appointment');
         }
       } else {
-        cb(null, 'Not Found')
+        cb(null, 'Not Found');
       }
     })
   }
-  /****************  END OF API FOR UPCOMING DOCTOR'SAPPOINTMENT LIST *************/
+  /************************************  END OF API FOR UPCOMING DOCTOR'SAPPOINTMENT LIST ******************************************/
 
 
+  /************************************** FETCH INDIVIDUAK DETAIL AND INSERT IT IN RESULT *************************************************/
+  appointment.observe('loaded', function (context, next) {
+    const Individual = app.models.individual;
+
+    // FETCH INDIVIDUAL DETAILS
+    console.log('contextdata', context.data.individualId)
+    Individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (err, indv) {
+      console.log(indv);
+      context.data.individual = indv;
+      delete context.data['individualId'];
+      next();
+    })
+  });
+  /*********************************************************** ENDS ******************************************************** */
 
 
 }
