@@ -1,0 +1,57 @@
+{
+    "name": "callhistory",
+    "description": "A concept named callhistory",
+    "plural": "callhistory",
+    "idInjection": false,
+    "options": {
+        "validateUpsert": true,
+        "composer": {
+            "type": "concept",
+            "namespace": "io.mefy.commonModel",
+            "name": "callhistory",
+            "fqn": "io.mefy.commonModel.callhistory",
+            "abstract": false
+        }
+    },
+    "properties": {
+        "$class": {
+            "type": "string",
+            "required": false,
+            "description": "The class identifier for this type",
+            "default": "io.mefy.commonModel.callhistory"
+        },
+        "callId": {
+            "type": "string",
+            "id": true,
+            "required": true,
+            "description": "The instance identifier for this type",
+            "defaultFn": "uuidv4"
+        },
+        "doctorId": {
+            "type": "string",
+            "required": true,
+            "description": "The identifier of an instance of doctorId"
+        },
+        "individualId": {
+            "type": "string",
+            "required": true,
+            "description": "The identifier of an instance of individual"
+        },
+        "file": {
+            "type": "string",
+            "required": false
+        },
+        "startTime": {
+            "type": "string",
+            "required": false
+        },
+        "endTime": {
+            "type": "string",
+            "required": false
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
+}

@@ -256,5 +256,9 @@
   "instruction": {
     "dataSource": "composer",
     "public": false
+  },
+  "callhistory":{
+    "dataSource": "composer",
+    "public": true
   }
 }
