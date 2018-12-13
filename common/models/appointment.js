@@ -61,7 +61,7 @@ module.exports = function (appointment) {
   }
   /********************************************** END OF API FOR BOOK APPOINTMENT ****************************************/
 
-  /********************************************* API FOR CANCEL APPOINTMENT *************************************************/
+  /********************************************* API FOR  APPOINTMENT  STATUS *************************************************/
   appointment.remoteMethod('appointmentstatus', {
     http: { path: '/appointmentstatus', verb: 'put' },
     accepts: { arg: 'data', type: 'object', required: true, http: { source: 'body' } },
