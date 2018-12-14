@@ -104,7 +104,7 @@ module.exports = function (callhistory) {
 
   callhistory.remoteMethod('individualCall', {
     http: { path: '/individualCall', verb: 'get' },
-    description: "update call  by callId",
+    description: "get individual callhistory",
     accepts: { arg: 'individualId', type: 'string', required: true },
     returns: { arg: 'result', type: 'any', root: true },
   });
@@ -148,7 +148,7 @@ module.exports = function (callhistory) {
 
   callhistory.remoteMethod('doctorCall', {
     http: { path: '/doctorCall', verb: 'get' },
-    description: "update call  by callId",
+    description: "get doctor vcall history",
     accepts: { arg: 'doctorId', type: 'string', required: true },
     returns: { arg: 'result', type: 'any', root: true },
   });
