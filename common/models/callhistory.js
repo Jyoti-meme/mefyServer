@@ -101,17 +101,17 @@ module.exports = function (callhistory) {
   /***************************************** ENDS ***************************************************** */
 
   /***************************************  POPULATE INDIVIDUAL AND DOCTOR FIELD********************************************** */
-  // callhistory.observe('loaded', function (context, next) {
-  //   const Individual = app.models.individual;
-  //   const Doctor = app.models.doctor;
-  //   // FETCH INDIVIDUAL DETAILS
-  //   console.log('contextdata', context.data.individualId)
-  //   Individual.findOne({where:{individualId:context.data.individualId}},function(err,res){
-  //     console.log(err);
-  //     console.log(res);
-
-  //   })
-  // })
+//   callhistory.observe('loaded', function (context, next) {
+//     const Individual = app.models.individual;
+//     const Doctor = app.models.doctor;
+//     // FETCH INDIVIDUAL DETAILS
+//     console.log('contextdata', context.data)
+//     Individual.findOne({where:{individualId:context.data.individualId}},function(err,res){
+//       console.log(err);
+//       console.log(res);
+// next();
+//     })
+//   })
 
   /******************************************* ENDS *************************************************** */
 }

@@ -886,7 +886,7 @@ module.exports = function (User) {
           //send otp
           var userdata = {
             err: false,
-            individualId: individual.individualId,
+            individualId: individual,
             message: 'Got user successfully'
           }
           cb(null, userdata)
