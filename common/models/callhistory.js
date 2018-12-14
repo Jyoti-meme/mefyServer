@@ -100,18 +100,31 @@ module.exports = function (callhistory) {
   }
   /***************************************** ENDS ***************************************************** */
 
+  /************************************** GET CALLHISTORY BY INDIVIDUAL ID ***************************************************** */
+
+  // callhistory.remoteMethod('updatecallhistory', {
+  //   http: { path: '/updatecallhistory/:callId', verb: 'put' },
+  //   description: "update call  by callId",
+  //   accepts: [
+  //     { arg: 'callId', type: 'string', required: true, http: { source: 'path' } },
+  //     { arg: 'data', type: 'obj', http: { source: 'body' } }
+  //   ],
+  //   returns: { arg: 'result', type: 'any', root: true },
+  // });
+
+  /*********************************************** ENDS ******************************************** */
   /***************************************  POPULATE INDIVIDUAL AND DOCTOR FIELD********************************************** */
-//   callhistory.observe('loaded', function (context, next) {
-//     const Individual = app.models.individual;
-//     const Doctor = app.models.doctor;
-//     // FETCH INDIVIDUAL DETAILS
-//     console.log('contextdata', context.data)
-//     Individual.findOne({where:{individualId:context.data.individualId}},function(err,res){
-//       console.log(err);
-//       console.log(res);
-// next();
-//     })
-//   })
+  //   callhistory.observe('loaded', function (context, next) {
+  //     const Individual = app.models.individual;
+  //     const Doctor = app.models.doctor;
+  //     // FETCH INDIVIDUAL DETAILS
+  //     console.log('contextdata', context.data)
+  //     Individual.findOne({where:{individualId:context.data.individualId}},function(err,res){
+  //       console.log(err);
+  //       console.log(res);
+  // next();
+  //     })
+  //   })
 
   /******************************************* ENDS *************************************************** */
 }

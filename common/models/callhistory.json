@@ -51,7 +51,18 @@
         }
     },
     "validations": [],
-    "relations": {},
+    "relations": {
+        "doctor": {
+          "type": "belongsTo",
+          "model": "doctor",
+          "foreignKey": "doctorId"
+        },
+        "individual": {
+            "type": "belongsTo",
+            "model": "individual",
+            "foreignKey": "individualId"
+          }
+      },
     "acls": [],
     "methods": {}
 }

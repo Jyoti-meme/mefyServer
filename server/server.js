@@ -83,7 +83,7 @@ boot(app, __dirname, function (err) {
           }
           else {
             console.log('DOCTOR WITH THAT SOCKET NOT FOUND CHECKING  for individual');
-            app.models.individual.findOne({where:{socketId:sockey.id}},function(err,exists){
+            app.models.individual.findOne({where:{socketId:socket.id}},function(err,exists){
               console.log('individual Socket Id...', exists)
               console.log('individual Socket error', err)
               if(!err){
