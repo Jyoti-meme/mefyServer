@@ -193,30 +193,105 @@ module.exports = function (callhistory) {
     const Individual = app.models.individual;
     const Doctor = app.models.doctor;
     // FETCH INDIVIDUAL DETAILS
-    console.log('contextdata', context.data.individualId)
-    Individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (indverr, indv) {
-      console.log('indv err', indverr);
-      context.data.individuals = indv;
-      delete context.data['individualId'];
-      Doctor.findOne({ where: { doctorId: context.data.doctorId.includes('#') ? context.data.doctorId.split('#')[1] : context.data.doctorId } }, function (docerr, doctor) {
-        console.log('doctor err', docerr);
-        console.log('doctor details', doctor)
-        context.data.doctors = doctor;
+    Promise.all([getIndividualDetails(context.data.individualId), getDoctorDetails(context.data.doctorId)]).then(function (values) {
+      console.log('values', values)
+      if (values[0] == 'nothing') {
+        context.data.individuals = null;
+        delete context.data['individualId'];
+      }
+      else {
+        context.data.individuals = values[0];
+        delete context.data['individualId'];
+      }
+      if (values[1] == 'nothing') {
+        context.data.doctors = null;
         delete context.data['doctorId'];
-        next();
-      })
-      // if (!err && Object.keys(indv).length != 0) {
-      //   console.log('INDIVIDUAL DETAILS', indv);
-      //   context.data.individuals = indv;
-      //   console.log('contexti indv data', context.data)
-      //   delete context.data['individualId'];
-      //   next();
-      // }
-      // else{
-      //   next();
-      // }
+      }
+      else {
+        context.data.doctors = values[1];
+        delete context.data['doctorId'];
+      }
 
+      next();
+    }).catch(err => {
+      console.log('CATCHED ERROR')
+      console.log('catched error', err)
+      next();
     })
+    // console.log('contextdata', context.data.individualId)
+    // Individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (indverr, indv) {
+    //   console.log('indv err', indverr);
+    //   context.data.individuals = indv;
+    //   delete context.data['individualId'];
+    //   Doctor.findOne({ where: { doctorId: context.data.doctorId.includes('#') ? context.data.doctorId.split('#')[1] : context.data.doctorId } }, function (docerr, doctor) {
+    //     console.log('doctor err', docerr);
+    //     console.log('doctor details', doctor)
+    //     context.data.doctors = doctor;
+    //     delete context.data['doctorId'];
+    //     next();
+    //   })
+    // if (!err && Object.keys(indv).length != 0) {
+    //   console.log('INDIVIDUAL DETAILS', indv);
+    //   context.data.individuals = indv;
+    //   console.log('contexti indv data', context.data)
+    //   delete context.data['individualId'];
+    //   next();
+    // }
+    // else{
+    //   next();
+    // }
+    // await Promise.all([slotdivide(instance, day, clinicId)]).then(function (values) {
+    // })
   });
+
+
+  // GET INDIVIDUAL DETAILS
+  async function getIndividualDetails(indvId) {
+    const Individual = app.models.individual;
+    return new Promise((resolve, reject) => {
+      Individual.findOne({ where: { individualId: indvId.includes('#') ? indvId.split('#')[1] : indvId } }, function (indverr, indv) {
+        console.log(indverr + ':::::' + indv);
+        if (!indverr) {
+          if (indv != null && Object.keys(indv).length != 0) {
+            resolve(indv)
+          }
+          else {
+            resolve('nothing')
+          }
+        }
+        // if(!indverr && indv!=null&& Object.keys(indv).length!=0){
+        //   resolve(indv);
+        // }
+        // else{
+        //   reject('Individual detail not found');
+        // }
+      })
+    })
+  }
+
+  // GET DOCTOR DETAILS
+  async function getDoctorDetails(doctorId) {
+    const Doctor = app.models.doctor;
+    return new Promise((resolve, reject) => {
+      Doctor.findOne({ where: { doctorId: doctorId.includes('#') ? doctorId.split('#')[1] : doctorId } }, function (docerr, doctor) {
+        console.log(docerr + ':::::' + doctor);
+
+        if (!docerr) {
+          if (doctor != null && Object.keys(doctor).length != 0) {
+            resolve(doctor)
+          }
+          else {
+            resolve('nothing')
+          }
+        }
+        //   if(!docerr && doctor!=null && Object.keys(doctor).length!=0){
+        //     resolve(doctor);
+        //   }
+        //  else{
+        //   reject('Doctor detail not found')
+        //  }
+      })
+    })
+  }
   /******************************************* ENDS *************************************************** */
 }
