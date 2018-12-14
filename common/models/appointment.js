@@ -85,7 +85,7 @@ module.exports = function (appointment) {
             console.log('err' + err, 'result' + result)
             if (err) {
               let x = {
-                error:true,
+                error: true,
                 err: err,
                 msg: "Sometiong Went Wrong.."
               }
@@ -241,9 +241,22 @@ module.exports = function (appointment) {
     if (context.data.individualId) {
       Individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (err, indv) {
         console.log(indv);
-        context.data.individual = indv;
-        delete context.data['individualId'];
-        next();
+        if (!err) {
+          if (indv != null && Object.keys(indv).length != 0) {
+            context.data.individual = indv;
+            delete context.data['individualId'];
+            next();
+          }
+          else {
+            context.data.individual = null;
+            delete context.data['individualId'];
+            next();
+          }
+        }
+        else {
+          next();
+        }
+
       })
     }
     else {
