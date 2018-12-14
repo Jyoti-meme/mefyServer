@@ -82,7 +82,25 @@ boot(app, __dirname, function (err) {
             });
           }
           else {
-            console.log('DOCTOR WITH THAT SOCKET NOT FOUND CHECKING ');
+            console.log('DOCTOR WITH THAT SOCKET NOT FOUND CHECKING  for individual');
+            app.models.individual.findOne({where:{socketId:sockey.id}},function(err,exists){
+              console.log('individual Socket Id...', exists)
+              console.log('individual Socket error', err)
+              if(!err){
+                if(exists != null && Object.keys(exists).length != 0){
+                  exists.updateAttribute('availability','Offline',function(err,result){
+                    console.log('avaialbility update',result);
+                    console.log('availability update error',err)
+                  });
+                }
+                else{
+                  console.log('Individual WITH THAT SOCKET NOT FOUND CHECKING ');  
+                }
+              }
+              else{
+                console.log('Something went wrong ');
+              }
+            })
           }
         })
         // Doctor.findOne({ where: { socketId: socket.id } }, function (err, exists) {
