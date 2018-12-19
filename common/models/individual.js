@@ -81,7 +81,7 @@ module.exports = function (individual) {
 
         individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, exists) {
           console.log('exists', exists);
-          
+
           if (exists != null && Object.keys(exists).length != 0) {
             let datas = {
               relation: data.relation,
@@ -91,7 +91,7 @@ module.exports = function (individual) {
             console.log('data to be updated', famarray)
             exists.updateAttribute('family', exists.family, function (err, result) {
               console.log('result', result)
-              console.log('error',err)
+              console.log('error', err)
               let successmessage = {
                 error: false,
                 result: result,
@@ -432,7 +432,7 @@ module.exports = function (individual) {
 
   individual.getsurgery = function (individuaId, cb) {
     const surgical = app.models.surgical;
-    surgical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individuaId } }, function (err, res) {
+    surgical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, res) {
       console.log('kjh', res)
       if (err) {
         let result = {
@@ -740,7 +740,7 @@ module.exports = function (individual) {
 
     cb(null, vaccineArray)
   }
-  
+
   /****************************************************** ENDS ***************************************************************** */
 
 
@@ -816,6 +816,42 @@ module.exports = function (individual) {
   }
 
   /*********************************************************** ENDS ***************************************************** */
+
+
+  individual.observe('loaded', function (context, next) {
+    const Individual = app.models.individual;
+
+    // FETCH INDIVIDUAL DETAILS
+    // console.log('contextdata', context.data.family.individualId)
+    if(context.data.family.length!=0){
+      ProcessArray(context.data.family).then(users => {
+        console.log('usrs',users)
+        context.data.families=users;
+        next();
+        // let result = {
+        //   error: false,
+        //   family: users,
+        //   message: 'family member get successfull'
+        // }
+        // cb(null, result)
+      })
+    }
+    else{
+      next();
+
+    }
+   
+    // if (context.data.individualId) {
+    //   individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (err, indv) {
+    //     console.log(indv + 'err' + err);
+    //     context.data.individuals = indv;
+    //     next();
+    //   })
+    // }
+    // else {
+    //   next();
+    // }
+  })
 
 };
   // individual.find({where:{family:{inq:['Father']}}},function(err,res){
