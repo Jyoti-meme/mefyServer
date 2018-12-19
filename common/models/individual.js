@@ -430,7 +430,7 @@ module.exports = function (individual) {
     returns: { arg: 'result', type: 'any' }
   });
 
-  individual.getsurgery = function (individuaId, cb) {
+  individual.getsurgery = function (individualId, cb) {
     const surgical = app.models.surgical;
     surgical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, res) {
       console.log('kjh', res)
