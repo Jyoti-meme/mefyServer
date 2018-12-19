@@ -27,7 +27,7 @@ surgical.addsurgical = function (data, cb) {
   surgical.create({
     individualId: data.individualId, disease: data.disease, dateOfDiagnosis: data.dateOfDiagnosis,
     healthRecordType: data.healthRecordType, currentStatus: data.currentStatus, signsAndSympton: data.signsAndSympton,otherInformation:data.otherInformation,
-    treatmentDetails: data.treatmentDetails,surgery:data.surgery,treatmentDetailsFile:data.treatmentDetailsFile?data.treatmentDetailsFile:''
+    treatmentDetails: data.treatmentDetails?data.treatmentDetails:'',surgery:data.surgery,treatmentDetailsFile:data.treatmentDetailsFile?data.treatmentDetailsFile:''
   }, function (err, res) {
     console.log('response', res, err);
     if (err) {
@@ -35,6 +35,7 @@ surgical.addsurgical = function (data, cb) {
         error: true,
         message: 'surgical creation failed'
       }
+      cb(null, result);
     }
     else {
       let result = {

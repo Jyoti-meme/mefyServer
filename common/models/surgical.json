@@ -30,7 +30,8 @@
     },
     "individualId": {
       "type": "string",
-      "required": false
+      "required": true,
+      "description": "The identifier of an instance of individualId"
     },
     "medicineId": {
       "type": [
@@ -69,11 +70,8 @@
       "required": false
     },
     "treatmentDetails": {
-      "type": [
-        "TreatmentDetails"
-      ],
-      "required": false,
-      "default": []
+     "type":"string",
+      "required": false
     },
     "treatmentDetailsFile": {
       "type": "string",
