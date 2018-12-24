@@ -466,6 +466,7 @@ module.exports = function (individual) {
     console.log('individualId', individualId)
     const Medical = app.models.medical
     Medical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, response) {
+      console.log('err'+err+':::::'+response)
       if (err) {
         let result = {
           error: true,

@@ -44,6 +44,10 @@
       "type": "string",
       "required": false
     },
+    "frequency":{
+      "type": "string",
+      "required": false
+    },
     "createdBy": {
       "type": "string",
       "required": false
