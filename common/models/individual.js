@@ -459,7 +459,7 @@ module.exports = function (individual) {
     http: { path: '/getMedicalHistory', verb: 'get' },
     description: "Get all medical history by Individual id",
     accepts: { arg: 'individualId', type: 'string', required: true },
-    returns: { arg: 'result', type: 'any' }
+    returns: { arg: 'result', type: 'any',root:true }
 
   });
   individual.getMedicalHistory = function (individualId, cb) {
@@ -476,7 +476,7 @@ module.exports = function (individual) {
         cb(null, result)
       }
       else {
-        if (response != null && Object.keys(response).length != 0) {
+        if (response != null && response.length != 0) {
           console.log('response', response)
           let medicalList = {
             error: false,
@@ -487,7 +487,12 @@ module.exports = function (individual) {
         }
 
         else {
-          cb(null, 'Not Found')
+          let result={
+            error: false,
+            result: [],
+            message: "No Medical History for Individual"
+          }
+          cb(null, result)
         }
       }
     })
