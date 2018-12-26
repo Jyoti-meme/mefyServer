@@ -8,7 +8,7 @@ const vaccineList = require('../../vaccine.json');       //GET VACCINE LIST JSON
 module.exports = function (individual) {
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory", "getimmunization", "allergieslist", "filterallergies", "diseaseslist", "relations", "medicalconditions", "vaccinegroup", "currentsymptom", "filterVaccine"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "filterdoctor", 'callinitiation', "callactions", "getallergies", "getsurgery", "getMedicalHistory", "getimmunization", "allergieslist", "filterallergies", "diseaseslist", "relations", "medicalconditions", "vaccinegroup", "currentsymptom", "filterVaccine", "getHealthrecords"];
   individual.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -434,7 +434,7 @@ module.exports = function (individual) {
     const surgical = app.models.surgical;
     surgical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, res) {
       console.log('kjh', res)
-      console.log('surgery error',err)
+      console.log('surgery error', err)
       if (err) {
         let result = {
           error: true,
@@ -459,15 +459,15 @@ module.exports = function (individual) {
     http: { path: '/getMedicalHistory', verb: 'get' },
     description: "Get all medical history by Individual id",
     accepts: { arg: 'individualId', type: 'string', required: true },
-    returns: { arg: 'result', type: 'any',root:true }
+    returns: { arg: 'result', type: 'any', root: true }
 
   });
   individual.getMedicalHistory = function (individualId, cb) {
     console.log('individualId', individualId)
     const Medical = app.models.medical
     Medical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, response) {
-      console.log('err'+err+':::::');
-      console.log('MEDICAL RECORD',response);
+      console.log('err' + err + ':::::');
+      console.log('MEDICAL RECORD', response);
       if (err) {
         let result = {
           error: true,
@@ -487,7 +487,7 @@ module.exports = function (individual) {
         }
 
         else {
-          let result={
+          let result = {
             error: false,
             result: [],
             message: "No Medical History for Individual"
@@ -500,6 +500,106 @@ module.exports = function (individual) {
 
   /****************************************** ENDS **************************************************************** */
 
+  /***************************** GET INDIVIDUALS HEALTH RECORDS ACCORDING TO INDIVIDUALID********************************************************************* */
+
+  individual.remoteMethod('getHealthrecords', {
+    http: { path: '/getHealthrecords', verb: 'get' },
+    description: "Get all getHealthrecords history by Individual id",
+    accepts: { arg: 'individualId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any', root: true }
+
+  });
+
+  individual.getHealthrecords = function (individualId, cb) {
+    console.log('individualId', individualId);
+    let newarr = [];
+    // RETURN ALL VALUES FROM PROMISES      // DATA FROM MEDICINE TO BE FETCHED
+    Promise.all([getIndividualSurgery(individualId), getIndividualImmunization(individualId), getIndividualMedical(individualId)]).then(function (values) {
+      console.log('VALUES', values);
+      let response = {
+        error: false,
+        result: (values[0].concat(values[1])).concat(values[2]),
+        message: "Medical Records get successfully"
+      }
+      cb(null, response)
+    }).catch(err => {
+      let response = {
+        error: true,
+        message: "SOmething Went Wrong"
+      }
+      cb(null, response)
+    })
+  }
+
+  // GET INDIVIDUAL RECORDS FROM SURGERY
+  async function getIndividualSurgery(individualId) {
+    const surgery = app.models.surgical;
+    return new Promise((resolve, reject) => {
+      surgery.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, sur) {
+        console.log('err', err);
+        console.log('suregery', sur);
+        if (err) {
+          reject()
+        }
+        else {
+          resolve(sur)
+         
+        }
+      })
+    })
+
+  }
+
+  // GET INDIVIDUAL RECORDS FROM IMMUNIZATION
+  async function getIndividualImmunization(individualId) {
+    const immunization = app.models.immunization;
+    return new Promise((resolve, reject) => {
+      immunization.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, imm) {
+        console.log('err', err);
+        console.log('immunization', imm);
+        if (err) {
+          reject()
+        }
+        else {
+          resolve(imm)
+          // if (imm.length != 0) {
+          //   resolve(imm);
+          // }
+          // else {
+          //   resolve(imm);
+          // }
+        }
+        // if (!err && imm.length != 0) {
+        //   resolve(imm)
+        // }
+        // else {
+        //   reject();
+        // }
+      })
+    })
+
+
+  }
+
+  // GET INDIVIDUAL RECORDS FROM MEDICALHISTORY
+  async function getIndividualMedical(individualId) {
+    const medical = app.models.medical;
+    return new Promise((resolve, reject) => {
+      medical.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, med) {
+        console.log('err', err);
+        console.log('medical', med);
+        if (err) {
+          reject()
+        }
+        else {
+          resolve(med)
+         
+        }
+      })
+    })
+
+  }
+  /******************************************** ENDS *************************************************************************************************************** */
 
 
   /********************************************** GET INDV Immunization LIST *******************************************/
@@ -825,16 +925,15 @@ module.exports = function (individual) {
 
   /*********************************************************** ENDS ***************************************************** */
 
-
+  /********************************************* GET FAMILY DETAILS AT INDIVIDUAL GET ************************************ */
   individual.observe('loaded', function (context, next) {
     const Individual = app.models.individual;
-
     // FETCH INDIVIDUAL DETAILS
     // console.log('contextdata', context.data.family.individualId)
-    if(context.data.family.length!=0){
+    if (context.data.family.length != 0) {
       ProcessArray(context.data.family).then(users => {
-        console.log('usrs',users)
-        context.data.families=users;
+        console.log('usrs', users)
+        context.data.families = users;
         next();
         // let result = {
         //   error: false,
@@ -844,11 +943,11 @@ module.exports = function (individual) {
         // cb(null, result)
       })
     }
-    else{
+    else {
       next();
 
     }
-   
+    /**************************************************** ENDS ******************************************************* */
     // if (context.data.individualId) {
     //   individual.findOne({ where: { individualId: context.data.individualId.includes('#') ? context.data.individualId.split('#')[1] : context.data.individualId } }, function (err, indv) {
     //     console.log(indv + 'err' + err);
