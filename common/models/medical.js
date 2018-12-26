@@ -26,42 +26,43 @@ module.exports = function (medical) {
   });
 
   medical.addMedical = function (data, cb) {
+    console.log('data',data)
     // calculate startdate from duration duration
-    var startDate = moment().subtract(data.duration.years, 'year').subtract(data.duration.months, 'month').subtract(data.duration.days, 'day').toISOString()
-    console.log(moment().subtract(1, 'year').subtract(0, 'month').subtract(1, 'day').toISOString())
-  // changed need to be done accorfding to new chanf=ges in suffering date
-    data.sufferingSince = {
-      start: startDate
+    //   var startDate = moment().subtract(data.duration.years, 'year').subtract(data.duration.months, 'month').subtract(data.duration.days, 'day').toISOString()
+    //   console.log(moment().subtract(1, 'year').subtract(0, 'month').subtract(1, 'day').toISOString())
+    // // changed need to be done accorfding to new chanf=ges in suffering date
+    //   data.sufferingSince = {
+    //     start: startDate
+    //   }
+    if (data.healthRecordType == 'currentComplaint')
+      medical.create(
+        {
+          individualId: data.individualId, healthRecordType: data.healthRecordType, symptoms: data.symptoms,
+          sufferingSince: data.sufferingSince,sufferingFrom: data.sufferingFrom
+        }, function (err, res) {
+          console.log('eesult', res)
+          let result = {
+            error: false,
+            clinic: res,
+            message: "complaint added  successfully"
+          }
+          cb(null, result);
+        })
+    else {
+      medical.create(
+        {
+          individualId: data.individualId, healthRecordType: data.healthRecordType, symptoms: data.symptoms, duration: data.duration,
+          sufferingFrom: data.sufferingFrom
+        }, function (err, res) {
+          console.log('eesult', res)
+          let result = {
+            error: false,
+            clinic: res,
+            message: " Medical Record Created  successfully"
+          }
+          cb(null, result);
+        })
     }
-    if(data.healthRecordType=='currentComplaint')
-    medical.create(
-      {
-        individualId: data.individualId, healthRecordType: data.healthRecordType, symptoms: data.symptoms, duration: data.duration,
-        sufferingSince: startDate, status: 'unsolved'
-      }, function (err, res) {
-        console.log('eesult', res)
-        let result = {
-          error: false,
-          clinic: res,
-          message: "complaint added  successfully"
-        }
-        cb(null, result);
-      })
-      else{
-        medical.create(
-          {
-            individualId: data.individualId, healthRecordType: data.healthRecordType, symptoms: data.symptoms, duration: data.duration,
-            sufferingDate: data.sufferingDate,status: 'solved'
-          }, function (err, res) {
-            console.log('eesult', res)
-            let result = {
-              error: false,
-              clinic: res,
-              message: " Medical Record Created  successfully"
-            }
-            cb(null, result);
-          })
-      }
   }
 
   /***************************************  END  ************************************************ */
