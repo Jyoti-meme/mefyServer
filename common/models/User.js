@@ -1015,15 +1015,18 @@ module.exports = function (User) {
     accessToken.identity = username;
 
     // Grant access to Video
-    // var grant = new VideoGrant();
-    // grant.room = 'cool room';
-    // accessToken.addGrant(grant);
+    let timestamp = new Date().getTime();
+    let roomname = username + '-' + timestamp;
+    var grant = new VideoGrant();
+    grant.room = roomname;
+    accessToken.addGrant(grant);
 
     // Serialize the token as a JWT
     var jwt = accessToken.toJwt();
     console.log(jwt);
     let response = {
-      token: jwt
+      token: jwt,
+      room: roomname
     }
     cb(null, response);
   }
