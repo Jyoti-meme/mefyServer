@@ -1028,6 +1028,34 @@ module.exports = function (User) {
     cb(null, response);
   }
 
+  /** Econsult APIS **/
+  /** API to generate tokens **/
+  User.remoteMethod('joinroom', {
+    http: { path: '/joinroom', verb: 'post' },
+    accepts: { arg: 'room', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'any', root: true },
+  });
+
+  User.joinroom = function (room, cb) {
+    let roomname = room.name;
+    // join room
+    let joinroomurl = "https://video.twilio.com/v1/Rooms";
+    let finaljoinroomurl = "https://video.twilio.com/v1/Rooms?EnableTurn=true&Type=group-small&UniqueName=" + roomname + "&StatusCallbackMethod=POST&MaxParticipants=2&RecordParticipantsOnConnect=true&VideoCodecs=H264";
+    fetch(finaljoinroomurl, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: "Basic QUM0OTA2ODg0MmZlYTU1NTc2MTQ0YjUyY2EzMmVjNjM5NTo0ZDAwNzUxN2E3NjZjOGM4MTQwYzI1Yjg2NjQ1YzIyNA=="
+      })
+    })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        console.log('url json response', responseJSON)
+        cb(null, responseJSON);
+      }).catch(err => {
+        cb(err, null);
+      })
+  }
+
 }
 
 
