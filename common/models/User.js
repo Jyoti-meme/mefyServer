@@ -1015,9 +1015,9 @@ module.exports = function (User) {
     accessToken.identity = username;
 
     // Grant access to Video
-    var grant = new VideoGrant();
-    grant.room = 'cool room';
-    accessToken.addGrant(grant);
+    // var grant = new VideoGrant();
+    // grant.room = 'cool room';
+    // accessToken.addGrant(grant);
 
     // Serialize the token as a JWT
     var jwt = accessToken.toJwt();
