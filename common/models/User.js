@@ -7,6 +7,21 @@ const cardName = "admin@mefy";
 const app = require('../../server/server');
 var loopback = require('loopback');
 
+var AccessToken = require('twilio').jwt.AccessToken;
+var VideoGrant = AccessToken.VideoGrant;
+
+// Substitute your Twilio AccountSid and ApiKey details
+var ACCOUNT_SID = 'AC49068842fea55576144b52ca32ec6395'; //account sid
+var API_KEY_SID = 'SK72c5e59d3d43962e1169419ff9b0f64d';
+var API_KEY_SECRET = '5CfQhyzGrW8MCEOZqtuCPS4bIEPVrIhQ';
+
+// Create an Access Token
+var accessToken = new AccessToken(
+  ACCOUNT_SID,
+  API_KEY_SID,
+  API_KEY_SECRET
+);
+
 module.exports = function (User) {
 
   /***CHECK THE EXISTENCE OF EMAIL AND PHONENUMBER */
@@ -28,7 +43,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber", "twilloToken"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -777,7 +792,7 @@ module.exports = function (User) {
   });
 
   User.edgeLogin = function (logindata, cb) {
-    console.log('data',logindata)
+    console.log('data', logindata)
     // const Individual = app.models.individual;
 
     User.findOne({ where: { and: [{ phoneNumber: logindata.phoneNumber }, { role: logindata.role }] } }, function (err, exists) {
@@ -987,6 +1002,32 @@ module.exports = function (User) {
     })
   }
   /********************************************************************************************************** */
+  /** Econsult APIS **/
+  /** API to generate tokens **/
+  User.remoteMethod('twilloToken', {
+    http: { path: '/twilloToken', verb: 'get' },
+    accepts: { arg: 'username', type: 'string' },
+    returns: { arg: 'result', type: 'any', root: true },
+  });
+
+  User.twilloToken = function (username, cb) {
+    // Set the Identity of this token
+    accessToken.identity = username;
+
+    // Grant access to Video
+    var grant = new VideoGrant();
+    grant.room = 'cool room';
+    accessToken.addGrant(grant);
+
+    // Serialize the token as a JWT
+    var jwt = accessToken.toJwt();
+    console.log(jwt);
+    let response = {
+      token: jwt
+    }
+    cb(null, response);
+  }
+
 }
 
 
