@@ -43,7 +43,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber", "twilloToken"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber", "twilloToken", "joinroom"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -1015,18 +1015,18 @@ module.exports = function (User) {
     accessToken.identity = username;
 
     // Grant access to Video
-    let timestamp = new Date().getTime();
-    let roomname = username + '-' + timestamp;
-    var grant = new VideoGrant();
-    grant.room = roomname;
-    accessToken.addGrant(grant);
+    // let timestamp = new Date().getTime();
+    // let roomname = username + '-' + timestamp;
+    // var grant = new VideoGrant();
+    // grant.room = roomname;
+    // accessToken.addGrant(grant);
 
     // Serialize the token as a JWT
     var jwt = accessToken.toJwt();
     console.log(jwt);
     let response = {
       token: jwt,
-      room: roomname
+      // room: roomname
     }
     cb(null, response);
   }
