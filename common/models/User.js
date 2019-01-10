@@ -75,6 +75,7 @@ module.exports = function (User) {
 
   // USER REGISTRATION API
   User.registration = function (data, cb) {
+    console.log('kljhgfd')
     console.log('USER', data)
     // where: { and: [{ phoneNumber: data.phoneNumber }, { role: data.role }]
     User.find({ where: { phoneNumber: data.phoneNumber } }, function (err, user) {

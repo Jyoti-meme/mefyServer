@@ -35,7 +35,7 @@ module.exports = function (prescription) {
 
         //form an array of data then send to generate ids
         if (data.medicine && data.medicine.length != 0) {
-          console.log('inside data medicine')
+          // console.log('inside data medicine')
           let data1 = {
             type: "medicine",
             medd: data.medicine
@@ -43,7 +43,7 @@ module.exports = function (prescription) {
           dataArray.push(data1);
         }
         if (data.diagnosis && data.diagnosis.length != 0) {
-          console.log('inside data diagnosis')
+          // console.log('inside data diagnosis')
           let data2 = {
             type: "diagnosis",
             diag: data.diagnosis
@@ -51,7 +51,7 @@ module.exports = function (prescription) {
           dataArray.push(data2)
         }
         if (data.advice && data.advice.length != 0) {
-          console.log('inside data advice')
+          // console.log('inside data advice')
           let data3 = {
             type: "advice",
             adv: data.advice
@@ -59,7 +59,7 @@ module.exports = function (prescription) {
           dataArray.push(data3);
         }
         if (data.lifestyle && data.lifestyle.length != 0) {
-          console.log('inside data lifestyle')
+          // console.log('inside data lifestyle')
           let data4 = {
             type: "lifestyle",
             life: data.lifestyle
@@ -67,7 +67,7 @@ module.exports = function (prescription) {
           dataArray.push(data4);
         }
         if (data.instruction && data.instruction.length != 0) {
-          console.log('inside data instruction')
+          // console.log('inside data instruction')
           let data5 = {
             type: "instructions",
             ins: data.instruction
@@ -75,26 +75,27 @@ module.exports = function (prescription) {
           dataArray.push(data5);
         }
         if (data.recommended && data.recommended.length != 0) {
-          console.log('inside data recommended')
+          // console.log('inside data recommended')
           let data6 = {
             type: "recommended",
             recomm: data.recommended
           }
           dataArray.push(data6);
         }
-        console.log('data array', dataArray)
+        // console.log('data array', dataArray)
         // GENERATE IDS THEN UPDATE PRESCRIPTION
         generateIds(dataArray).then(function (values) {
 
           console.log('GenerateIds returned value', values)
+          console.log(values.medicineId.length != 0 ? values.medicineId : [])
           pres.updateAttributes({
-            medicineId: values.medicineId != '' ? values.medicineId : null, adviceId: values.adviceId != '' ? values.adviceId : null,
-            lifeStyleId: values.lifestyleId != '' ? values.lifestyleId : null, diagnosisId: values.diagnosisId != '' ? values.diagnosisId : null,
-            specificInstructionId: values.instructionId != '' ? values.instructionId : null, recommendedId: values.recommendedId != '' ? values.recommendedId : null
+            medicineId: values.medicineId ? (values.medicineId.length != 0 ? values.medicineId : []) : [], adviceId: values.adviceId ? (values.adviceId.length != 0 ? values.adviceId : []) : [],
+            lifeStyleId: values.lifestyleId ? (values.lifestyleId.length != 0 ? values.lifestyleId : []) : [], diagnosisId: values.diagnosisId ? (values.diagnosisId.length != 0 ? values.diagnosisId : []) : [],
+            specificInstructionId: values.instructionId ? (values.instructionId.length != 0 ? values.instructionId : []) : [], recommendedId: values.recommendedId ? (values.recommendedId.length != 0 ? values.recommendedId : []) : []
 
           }, function (err, created) {
-            console.log('PRESCRIPTION UPDATE ERROR', err);
-            console.log('PRESCRIPTION UPDATED SUCCESS', created);
+            // console.log('PRESCRIPTION UPDATE ERROR', err);
+            // console.log('PRESCRIPTION UPDATED SUCCESS', created);
             if (!err) {
               let response = {
                 error: false,
@@ -118,15 +119,17 @@ module.exports = function (prescription) {
 
   // RETURN GENERATED IDS
   async function generateIds(dataArray) {
-    console.log('INSIDE GENERATE IDS', dataArray);
+    // console.log('INSIDE GENERATE IDS', dataArray);
     let x = {};
     for (const instance of dataArray) {
-      console.log('INSIDE FOR LOOP', instance)
+      // console.log('INSIDE FOR LOOP', instance)
       await Promise.all([aggregate(instance)]).then(function (values) {
-        console.log('AGGRGATE FUNCTION VALUE', values);
-        console.log(values[0])
+        // console.log('AGGRGATE FUNCTION VALUE', values);
+        // console.log(values[0])
         if (values[0].hasOwnProperty("medicineId")) {
+          // console.log('insode if')
           x.medicineId = values[0].medicineId;
+          // console.log(x)
         }
         else if (values[0].hasOwnProperty("diagnosisId")) {
           x.diagnosisId = values[0].diagnosisId
@@ -150,7 +153,7 @@ module.exports = function (prescription) {
 
   // GENERATE SINGLE IDS
   async function aggregate(instance) {
-    console.log('INSIDE AGGREGATE FUNCTION', instance);
+    // console.log('INSIDE AGGREGATE FUNCTION', instance);
     const medicine = app.models.prescribeMedicine;
     const advice = app.models.advice;
     const lifestyle = app.models.lifeStyle;
@@ -159,66 +162,91 @@ module.exports = function (prescription) {
     const recommended = app.models.recommended;
     return new Promise((resolve) => {
       if (instance.type == "medicine") {
+        let medarray = [];
         medicine.create([instance.medd], function (err, med) {
-          console.log('err', err);
-          console.log('MED', med)
+          // console.log('err', err);
+          // console.log('MED', med)
+          med[0].forEach(element => {
+            medarray.push(element.prescribeMedicineId)
+          })
+          // console.log('medarray',medarray)
           let datasent = {
-            medicineId: med[0][0].prescribeMedicineId,
+            medicineId: medarray,
 
           }
           resolve(datasent)
         })
       }
       else if (instance.type == "diagnosis") {
+        let diagarray = [];
         diagnosis.create([instance.diag], function (err, diag) {
-          console.log('err', err);
-          console.log('DIAG', diag[0][0])
+          // console.log('err', err);
+          // console.log('DIAG', diag[0][0])
+          diag[0].forEach(element => {
+            diagarray.push(element.diagnosisId)
+          })
           let datasent = {
-            diagnosisId: diag[0][0].diagnosisId,
+            diagnosisId: diagarray,
 
           }
           resolve(datasent)
         })
       }
       else if (instance.type == "advice") {
+        let advarray = [];
         advice.create([instance.adv], function (err, adv) {
-          console.log('err', err);
-          console.log('ADV', adv)
+          // console.log('err', err);
+          // console.log('ADV', adv);
+          adv[0].forEach(element => {
+            advarray.push(element.adviceId)
+          })
           let datasent = {
-            adviceId: adv[0][0].adviceId,
+            adviceId: advarray,
 
           }
           resolve(datasent)
         })
       }
       else if (instance.type == "recommended") {
+        let recomarray = [];
         recommended.create([instance.recomm], function (err, rec) {
-          console.log('err', err);
-          console.log('REC', rec)
+          // console.log('err', err);
+          // console.log('REC', rec);
+          rec[0].forEach(element => {
+            recomarray.push(element.recommendedId)
+          })
           let datasent = {
-            recommendedId: rec[0][0].recommendedId,
+            recommendedId: recomarray,
 
           }
           resolve(datasent)
         })
       }
       else if (instance.type == "lifestyle") {
+        let lifearray = [];
         lifestyle.create([instance.life], function (err, life) {
-          console.log('err', err);
-          console.log('LIFE', life)
+          // console.log('err', err);
+          // console.log('LIFE', life);
+          life[0].forEach(element => {
+            lifearray.push(element.lifeStyleId)
+          })
           let datasent = {
-            lifestyleId: life[0][0].lifeStyleId,
+            lifestyleId: lifearray,
 
           }
           resolve(datasent)
         })
       }
       else if (instance.type == "instructions") {
+        let insarray = [];
         instruction.create([instance.ins], function (err, ins) {
-          console.log('err', err);
-          console.log('Ins', ins)
+          // console.log('err', err);
+          // console.log('Ins', ins);
+          ins[0].forEach(element => {
+            insarray.push(element.instructionId)
+          })
           let datasent = {
-            instructionId: ins[0][0].instructionId,
+            instructionId: insarray,
 
           }
           resolve(datasent)
@@ -242,7 +270,9 @@ module.exports = function (prescription) {
   // LOGIC FOR GETTING DETAILS
   prescription.prescriptionbyindividualId = function (individualId, cb) {
     prescription.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, list) {
-
+      // console.log('list',list);
+      // console.log(err)
+      // cb(null,list)
       fetchDetail(list).then(function (result) {
         // console.log('FETCH DETAIL RETURNED VALUE', result);
         let response = {
@@ -262,7 +292,7 @@ module.exports = function (prescription) {
     // console.log('INSIDE FETCHDETAIL FUNCTION', preslist)
     let dataarray = [];
     for (const instance of preslist) {
-      // console.log('instance',instance)
+      console.log('instance', instance)
       let fulldata = [];
 
       if (instance.doctorId) {
@@ -271,37 +301,37 @@ module.exports = function (prescription) {
         }
         fulldata.push(data1)
       }
-      if (instance.medicineId) {
+      if (instance.medicineId && instance.medicineId.length != 0) {
         let data2 = {
           medicineId: instance.medicineId
         }
         fulldata.push(data2)
       }
-      if (instance.adviceId) {
+      if (instance.adviceId && instance.adviceId.length != 0) {
         let data3 = {
           adviceId: instance.adviceId
         }
         fulldata.push(data3)
       }
-      if (instance.recommendedId) {
+      if (instance.recommendedId && instance.recommendedId.length != 0) {
         let data4 = {
           recommendedId: instance.recommendedId
         }
         fulldata.push(data4)
       }
-      if (instance.specificInstructionId) {
+      if (instance.specificInstructionId && instance.specificInstructionId.length != 0) {
         let data5 = {
           specificInstructionId: instance.specificInstructionId
         }
         fulldata.push(data5)
       }
-      if (instance.lifeStyleId) {
+      if (instance.lifeStyleId && instance.lifeStyleId.length != 0) {
         let data6 = {
           lifeStyleId: instance.lifeStyleId
         }
         fulldata.push(data6)
       }
-      if (instance.diagnosisId) {
+      if (instance.diagnosisId && instance.diagnosisId.length != 0) {
         let data7 = {
           diagnosisId: instance.diagnosisId
         }
@@ -319,6 +349,7 @@ module.exports = function (prescription) {
         }
         fulldata.push(data9)
       }
+      // console.log(fulldata)
       await getDetails(fulldata).then(function (values) {
         console.log('GET DETAILS RETURNED VALUE', values)
         dataarray.push(values);
@@ -330,14 +361,15 @@ module.exports = function (prescription) {
 
   // ARRANGE DATA RECEIVED
   async function getDetails(data) {
-    console.log('INSIDE GET DETAILS FUNCTIONS', data)
+    // console.log('INSIDE GET DETAILS FUNCTIONS', data)
     let prescriptiondata = {};
     for (const item of data) {
+      // console.log('ITEMSSS', item)
+
       await Promise.all([getspecificdetails(item)]).then(function (values) {
-        if (values[0].type == 'doctor') {
-          prescriptiondata.doctor = values[0].data
-        }
-        else if (values[0].type == 'advice') {
+        // console.log(' SPECIFIC DETAIL RETURNED VALUES', values);
+
+        if (values[0].type == 'advice') {
           prescriptiondata.advice = values[0].data
         }
         else if (values[0].type == 'medicine') {
@@ -358,9 +390,13 @@ module.exports = function (prescription) {
         else if (values[0].type == 'prescription') {
           prescriptiondata.prescriptionId = values[0].data
         }
+        else if (values[0].type == 'doctor') {
+          prescriptiondata.doctor = values[0].data
+        }
         else if (values[0].type == 'individual') {
           prescriptiondata.individualId = values[0].data
         }
+
       })
     }
     return prescriptiondata
@@ -368,11 +404,14 @@ module.exports = function (prescription) {
 
   }
 
+
+
   // FIND DETAIL OF DOCTOR ,PRESCRIPTIONS INDIVIDUALLY
   async function getspecificdetails(item) {
-    // console.log('INSIDE GETSPECIFIC DETAIL FUNCTION ', item);
+    console.log('INSIDE GETSPECIFIC DETAIL FUNCTION ', item);
     const doctor = app.models.doctor;
-    const medicine = app.models.prescribeMedicine;
+    const individual = app.models.individual;
+    const pmedicine = app.models.prescribeMedicine;
     const advice = app.models.advice;
     const lifestyle = app.models.lifeStyle;
     const instruction = app.models.instruction;
@@ -380,6 +419,7 @@ module.exports = function (prescription) {
     const recommended = app.models.recommended;
     return new Promise((resolve) => {
       if (item.doctorId) {
+        // console.log('inside /doctor details ',item.doctorId.split('#')[1]);
         doctor.findOne({ where: { doctorId: item.doctorId.split('#')[1] } }, function (err, doctordetails) {
           // console.log('doctor details', doctordetails)
           let data1 = {
@@ -389,68 +429,144 @@ module.exports = function (prescription) {
           resolve(data1)
         })
       }
+      // // else 
       else if (item.medicineId) {
-        medicine.findOne({ where: { prescribeMedicineId: item.medicineId.split('#')[1] } }, function (err, meddetails) {
-          // console.log('medicine details', meddetails)
-          let data2 = {
-            type: 'medicine',
-            data: meddetails
-          }
-          resolve(data2);
+        let medarray = [];
+        item.medicineId.forEach(element => {
+          // console.log('element', element)
+          pmedicine.findOne({ where: { prescribeMedicineId: element.split('#')[1] } }, function (err, meddetails) {
+            // console.log('meddetais', meddetails, 'err::', err);
+            medarray.push(meddetails);
+            // console.log('medarray',medarray)
+            let data2 = {
+              type: 'medicine',
+              data: medarray
+            }
+            // console.log('data2', data2)
+            resolve(data2)
+          })
+
+          // console.log('data2',data2)
         })
       }
       else if (item.adviceId) {
-        advice.findOne({ where: { adviceId: item.adviceId.split('#')[1] } }, function (err, advdetails) {
-          // console.log('advic details', advdetails);
+        let advarray = [];
 
-          let data3 = {
-            type: 'advice',
-            data: advdetails
-          }
-          resolve(data3);
+        item.adviceId.forEach(element => {
+          // console.log('element', element)
+          advice.findOne({ where: { adviceId: element.split('#')[1] } }, function (err, advdetails) {
+            // console.log('advdetails', advdetails, 'err::', err);
+            advarray.push(advdetails);
+            // console.log('medarray',medarray)
+            let data3 = {
+              type: 'advice',
+              data: advarray
+            }
+            // console.log('data3', data3)
+            // console.log('index', item.adviceId.indexOf(element))
+            if (item.adviceId.indexOf(element) == item.adviceId.length - 1) {
+              // console.log('if satisfied')
+              resolve(data3)
+            }
+
+          })
         })
       }
       else if (item.diagnosisId) {
-        diagnosis.findOne({ where: { diagnosisId: item.diagnosisId.split('#')[1] } }, function (err, diagnosisdetails) {
-          // console.log('diagnosisdetails details', diagnosisdetails);
-          let data4 = {
-            type: 'diagnosis',
-            data: diagnosisdetails
-          }
-          resolve(data4);
+
+
+        let diagnosisarray = [];
+
+        item.diagnosisId.forEach(element => {
+          // console.log('element', element)
+          diagnosis.findOne({ where: { diagnosisId: element.split('#')[1] } }, function (err, diagnosisdetails) {
+            // console.log('diagnosisdetails', diagnosisdetails, 'err::', err);
+            diagnosisarray.push(diagnosisdetails);
+            // console.log('medarray',medarray)
+            let data4 = {
+              type: 'diagnosis',
+              data: diagnosisarray
+            }
+            // console.log('data4', data4)
+            // console.log('index', item.diagnosisId.indexOf(element))
+            if (item.diagnosisId.indexOf(element) == item.diagnosisId.length - 1) {
+              // console.log('if satisfied')
+              resolve(data4)
+            }
+
+          })
+
+          // console.log('data2',data2)
         })
       }
       else if (item.lifeStyleId) {
-        lifestyle.findOne({ where: { lifeStyleId: item.lifeStyleId.split('#')[1] } }, function (err, lifedetails) {
-          // console.log('liefdetails details', lifedetails);
-          let data5 = {
-            type: 'lifestyle',
-            data: lifedetails
-          }
-          resolve(data5);
+        let lifearray = [];
+
+        item.lifeStyleId.forEach(element => {
+          // console.log('element', element)
+          lifestyle.findOne({ where: { lifeStyleId: element.split('#')[1] } }, function (err, lifedetails) {
+            // console.log('lifedetails', lifedetails, 'err::', err);
+            lifearray.push(lifedetails);
+            // console.log('medarray',medarray)
+            let data5 = {
+              type: 'lifestyle',
+              data: lifearray
+            }
+            // console.log('data5', data5)
+            // console.log('index', item.lifeStyleId.indexOf(element))
+            if (item.lifeStyleId.indexOf(element) == item.lifeStyleId.length - 1) {
+              // console.log('if satisfied')
+              resolve(data5)
+            }
+
+          })
         })
       }
       else if (item.specificInstructionId) {
-        instruction.findOne({ where: { specificInstructionId: item.specificInstructionId.split('#')[1] } }, function (err, instructiondetails) {
-          // console.log('instructiondetails details', instructiondetails);
+        let instructionarray = [];
 
-          let data6 = {
-            type: 'instruction',
-            data: instructiondetails
-          }
-          resolve(data6);
+        item.specificInstructionId.forEach(element => {
+          // console.log('element', element)
+          instruction.findOne({ where: { instructionId: element.split('#')[1] } }, function (err, instructiondetails) {
+            // console.log('instructiondetails', instructiondetails, 'err::', err);
+            instructionarray.push(instructiondetails);
+            // console.log('medarray',medarray)
+            let data6 = {
+              type: 'instruction',
+              data: instructionarray
+            }
+            // console.log('data5', data6)
+            // console.log('index', item.specificInstructionId.indexOf(element))
+            if (item.specificInstructionId.indexOf(element) == item.specificInstructionId.length - 1) {
+              // console.log('if satisfied')
+              resolve(data6);
+            }
+
+          })
         })
       }
       else if (item.recommendedId) {
-        recommended.findOne({ where: { recommendedId: item.recommendedId.split('#')[1] } }, function (err, recommendeddetails) {
-          // console.log('recommendeddetails details', recommendeddetails);
-          let data7 = {
-            type: 'recommended',
-            data: recommendeddetails
-          }
-          resolve(data7);
+        let recommarray = [];
+        item.recommendedId.forEach(element => {
+          // console.log('element', element)
+          recommended.findOne({ where: { recommendedId: item.recommendedId[0].split('#')[1] } }, function (err, recommendeddetails) {
+            recommarray.push(recommendeddetails);
+            // console.log('medarray',medarray)
+            let data7 = {
+              type: 'recommended',
+              data: recommarray
+            }
+            // console.log('data7', data7);
+            // console.log('index', item.recommendedId.indexOf(element))
+            if (item.recommendedId.indexOf(element) == item.recommendedId.length - 1) {
+              // console.log('if satisfied')
+              resolve(data7);
+            }
+
+          })
         })
       }
+
       else if (item.prescriptionId) {
         let data8 = {
           type: 'prescription',
@@ -459,14 +575,21 @@ module.exports = function (prescription) {
         resolve(data8)
       }
       else if (item.individualId) {
-        let data9 = {
-          type: 'individual',
-          data: item.individualId
-        }
-        resolve(data9)
+        console.log('inssdidid')
+        individual.findOne({ where: { individualId: item.individualId.split('#')[1] } }, function (err, indvdetails) {
+          console.log('indvdetails details', indvdetails)
+          console.log('err', err)
+          let data9 = {
+            type: 'individual',
+            data: indvdetails
+          }
+          resolve(data9)
+        })
       }
+
     })
   }
+
   /**************************************************** ENDS ****************************************************** */
 
   /************************************ GET PRESCRIPTION DETAILS BY PRESCRIPTION ID ****************************** */
@@ -499,4 +622,90 @@ module.exports = function (prescription) {
 
   /********************************************************* ENDS ********************************************* */
 
-};
+
+
+
+  // prescription.observe('loaded', function (context, next) {
+  //   // console.log('CONTEXT DATA', context.data);
+
+  //   const Individual = app.models.individual;
+  //   const Doctor = app.models.doctor;
+  //   // FETCH INDIVIDUAL DETAILS
+  //   Promise.all([getIndividualDetails(context.data.individualId), getDoctorDetails(context.data.doctorId)]).then(function (values) {
+  //     // console.log('values', values)
+  //     if (values[0] == 'nothing') {
+  //       context.data.individuals = null;
+  //       delete context.data['individualId'];
+  //     }
+  //     else {
+  //       context.data.individuals = values[0];
+  //       delete context.data['individualId'];
+  //     }
+  //     if (values[1] == 'nothing') {
+  //       context.data.doctors = null;
+  //       delete context.data['doctorId'];
+  //     }
+  //     else {
+  //       context.data.doctors = values[1];
+  //       delete context.data['doctorId'];
+  //     }
+
+  //     next();
+  //   }).catch(err => {
+  //     // console.log('CATCHED ERROR')
+  //     // console.log('catched error', err)
+  //     next();
+  //   })
+  // })
+
+
+
+  // GET INDIVIDUAL DETAILS
+  // async function getIndividualDetails(indvId) {
+  //   const Individual = app.models.individual;
+  //   return new Promise((resolve, reject) => {
+  //     Individual.findOne({ where: { individualId: indvId.includes('#') ? indvId.split('#')[1] : indvId } }, function (indverr, indv) {
+  //       // console.log(indverr + ':::::' + indv);
+  //       if (!indverr) {
+  //         if (indv != null && Object.keys(indv).length != 0) {
+  //           resolve(indv)
+  //         }
+  //         else {
+  //           resolve('nothing')
+  //         }
+  //       }
+  //       // if(!indverr && indv!=null&& Object.keys(indv).length!=0){
+  //       //   resolve(indv);
+  //       // }
+  //       // else{
+  //       //   reject('Individual detail not found');
+  //       // }
+  //     })
+  //   })
+  // }
+
+  // GET DOCTOR DETAILS
+  // async function getDoctorDetails(doctorId) {
+  //   const Doctor = app.models.doctor;
+  //   return new Promise((resolve, reject) => {
+  //     Doctor.findOne({ where: { doctorId: doctorId.includes('#') ? doctorId.split('#')[1] : doctorId } }, function (docerr, doctor) {
+  //       // console.log(docerr + ':::::' + doctor);
+
+  //       if (!docerr) {
+  //         if (doctor != null && Object.keys(doctor).length != 0) {
+  //           resolve(doctor)
+  //         }
+  //         else {
+  //           resolve('nothing')
+  //         }
+  //       }
+  //       //   if(!docerr && doctor!=null && Object.keys(doctor).length!=0){
+  //       //     resolve(doctor);
+  //       //   }
+  //       //  else{
+  //       //   reject('Doctor detail not found')
+  //       //  }
+  //     })
+  //   })
+  // }
+}

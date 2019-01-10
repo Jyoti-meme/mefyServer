@@ -29,6 +29,7 @@
     "socketio-auth": "^0.1.1",
     "strong-error-handler": "^2.0.0",
     "to": "^0.2.9",
+    "twilio": "^3.26.1",
     "uninstall": "0.0.0",
     "update": "^0.7.4"
   },
