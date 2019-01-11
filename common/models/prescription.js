@@ -29,8 +29,8 @@ module.exports = function (prescription) {
     // console.log('data,', data);
     var dataArray = [];
     prescription.create({ doctorId: data.doctorId, individualId: data.individualId }, function (err, pres) {
-      // console.log('err', err)
-      // console.log('pres', pres)
+      console.log('ERR', err)
+      console.log('PRES', pres)
       if (!err) {
 
         //form an array of data then send to generate ids
@@ -82,12 +82,12 @@ module.exports = function (prescription) {
           }
           dataArray.push(data6);
         }
-        // console.log('data array', dataArray)
+        console.log('DATA ARRAY', dataArray)
         // GENERATE IDS THEN UPDATE PRESCRIPTION
         generateIds(dataArray).then(function (values) {
 
           console.log('GenerateIds returned value', values)
-          console.log(values.medicineId.length != 0 ? values.medicineId : [])
+          // console.log(values.medicineId.length != 0 ? values.medicineId : [])
           pres.updateAttributes({
             medicineId: values.medicineId ? (values.medicineId.length != 0 ? values.medicineId : []) : [], adviceId: values.adviceId ? (values.adviceId.length != 0 ? values.adviceId : []) : [],
             lifeStyleId: values.lifestyleId ? (values.lifestyleId.length != 0 ? values.lifestyleId : []) : [], diagnosisId: values.diagnosisId ? (values.diagnosisId.length != 0 ? values.diagnosisId : []) : [],
@@ -119,7 +119,7 @@ module.exports = function (prescription) {
 
   // RETURN GENERATED IDS
   async function generateIds(dataArray) {
-    // console.log('INSIDE GENERATE IDS', dataArray);
+    console.log('INSIDE GENERATE IDS', dataArray);
     let x = {};
     for (const instance of dataArray) {
       // console.log('INSIDE FOR LOOP', instance)
@@ -240,8 +240,8 @@ module.exports = function (prescription) {
       else if (instance.type == "instructions") {
         let insarray = [];
         instruction.create([instance.ins], function (err, ins) {
-          // console.log('err', err);
-          // console.log('Ins', ins);
+          console.log('err', err);
+          console.log('Ins', ins);
           ins[0].forEach(element => {
             insarray.push(element.instructionId)
           })
