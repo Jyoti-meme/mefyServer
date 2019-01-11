@@ -270,8 +270,8 @@ module.exports = function (prescription) {
   // LOGIC FOR GETTING DETAILS
   prescription.prescriptionbyindividualId = function (individualId, cb) {
     prescription.find({ where: { individualId: 'resource:io.mefy.individual.individual#' + individualId } }, function (err, list) {
-      // console.log('list',list);
-      // console.log(err)
+      console.log('list',list);
+      console.log(err)
       // cb(null,list)
       if(!err && list.length!=0){
         fetchDetail(list).then(function (result) {
