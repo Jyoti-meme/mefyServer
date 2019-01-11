@@ -359,7 +359,7 @@ module.exports = function (prescription) {
         }
         fulldata.push(data9)
       }
-      // console.log(fulldata)
+      console.log('FULLDATA',fulldata)
       await getDetails(fulldata).then(function (values) {
         console.log('GET DETAILS RETURNED VALUE', values)
         dataarray.push(values);
