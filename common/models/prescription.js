@@ -501,9 +501,9 @@ module.exports = function (prescription) {
         let diagnosisarray = [];
         if (item.diagnosisId.length != 0) {
           item.diagnosisId.forEach(element => {
-            // console.log('element', element)
+            console.log('element', element)
             diagnosis.findOne({ where: { diagnosisId: element.split('#')[1] } }, function (err, diagnosisdetails) {
-              // console.log('diagnosisdetails', diagnosisdetails, 'err::', err);
+              console.log('diagnosisdetails', diagnosisdetails, 'err::', err);
               diagnosisarray.push(diagnosisdetails);
               // console.log('medarray',medarray)
               let data4 = {
