@@ -94,8 +94,8 @@ module.exports = function (prescription) {
             specificInstructionId: values.instructionId ? (values.instructionId.length != 0 ? values.instructionId : []) : [], recommendedId: values.recommendedId ? (values.recommendedId.length != 0 ? values.recommendedId : []) : []
 
           }, function (err, created) {
-            // console.log('PRESCRIPTION UPDATE ERROR', err);
-            // console.log('PRESCRIPTION UPDATED SUCCESS', created);
+            console.log('PRESCRIPTION UPDATE ERROR', err);
+            console.log('PRESCRIPTION UPDATED SUCCESS', created);
             if (!err) {
               let response = {
                 error: false,
