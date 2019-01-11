@@ -273,17 +273,27 @@ module.exports = function (prescription) {
       // console.log('list',list);
       // console.log(err)
       // cb(null,list)
-      fetchDetail(list).then(function (result) {
-        // console.log('FETCH DETAIL RETURNED VALUE', result);
-        let response = {
-          error: false,
-          result: result,
-          message: 'Prescription detail get successfull'
+      if(!err && list.length!=0){
+        fetchDetail(list).then(function (result) {
+          // console.log('FETCH DETAIL RETURNED VALUE', result);
+          let response = {
+            error: false,
+            result: result,
+            message: 'Prescription detail get successfull'
+          }
+          cb(null, response)
+        }).catch(err => {
+  
+        })
+      }
+      else{
+        let data={
+          error:false,
+          result:[],
+          message:'No prescription found'
         }
-        cb(null, response)
-      }).catch(err => {
-
-      })
+        cb(null,data)
+      }
     })
   }
 
