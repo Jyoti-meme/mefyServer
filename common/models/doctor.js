@@ -39,27 +39,38 @@ module.exports = function (doctor) {
 
     doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, exists) {
       console.log('result', exists)
-      if (exists != null && Object.keys(exists).length != 0) {
-        // update attributes
-        exists.updateAttributes(data, function (err, result) {
-          console.log('response from update', result);
-
-          let success = {
-            error: false,
-            result: result,
-            message: 'Profile updated Sucessfully'
+      console.log(err)
+      if(!err){
+        if (exists != null && Object.keys(exists).length != 0) {
+          // update attributes
+          exists.updateAttributes(data, function (err, result) {
+            console.log('response from update', result);
+  
+            let success = {
+              error: false,
+              result: result,
+              message: 'Profile updated Sucessfully'
+            }
+            cb(null, success);
+          })
+  
+        }
+        else {
+          let error = {
+            error: true,
+            message: 'User not found'
           }
-          cb(null, success);
-        })
-
+          cb(null, error)
+        }
       }
-      else {
+      else{
         let error = {
           error: true,
-          message: 'User not found'
+          message: 'Profile updation failed'
         }
         cb(null, error)
       }
+ 
     })
   }
   /************************************ENDS******************************************************* */
