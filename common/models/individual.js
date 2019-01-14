@@ -34,27 +34,37 @@ module.exports = function (individual) {
     //check user existence
     individual.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, exists) {
       console.log('result', exists)
-      if (exists != null && Object.keys(exists).length != 0) {
-        // update attributes
-        exists.updateAttributes(data, function (err, result) {
-          console.log('response from update', result);
+      if (!err) {
+        if (exists != null && Object.keys(exists).length != 0) {
+          // update attributes
+          exists.updateAttributes(data, function (err, result) {
+            console.log('response from update', result);
+            console.log(err)
+            let success = {
+              error: false,
+              result: result,
+              message: 'Profile updated Sucessfully'
+            }
+            cb(null, success);
+          })
 
-          let success = {
-            error: false,
-            result: result,
-            message: 'Profile updated Sucessfully'
+        }
+        else {
+          let error = {
+            error: true,
+            message: 'User not found'
           }
-          cb(null, success);
-        })
-
+          cb(null, error)
+        }
       }
       else {
         let error = {
           error: true,
-          message: 'User not found'
+          message: 'Profile updation failed'
         }
         cb(null, error)
       }
+
     })
   }
 
@@ -543,7 +553,7 @@ module.exports = function (individual) {
         }
         else {
           resolve(sur)
-         
+
         }
       })
     })
@@ -593,7 +603,7 @@ module.exports = function (individual) {
         }
         else {
           resolve(med)
-         
+
         }
       })
     })
@@ -930,7 +940,7 @@ module.exports = function (individual) {
     const Individual = app.models.individual;
     // FETCH INDIVIDUAL DETAILS
     // console.log('contextdata', context.data.family.individualId)
-    if (context.data.family.length != 0) {
+    if (context.data.family && context.data.family.length != 0) {
       ProcessArray(context.data.family).then(users => {
         console.log('usrs', users)
         context.data.families = users;
