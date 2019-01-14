@@ -40,12 +40,22 @@ module.exports = function (individual) {
           exists.updateAttributes(data, function (err, result) {
             console.log('response from update', result);
             console.log(err)
-            let success = {
-              error: false,
-              result: result,
-              message: 'Profile updated Sucessfully'
+            if(!err){
+              let success = {
+                error: false,
+                result: result,
+                message: 'Profile updated Sucessfully'
+              }
+              cb(null, success);
             }
-            cb(null, success);
+            else{
+              let error = {
+                error: true,
+                message: 'Profile updation failed'
+              }
+              cb(null, error)
+            }
+            
           })
 
         }
