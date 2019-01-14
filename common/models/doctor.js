@@ -13,7 +13,7 @@ const issueAuthorityList = require('../../issuingAuthority.json');
 
 module.exports = function (doctor) {
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList", "doctorDashboard","findIndividual","createIndividual"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList", "doctorDashboard", "findIndividual", "createIndividual"];
   doctor.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -40,12 +40,12 @@ module.exports = function (doctor) {
     doctor.findOne({ where: { userId: 'resource:io.mefy.commonModel.User#' + userId } }, function (err, exists) {
       console.log('result', exists)
       console.log(err)
-      if(!err){
+      if (!err) {
         if (exists != null && Object.keys(exists).length != 0) {
           // update attributes
           exists.updateAttributes(data, function (err, result) {
             console.log('response from update', result);
-  
+            console.log(err)
             let success = {
               error: false,
               result: result,
@@ -53,7 +53,7 @@ module.exports = function (doctor) {
             }
             cb(null, success);
           })
-  
+
         }
         else {
           let error = {
@@ -63,14 +63,14 @@ module.exports = function (doctor) {
           cb(null, error)
         }
       }
-      else{
+      else {
         let error = {
           error: true,
           message: 'Profile updation failed'
         }
         cb(null, error)
       }
- 
+
     })
   }
   /************************************ENDS******************************************************* */
@@ -208,13 +208,13 @@ module.exports = function (doctor) {
   /*************************** GET List OF Specility,State,Language ,Education********************************/
   doctor.remoteMethod('getList', {
     http: { path: '/getList', verb: 'get' },
-    accepts: [{ arg: 'speciality', type: 'string' }, { arg: 'state', type: 'string' }, { arg: 'language', type: 'string' }, { arg: 'education', type: 'string' },{ arg: 'medicine', type: 'string' },{ arg: 'issuingAuthority', type: 'string' }],
+    accepts: [{ arg: 'speciality', type: 'string' }, { arg: 'state', type: 'string' }, { arg: 'language', type: 'string' }, { arg: 'education', type: 'string' }, { arg: 'medicine', type: 'string' }, { arg: 'issuingAuthority', type: 'string' }],
     description: "get list of Specility,State,Language,Education,medicine,issuingAuthority",
     returns: { arg: 'result', type: 'any' },
   });
-  doctor.getList = function (speciality, state, language, education,medicine,issuingAuthority, cb) {
-    console.log('data',language)
-    if (speciality || state || language || education || medicine ||issuingAuthority!= null && Object.keys(speciality || state || language || education || medicine ||issuingAuthority).length != 0) {
+  doctor.getList = function (speciality, state, language, education, medicine, issuingAuthority, cb) {
+    console.log('data', language)
+    if (speciality || state || language || education || medicine || issuingAuthority != null && Object.keys(speciality || state || language || education || medicine || issuingAuthority).length != 0) {
       if (speciality == 'speciality') {
         console.log('specialityyy')
         let specialityResponse = {
@@ -224,7 +224,7 @@ module.exports = function (doctor) {
         }
         cb(null, specialityResponse);
       }
-     else  if (state == 'state') {
+      else if (state == 'state') {
         console.log('state')
         let stateResponse = {
           error: false,
@@ -251,7 +251,7 @@ module.exports = function (doctor) {
         }
         cb(null, educationResponse);
       }
-     else if (medicine == 'medicine') {
+      else if (medicine == 'medicine') {
         console.log('medicine')
         let medicineResponse = {
           error: false,
@@ -299,11 +299,11 @@ module.exports = function (doctor) {
         Appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (er, appointment) {
           if (appointment != null && Object.keys(appointment).length != 0) {
             for (let i = 0; i < appointment.length; i++) {
-              if (appointment[i].appointmentType == 'eConsult'&& appointment[i].status=='Active' && moment(appointment[i].appointmentDate).isSame(now) ) {
+              if (appointment[i].appointmentType == 'eConsult' && appointment[i].status == 'Active' && moment(appointment[i].appointmentDate).isSame(now)) {
                 eConsultData.push(appointment[i])
                 console.log('appppointment', eConsultData.length)
               }
-              else if(appointment[i].appointmentType == 'clinicVisit' && appointment[i].status=='Active' && moment(appointment[i].appointmentDate).isSame(now) ){
+              else if (appointment[i].appointmentType == 'clinicVisit' && appointment[i].status == 'Active' && moment(appointment[i].appointmentDate).isSame(now)) {
                 clinicVisitData.push(appointment[i])
                 console.log('clinicVisitData', clinicVisitData.length)
               }
@@ -357,7 +357,7 @@ module.exports = function (doctor) {
     console.log('data', data);
     const User = app.models.User;
     const individual = app.models.individual;
-    User.find({where:{ phoneNumber: data.phoneNumber }}, function (err, exists) {
+    User.find({ where: { phoneNumber: data.phoneNumber } }, function (err, exists) {
       console.log('exists', exists);
       if (exists.length != 0) {
         // individual created
@@ -365,63 +365,64 @@ module.exports = function (doctor) {
           error: true,
           message: 'Individual exists'
         }
-        cb(null,result)
+        cb(null, result)
       }
       else {
         //create user and individual
-       
+
         User.create({
           phoneNumber: data.phoneNumber, role: data.role
         }, function (err, user) {
           console.log('user created', user);
-          console.log('errr',err)
+          console.log('errr', err)
           individual.create({ phoneNumber: data.phoneNumber, name: data.name, userId: user.userId }, function (err, indv) {
             console.log('individual', indv)
-            console.log('er',err)
-            let response={
-              err:false,
-              result:indv,
-              message:'indv created'
+            console.log('er', err)
+            let response = {
+              err: false,
+              result: indv,
+              message: 'indv created'
             }
-            cb(null,response);
+            cb(null, response);
           })
         })
       }
     })
   }
   /****************************************************ENDS ******************************************* */
-/************************************* DOCTOR FIND INDIVIDUAL ************************************************ */
-doctor.remoteMethod('findIndividual', {
-  http: { path: '/findindividual', verb: 'get' },
-  description: "Doctor create individual",
-  accepts: { arg: 'phoneNumber', type: 'string', required: true},  //doctorId,phonenumber,role,name
-  returns: { arg: 'result', type: 'any' }
-});
+  /************************************* DOCTOR FIND INDIVIDUAL ************************************************ */
+  doctor.remoteMethod('findIndividual', {
+    http: { path: '/findindividual', verb: 'get' },
+    description: "Doctor create individual",
+    accepts: { arg: 'phoneNumber', type: 'string', required: true },  //doctorId,phonenumber,role,name
+    returns: { arg: 'result', type: 'any' }
+  });
 
-doctor.findIndividual=function(phoneNumber,cb){
-  console.log('phoneNumber',phoneNumber);
-  const individual=app.models.individual;
-  individual.findOne({where:{phoneNumber:phoneNumber}},function(err,result){
-    console.log('result',result);
-    console.log('err',err);
-    if(result!==null&& Object.keys(result).length!=0){
-      let response={
-        error:false,
-        result:result,
-        message:'User detail'
+  doctor.findIndividual = function (phoneNumber, cb) {
+    console.log('phoneNumber', phoneNumber);
+    const individual = app.models.individual;
+    individual.findOne({ where: { phoneNumber: phoneNumber } }, function (err, result) {
+      console.log('result', result);
+      console.log('err', err);
+      if (result !== null && Object.keys(result).length != 0) {
+        let response = {
+          error: false,
+          result: result,
+          message: 'User detail'
+        }
+        cb(null, response);
       }
-      cb(null,response);
-    }
-   else{
-     let response={
-       error:true,
-       result:{},
-       message:'user not found'
-     }
-    cb(null,response);
-   }
+      else {
+        let response = {
+          error: true,
+          result: {},
+          message: 'user not found'
+        }
+        cb(null, response);
+      }
 
-  })
-}
+    })
+  }
 
-/************************************************* ENDS *********************************************** */};
+  /************************************************* ENDS *********************************************** */
+};
