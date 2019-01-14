@@ -164,8 +164,8 @@ module.exports = function (prescription) {
       if (instance.type == "medicine") {
         let medarray = [];
         medicine.create([instance.medd], function (err, med) {
-          // console.log('err', err);
-          // console.log('MED', med)
+          console.log('err', err);
+          console.log('MED', med)
           med[0].forEach(element => {
             medarray.push(element.prescribeMedicineId)
           })
@@ -180,7 +180,7 @@ module.exports = function (prescription) {
       else if (instance.type == "diagnosis") {
         let diagarray = [];
         diagnosis.create([instance.diag], function (err, diag) {
-          // console.log('err', err);
+          console.log('err', err);
           // console.log('DIAG', diag[0][0])
           diag[0].forEach(element => {
             diagarray.push(element.diagnosisId)
@@ -195,7 +195,7 @@ module.exports = function (prescription) {
       else if (instance.type == "advice") {
         let advarray = [];
         advice.create([instance.adv], function (err, adv) {
-          // console.log('err', err);
+          console.log('err', err);
           // console.log('ADV', adv);
           adv[0].forEach(element => {
             advarray.push(element.adviceId)
@@ -210,8 +210,8 @@ module.exports = function (prescription) {
       else if (instance.type == "recommended") {
         let recomarray = [];
         recommended.create([instance.recomm], function (err, rec) {
-          // console.log('err', err);
-          // console.log('REC', rec);
+          console.log('err', err);
+          console.log('REC', rec);
           rec[0].forEach(element => {
             recomarray.push(element.recommendedId)
           })
@@ -225,8 +225,8 @@ module.exports = function (prescription) {
       else if (instance.type == "lifestyle") {
         let lifearray = [];
         lifestyle.create([instance.life], function (err, life) {
-          // console.log('err', err);
-          // console.log('LIFE', life);
+          console.log('err', err);
+          console.log('LIFE', life);
           life[0].forEach(element => {
             lifearray.push(element.lifeStyleId)
           })
