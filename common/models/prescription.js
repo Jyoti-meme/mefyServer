@@ -359,9 +359,15 @@ module.exports = function (prescription) {
         }
         fulldata.push(data9)
       }
-      console.log('FULLDATA',fulldata)
+      if(instance.createdDate){
+        let data10={
+          createdDate:instance.createdDate
+        }
+        fulldata.push(data10)
+      }
+      // console.log('FULLDATA',fulldata)
       await getDetails(fulldata).then(function (values) {
-        console.log('GET DETAILS RETURNED VALUE', values)
+        // console.log('GET DETAILS RETURNED VALUE', values)
         dataarray.push(values);
       })
     }
@@ -374,7 +380,7 @@ module.exports = function (prescription) {
     // console.log('INSIDE GET DETAILS FUNCTIONS', data)
     let prescriptiondata = {};
     for (const item of data) {
-      // console.log('ITEMSSS', item)
+      console.log('ITEMSSS', item)
 
       await Promise.all([getspecificdetails(item)]).then(function (values) {
         // console.log(' SPECIFIC DETAIL RETURNED VALUES', values);
@@ -405,6 +411,9 @@ module.exports = function (prescription) {
         }
         else if (values[0].type == 'individual') {
           prescriptiondata.individualId = values[0].data
+        }
+        else if (values[0].type == 'createdDate') {
+          prescriptiondata.createdDate = values[0].data
         }
 
       })
@@ -474,7 +483,7 @@ module.exports = function (prescription) {
           item.adviceId.forEach(element => {
             // console.log('element', element)
             advice.findOne({ where: { adviceId: element.split('#')[1] } }, function (err, advdetails) {
-              console.log('advdetails', advdetails, 'err::', err);
+              // console.log('advdetails', advdetails, 'err::', err);
               advarray.push(advdetails);
               // console.log('medarray',medarray)
               let data3 = {
@@ -501,9 +510,9 @@ module.exports = function (prescription) {
         let diagnosisarray = [];
         if (item.diagnosisId.length != 0) {
           item.diagnosisId.forEach(element => {
-            console.log('element', element)
+            // console.log('element', element)
             diagnosis.findOne({ where: { diagnosisId: element.split('#')[1] } }, function (err, diagnosisdetails) {
-              console.log('diagnosisdetails', diagnosisdetails, 'err::', err);
+              // console.log('diagnosisdetails', diagnosisdetails, 'err::', err);
               diagnosisarray.push(diagnosisdetails);
               // console.log('medarray',medarray)
               let data4 = {
@@ -612,6 +621,19 @@ module.exports = function (prescription) {
         }
       }
 
+     
+      else if (item.individualId) {
+        // console.log('inssdidid')
+        individual.findOne({ where: { individualId: item.individualId.split('#')[1] } }, function (err, indvdetails) {
+          // console.log('indvdetails details', indvdetails)
+          // console.log('err', err)
+          let data9 = {
+            type: 'individual',
+            data: indvdetails
+          }
+          resolve(data9)
+        })
+      }
       else if (item.prescriptionId) {
         let data8 = {
           type: 'prescription',
@@ -619,17 +641,12 @@ module.exports = function (prescription) {
         }
         resolve(data8)
       }
-      else if (item.individualId) {
-        // console.log('inssdidid')
-        individual.findOne({ where: { individualId: item.individualId.split('#')[1] } }, function (err, indvdetails) {
-          // console.log('indvdetails details', indvdetails)
-          console.log('err', err)
-          let data9 = {
-            type: 'individual',
-            data: indvdetails
-          }
-          resolve(data9)
-        })
+      else if(item.createdDate){
+        let data10 = {
+          type: 'createdDate',
+          data: item.createdDate
+        }
+        resolve(data10)
       }
 
     })

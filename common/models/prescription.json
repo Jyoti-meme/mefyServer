@@ -101,7 +101,8 @@
     },
     "createdDate": {
       "type": "date",
-      "required": false
+      "required": false,
+      "defaultFn": "now"
     },
     "updatedDate": {
       "type": "date",
