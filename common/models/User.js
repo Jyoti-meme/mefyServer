@@ -1007,11 +1007,13 @@ module.exports = function (User) {
   /** API to generate tokens **/
   User.remoteMethod('twilloToken', {
     http: { path: '/twilloToken', verb: 'get' },
-    accepts: { arg: 'username', type: 'string' },
+    accepts: [{ arg: 'username', type: 'string' },
+    { arg: 'roomname', type: 'string' }],
+
     returns: { arg: 'result', type: 'any', root: true },
   });
 
-  User.twilloToken = function (username, cb) {
+  User.twilloToken = function (username,roomname, cb) {
     // Set the Identity of this token
     accessToken.identity = username;
 
@@ -1020,7 +1022,10 @@ module.exports = function (User) {
     // let roomname = username + '-' + timestamp;
     // var grant = new VideoGrant();
     // grant.room = roomname;
-    // accessToken.addGrant(grant);
+    const videoGrant = new VideoGrant({
+      room: roomname,
+      });
+    accessToken.addGrant(videoGrant);
 
     // Serialize the token as a JWT
     var jwt = accessToken.toJwt();
