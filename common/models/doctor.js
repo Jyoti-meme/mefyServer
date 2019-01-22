@@ -13,7 +13,7 @@ const issueAuthorityList = require('../../issuingAuthority.json');
 
 module.exports = function (doctor) {
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList", "doctorDashboard", "findIndividual", "createIndividual"];
+  const enabledRemoteMethods = ["findById", "updateProfile", "deleteById", "find", "updateDoctorStatus", "getList", "doctorDashboard", "findIndividual", "createIndividual", "createreceptionist"];
   doctor.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -434,4 +434,43 @@ module.exports = function (doctor) {
   }
 
   /************************************************* ENDS *********************************************** */
+
+  /***************************************************** DOCTOR CREATE RECEPTIONIST ******************************************* */
+  doctor.remoteMethod('createreceptionist', {
+    http: { path: '/receptionist', verb: 'post' },
+    description: "Doctor create receptionist",
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     //doctorId,phonenumber,name,clinicId
+    returns: { arg: 'result', type: 'any', root: true }
+  });
+
+  doctor.createreceptionist = function (data, cb) {
+    console.log('data', data);
+    const receptionist = app.models.receptionist;
+    const clinic = app.models.clinic;
+    receptionist.create({
+      name: data.name, phoneNumber: data.phoneNumber, doctorId: data.doctorId, clinicId: data.clinicId
+    }, function (err, res) {
+      console.log('err', err);
+      console.log('response', res);
+      if (err) {
+        let result = {
+          error: true,
+          message: 'Receptionist creation failed'
+        }
+        cb(null, result);
+      }
+      else {
+        let result = {
+          error: false,
+          result: res,
+          message: 'Doctor added receptionist'
+        }
+        cb(null, result);
+      }
+    })
+  }
+
+
+  /*************************************************************** ENDS ********************************************************* */
+
 };
