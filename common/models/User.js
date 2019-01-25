@@ -43,7 +43,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber", "twilloToken"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber", "twilloToken", "joinroom"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -75,6 +75,7 @@ module.exports = function (User) {
 
   // USER REGISTRATION API
   User.registration = function (data, cb) {
+    console.log('kljhgfd')
     console.log('USER', data)
     // where: { and: [{ phoneNumber: data.phoneNumber }, { role: data.role }]
     User.find({ where: { phoneNumber: data.phoneNumber } }, function (err, user) {
@@ -1006,26 +1007,62 @@ module.exports = function (User) {
   /** API to generate tokens **/
   User.remoteMethod('twilloToken', {
     http: { path: '/twilloToken', verb: 'get' },
-    accepts: { arg: 'username', type: 'string' },
+    accepts: [{ arg: 'username', type: 'string' },
+    { arg: 'roomname', type: 'string' }],
+
     returns: { arg: 'result', type: 'any', root: true },
   });
 
-  User.twilloToken = function (username, cb) {
+  User.twilloToken = function (username,roomname, cb) {
     // Set the Identity of this token
     accessToken.identity = username;
 
     // Grant access to Video
-    var grant = new VideoGrant();
-    grant.room = 'cool room';
-    accessToken.addGrant(grant);
+    // let timestamp = new Date().getTime();
+    // let roomname = username + '-' + timestamp;
+    // var grant = new VideoGrant();
+    // grant.room = roomname;
+    const videoGrant = new VideoGrant({
+      room: roomname,
+      });
+    accessToken.addGrant(videoGrant);
 
     // Serialize the token as a JWT
     var jwt = accessToken.toJwt();
     console.log(jwt);
     let response = {
-      token: jwt
+      token: jwt,
+      // room: roomname
     }
     cb(null, response);
+  }
+
+  /** Econsult APIS **/
+  /** API to generate tokens **/
+  User.remoteMethod('joinroom', {
+    http: { path: '/joinroom', verb: 'post' },
+    accepts: { arg: 'room', type: 'object', http: { source: 'body' } },
+    returns: { arg: 'result', type: 'any', root: true },
+  });
+
+  User.joinroom = function (room, cb) {
+    let roomname = room.name;
+    // join room
+    let joinroomurl = "https://video.twilio.com/v1/Rooms";
+    let finaljoinroomurl = "https://video.twilio.com/v1/Rooms?EnableTurn=true&Type=group-small&UniqueName=" + roomname + "&StatusCallbackMethod=POST&MaxParticipants=2&RecordParticipantsOnConnect=true&VideoCodecs=H264";
+    fetch(finaljoinroomurl, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: "Basic QUM0OTA2ODg0MmZlYTU1NTc2MTQ0YjUyY2EzMmVjNjM5NTo0ZDAwNzUxN2E3NjZjOGM4MTQwYzI1Yjg2NjQ1YzIyNA=="
+      })
+    })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        console.log('url json response', responseJSON)
+        cb(null, responseJSON);
+      }).catch(err => {
+        cb(err, null);
+      })
   }
 
 }

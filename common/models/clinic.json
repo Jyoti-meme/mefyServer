@@ -33,6 +33,11 @@
       "required": true,
       "description": "The identifier of an instance of doctorId"
     },
+    "receptionist": {
+      "type": "string",
+      "required": false,
+      "description": "The identifier of an instance of receptionist"
+    },
     "type": {
       "type": "string",
       "required": true,
@@ -109,7 +114,12 @@
       "type": "belongsTo",
       "model": "doctor",
       "foreignKey": "doctorId"
-    }
+    },
+      "receptionist":{
+        "type": "belongsTo",
+        "model": "receptionist",
+        "foreignKey": "receptionId"
+      }
   },
   "acls": [],
   "methods": {}

@@ -260,5 +260,9 @@
   "callhistory":{
     "dataSource": "composer",
     "public": true
+  },
+  "receptionist":{
+    "dataSource": "composer",
+    "public": true
   }
 }

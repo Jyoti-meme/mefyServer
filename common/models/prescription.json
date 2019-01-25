@@ -45,37 +45,37 @@
     },
     "adviceId": {
       "type": 
-        "string" ,
+        [""] ,
       "required": false,
       "description": "The identifier of an instance of adviceId"
     },
     "lifeStyleId": {
       "type": 
-        "string",
+      [""],
       "required": false,
       "description": "The identifier of an instance of lifeStyleId"
     },
     "medicineId": {
       "type": 
-        "string" ,
+      [""] ,
       "required": false,
       "description": "The identifier of an instance of medicineId"
     },
     "diagnosisId": {
       "type": 
-        "string",
+      [""],
       "required": false,
       "description": "The identifier of an instance of diagnosisId"
     },
     "specificInstructionId": {
       "type":
-        "string" ,
+      [""] ,
       "required": false,
       "description": "The identifier of an instance of specificInstructionId"
     },
     "recommendedId": {
       "type": 
-        "string",
+      [""],
       "required": false,
       "description": "The identifier of an instance of recommendedId"
     },
@@ -101,7 +101,8 @@
     },
     "createdDate": {
       "type": "date",
-      "required": false
+      "required": false,
+      "defaultFn": "now"
     },
     "updatedDate": {
       "type": "date",
