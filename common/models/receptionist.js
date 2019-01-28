@@ -7,7 +7,7 @@ module.exports = function (receptionist) {
 
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist","updateclinic"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist"];
   receptionist.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -53,28 +53,28 @@ module.exports = function (receptionist) {
   /*************************************************************** ENDS ********************************************************* */
 
   /********************************************************* UPDATE CLINIC BY RECEPTIONIST NAME *********************************** */
-  receptionist.remoteMethod('updateclinic', {
-    http: { path: '/updateclinic', verb: 'put' },
-    description: "Update clinic by receptionist",
-    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     //receptionist detail,clinicId
-    returns: { arg: 'result', type: 'any', root: true }
-  });
+  // receptionist.remoteMethod('updateclinic', {
+  //   http: { path: '/updateclinic', verb: 'put' },
+  //   description: "Update clinic by receptionist",
+  //   accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     //receptionist detail,clinicId
+  //   returns: { arg: 'result', type: 'any', root: true }
+  // });
 
-  receptionist.updateclinic = function (data, cb) {
-    console.log('data' + data.receptionist,data.clinicId);
-    const clinic = app.models.clinic;
-    clinic.findOne({ where: { clinicId: data.clinicId } }, function (err, clinicinfo) {
-      console.log('err', err);
-      console.log('clinicinfo', clinicinfo);
-      if (!err) {
-        clinicinfo.updateAttributes({receptionist:data.receptionist} ,function (err, updated) {
-          console.log('err', err);
-          console.log('updated data', updated);
-          cb(null, updated);
-        });
-      }
-    });
-  }
+  // receptionist.updateclinic = function (data, cb) {
+  //   console.log('data' + data.receptionist,data.clinicId);
+  //   const clinic = app.models.clinic;
+  //   clinic.findOne({ where: { clinicId: data.clinicId } }, function (err, clinicinfo) {
+  //     console.log('err', err);
+  //     console.log('clinicinfo', clinicinfo);
+  //     if (!err) {
+  //       clinicinfo.updateAttributes({receptionist:data.receptionist} ,function (err, updated) {
+  //         console.log('err', err);
+  //         console.log('updated data', updated);
+  //         cb(null, updated);
+  //       });
+  //     }
+  //   });
+  // }
 
 
   /********************************************************************* ENDS ****************************************************** */
