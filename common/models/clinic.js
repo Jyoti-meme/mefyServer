@@ -31,8 +31,8 @@ module.exports = function (clinic) {
             address: data.address, pin: data.pin, fee: data.fee, weekDays: data.weekDays, bookingStatus: data.bookingStatus,
             availability: data.availability
           }, function (err, res) {
-            console.log('eesult', res,err)
-            if(!err){
+            console.log('eesult', res, err)
+            if (!err) {
               let cliniccreation = {
                 error: false,
                 clinic: res,
@@ -40,15 +40,15 @@ module.exports = function (clinic) {
               }
               cb(null, cliniccreation);
             }
-            else{
+            else {
               let error = {
                 error: true,
                 message: err.message
-    
+
               }
               cb(null, error)
             }
-           
+
           })
       }
       else {
@@ -64,7 +64,7 @@ module.exports = function (clinic) {
                 availability: data.availability
               }, function (err, res) {
                 console.log('reesult', res)
-                if(!err){
+                if (!err) {
                   let cliniccreation = {
                     error: false,
                     clinic: res,
@@ -72,11 +72,11 @@ module.exports = function (clinic) {
                   }
                   cb(null, cliniccreation);
                 }
-                else{
+                else {
                   let error = {
                     error: true,
                     message: err.message
-        
+
                   }
                   cb(null, error)
                 }
@@ -322,7 +322,7 @@ module.exports = function (clinic) {
     console.log('day', day);
     clinic.findOne({ where: { clinicId: clinicId } }, function (err, result) {
       console.log('result....', result)
-console.log('err.....',err)
+      console.log('err.....', err)
       if (result != null && Object.keys(result).length != 0) {
 
         let duration = result.weekDays;
@@ -359,8 +359,8 @@ console.log('err.....',err)
           [x]: values[0]
         }
         slot.push(a)
-      }).catch(err=>{
-        console.log('error::::',err)
+      }).catch(err => {
+        console.log('error::::', err)
       })
 
     }
@@ -454,8 +454,8 @@ console.log('err.....',err)
           }
           y.push(x);
         }
-      }).catch(err=>{
-        console.log('error 458',err)
+      }).catch(err => {
+        console.log('error 458', err)
       })
     }
     // console.log('ARRAY PUSHED METHOD', y)
@@ -479,6 +479,36 @@ console.log('err.....',err)
     })
   }
   // /*********************** END OF API Specific clinic's available slots for a day**********************/
+
+
+  /****************************************** RECEPTIONIST NAME ************************************************ */
+  clinic.observe('loaded', function (context, next) {
+    const receptionist = app.models.receptionist;
+  console.log('contextdata',context.data);
+  
+    if (context.data.receptionist) {
+      console.log('inside if');
+     
+      receptionist.findOne({ where: { receptionId: context.data.receptionist.split('#')[1] } }, function (err, result) {
+        console.log('err', err);
+        console.log('result', result);
+        if (!err) {
+          context.data.receptionist = result;
+          // delete context.data['receptionist'];
+          next();
+        }
+        else {
+          context.data.receptionist = null;
+          // delete context.data['receptionist'];
+          next();
+        }
+      });
+    }
+    else {
+      next();
+    }
+  })
+  /***************************************************** ENDS ************************************************* */
 }
 
 
