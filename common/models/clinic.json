@@ -114,12 +114,7 @@
       "type": "belongsTo",
       "model": "doctor",
       "foreignKey": "doctorId"
-    },
-      "receptionist":{
-        "type": "belongsTo",
-        "model": "receptionist",
-        "foreignKey": "receptionId"
-      }
+    }
   },
   "acls": [],
   "methods": {}

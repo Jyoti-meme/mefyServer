@@ -193,7 +193,7 @@ console.log(data)
   /**************************************  API FOR GETTING DOCTOR'S  CURRENT SCHEDULE  ***********************************/
   appointment.remoteMethod('getDoctorEvents', {
     http: { path: '/getDoctorEvents', verb: 'get' },
-    description: "Get doctor's appoitnment for specific date",
+    description: "Get doctor's appoitnment for current  date",
     accepts: { arg: 'doctorId', type: 'string', required: true },
     returns: { arg: 'result', type: 'any' }
   })
