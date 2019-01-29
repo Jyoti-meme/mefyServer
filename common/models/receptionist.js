@@ -7,15 +7,13 @@ module.exports = function (receptionist) {
 
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist", "removereceptionist"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist", "removereceptionist", "numberChecking", "sendOtp", "login"];
   receptionist.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
       receptionist.disableRemoteMethodByName(methodName);
     }
   });
-
-
 
 
   /***************************************************** DOCTOR CREATE RECEPTIONIST ******************************************* */
@@ -82,6 +80,125 @@ module.exports = function (receptionist) {
   }
 
   /********************************************************* ENDS ************************************************************* */
+
+  /************************************* CHECK IF PHONENUMBER IS UNIQUE OR NOT ************ */
+  receptionist.remoteMethod('numberChecking', {
+    http: { path: '/checkNumber', verb: 'post' },
+    description: "check whether receptionist number is unique or not",
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     // phoneNumber
+    returns: { arg: 'result', type: 'any', root: true }
+  });
+
+  receptionist.numberChecking = function (data, cb) {
+    receptionist.find({ where: { phoneNumber: data.phoneNumber } }, function (err, exists) {
+      console.log('err', err);
+      console.log('exists', exists);
+      if (err) {
+        let response = {
+          error: true,
+          message: 'Error occurred'
+        }
+        cb(null, response);
+      }
+      else if (exists.length != 0) {
+        let response = {
+          error: false,
+          message: 'PhoneNumber already exists!'
+        }
+        cb(null, response);
+      }
+      else {
+        let response = {
+          error: false,
+          message: 'PhoneNumber is unique!'
+        }
+        cb(null, response);
+      }
+
+    })
+  }
+  /******************************************** ENDS *************************************** */
+
+  /*********************************************** SendOtp ***************************************** */
+
+  receptionist.remoteMethod('sendOtp', {
+    http: { path: '/sendOtp', verb: 'post' },
+    description: "send otp to receptionist phonenNumber",
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     // phoneNumber
+    returns: { arg: 'result', type: 'any', root: true }
+  });
+
+  receptionist.sendOtp = function (data, cb) {
+    // console.log(phoneNumber)
+    receptionist.findOne({ where: { phoneNumber: data.phoneNumber } }, function (err, exists) {
+     console.log('err',err);
+     console.log('exists',exists)
+      if (err) {
+        let response = {
+          error: true,
+          message: 'Something Happended!'
+        }
+        cb(null, response);
+      }
+      else if (exists!=null && Object.keys(exists).length != 0) {
+        //send otp
+        var otpresponse = {
+                err: false,
+                message: 'OTP sent to registered number'
+              }
+              cb(null, otpresponse)
+        // sendOtptoNumber(data.phoneNumber).then(function (otp) {
+        //   console.log('otp',otp)
+        //   if (otp.type == 'success') {
+        //     var otpresponse = {
+        //       err: false,
+        //       message: 'OTP sent to registered number'
+        //     }
+        //     cb(null, otpresponse)
+        //   }
+        //   else {
+        //     var otperror = {
+        //       error: true,
+        //       message: 'Otp sending falied',
+        //       details: result
+        //     }
+        //     cb(null, otperror)
+        //   }
+        // }).catch(err => {
+        //   cb(null, err)
+        // })
+      }
+      else {
+        // number not registeree
+        let response = {
+          error: true,
+          message: 'PhoneNumber doesnot exists!'
+        }
+        cb(null, response);
+      }
+
+    })
+  }
+
+  // send otp to number
+  function sendOtptoNumber(phoneNumber) {
+    return new Promise((resolve, reject) => {
+      let url = 'http://control.msg91.com/api/sendotp.php?authkey=236155AYj2f1NozV5b921323&message=%23%23OTP%23%23&sender=MEFYME&mobile=' + phoneNumber + '';
+      fetch(url, {
+        method: 'GET'
+      })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+          resolve(responseJSON)
+        })
+        .catch((error) => {
+          reject(err)
+        })
+    })
+  }
+  /************************************************* ENDS ******************************* */
+
+
   /********************************************************* UPDATE CLINIC BY RECEPTIONIST NAME *********************************** */
   // receptionist.remoteMethod('updateclinic', {
   //   http: { path: '/updateclinic', verb: 'put' },
