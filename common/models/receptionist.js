@@ -131,8 +131,8 @@ module.exports = function (receptionist) {
   receptionist.sendOtp = function (data, cb) {
     // console.log(phoneNumber)
     receptionist.findOne({ where: { phoneNumber: data.phoneNumber } }, function (err, exists) {
-     console.log('err',err);
-     console.log('exists',exists)
+      console.log('err', err);
+      console.log('exists', exists)
       if (err) {
         let response = {
           error: true,
@@ -140,13 +140,13 @@ module.exports = function (receptionist) {
         }
         cb(null, response);
       }
-      else if (exists!=null && Object.keys(exists).length != 0) {
+      else if (exists != null && Object.keys(exists).length != 0) {
         //send otp
         var otpresponse = {
-                err: false,
-                message: 'OTP sent to registered number'
-              }
-              cb(null, otpresponse)
+          err: false,
+          message: 'OTP sent to registered number'
+        }
+        cb(null, otpresponse)
         // sendOtptoNumber(data.phoneNumber).then(function (otp) {
         //   console.log('otp',otp)
         //   if (otp.type == 'success') {
@@ -197,6 +197,69 @@ module.exports = function (receptionist) {
     })
   }
   /************************************************* ENDS ******************************* */
+
+  /***************************************** VERIFY OTP AND LOGIN ********************************** */
+  receptionist.remoteMethod('verifyotp', {
+    http: { path: '/login', verb: 'post' },
+    description: "verify otp ",
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     // phoneNumber
+    returns: { arg: 'result', type: 'any', root: true }
+  });
+
+  receptionist.verifyotp = function (data, cb) {
+    console.log(data)
+    verifyOtp(data.phoneNumber, data.otp).then(function (result) {
+      console.log(result);
+      if (result) {
+        let response = {
+          error: false,
+          message: 'User loggedIn successfully'
+        }
+        cb(null, response)
+      }
+      else {
+        let response = {
+          error: true,
+          message: 'OPt verification failed'
+        }
+        cb(null, response)
+      }
+    }).catch(err => {
+      cb(null, err)
+    })
+
+  }
+
+
+
+  function verifyOtp(phoneNumber, otp) {
+    console.log('dataaaaa', phoneNumber, otp)
+    return new Promise((resolve, reject) => {
+
+      if (otp == "8888") {
+        resolve(true)
+      }
+      else {
+        reject(false)
+      }
+      // let verifyOtpUrl = 'https://control.msg91.com/api/verifyRequestOTP.php?authkey=236155AYj2f1NozV5b921323&mobile=' + phoneNumber + '&otp=' + otp;
+      // console.log('verifyOtpUrl', verifyOtpUrl)
+      // fetch(verifyOtpUrl, {
+      //   method: 'POST'
+      // })
+      //   .then((response) => response.json())
+      //   .then((responseJSON) => {
+      //     console.log('url json response', responseJSON)
+      //     resolve(responseJSON)
+      //   }).catch(err => {
+      //     reject(err)
+      //   })
+      // })
+    })
+  }
+
+
+  /********************************************* ENDS ******************************************** */
 
 
   /********************************************************* UPDATE CLINIC BY RECEPTIONIST NAME *********************************** */
