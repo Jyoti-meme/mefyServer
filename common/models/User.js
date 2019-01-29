@@ -43,7 +43,7 @@ module.exports = function (User) {
 
 
   // HIDE UNUSED REMOTE METHODS
-  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber", "twilloToken", "joinroom"];
+  const enabledRemoteMethods = ["create", "find", "findById", "registration", "deleteById", "verifyotp", "resendOtp", "login", "profile", "loginByScanner", "verifyotplogin", "doctorWebLogin", "verifyNumber", "twilloToken", "joinroom", "checkNumber"];
   User.sharedClass.methods().forEach(method => {
     // console.log('metods name',method.stringName)
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
@@ -1002,8 +1002,8 @@ module.exports = function (User) {
       }
     })
   }
-  /********************************************************************************************************** */
-  /** Econsult APIS **/
+  /*************************************** ENDS ******************************************************************* */
+  /************************************ Econsult APIS ******************************************/
   /** API to generate tokens **/
   User.remoteMethod('twilloToken', {
     http: { path: '/twilloToken', verb: 'get' },
@@ -1013,7 +1013,7 @@ module.exports = function (User) {
     returns: { arg: 'result', type: 'any', root: true },
   });
 
-  User.twilloToken = function (username,roomname, cb) {
+  User.twilloToken = function (username, roomname, cb) {
     // Set the Identity of this token
     accessToken.identity = username;
 
@@ -1024,7 +1024,7 @@ module.exports = function (User) {
     // grant.room = roomname;
     const videoGrant = new VideoGrant({
       room: roomname,
-      });
+    });
     accessToken.addGrant(videoGrant);
 
     // Serialize the token as a JWT
@@ -1064,7 +1064,80 @@ module.exports = function (User) {
         cb(err, null);
       })
   }
+  /******************************************** ENDS ************************************* */
 
+
+  /********************************* NUMBER BELONGS TO USER OR RECEPTIONIST ************* */
+  User.remoteMethod('checkNumber', {
+    http: { path: '/checkNumber', verb: 'post' },
+    description: "number exists to user or receptionist",
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } }, //phonenumber
+    returns: { arg: 'result', type: 'any' }
+  });
+
+  User.checkNumber = function (data, cb) {
+    const receptionist = app.models.receptionist;
+    Promise.all([getDoctorsDetails(data.phoneNumber), getReceptionistDetails(data.phoneNumber)]).then(function (values) {
+      console.log('values', values)
+      if (values[0] != 'nothing') {
+        let response = {
+          error: false,
+          result: values[0],
+          message: "Number belongs to Doctor"
+        }
+        cb(null, response);
+
+      }
+      if (values[1] != 'nothing') {
+        let response = {
+          error: false,
+          result: values[1],
+          message: "Number belongs to Receptionist"
+        }
+        cb(null, response);
+      }
+    }).catch(err => {
+      cb(null, err)
+    })
+  }
+
+  async function getDoctorsDetails(phoneNumber) {
+    return new Promise((resolve, reject) => {
+      User.findOne({ where: { phoneNumber: phoneNumber } }, function (err, existence) {
+        console.log(err);
+        console.log(existence);
+        if (err) {
+          resolve('nothing')
+        }
+        else if (existence != null && Object.keys(existence).length != 0) {
+          resolve(existence);
+        }
+        else {
+          resolve('nothing');
+        }
+      })
+    })
+  }
+
+  async function getReceptionistDetails(phoneNumber) {
+    const receptionist = app.models.receptionist;
+    return new Promise((resolve, reject) => {
+      receptionist.findOne({ where: { phoneNumber: phoneNumber } }, function (err, existence) {
+        console.log('err', err);
+        console.log('j', existence)
+        if (err) {
+          resolve('nothing');
+        }
+        else if (existence != null && Object.keys(existence).length != 0) {
+          resolve(existence);
+        }
+        else {
+          resolve('nothing');
+        }
+      })
+    })
+  }
+  /********************************************** ENDS ********************************** */
 }
 
 
