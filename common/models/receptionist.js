@@ -7,7 +7,7 @@ module.exports = function (receptionist) {
 
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist", "removereceptionist"];
   receptionist.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -52,6 +52,36 @@ module.exports = function (receptionist) {
   }
   /*************************************************************** ENDS ********************************************************* */
 
+  /*********************************************** DOCTOR REMOVE RECEPTIONIST FROM CLINIC ************************************* */
+  receptionist.remoteMethod('removereceptionist', {
+    http: { path: '/removereceptionist', verb: 'delete' },
+    description: "remove receptionist from clinic",
+    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     //reception id
+    returns: { arg: 'result', type: 'any', root: true }
+  });
+  receptionist.removereceptionist = function (data, cb) {
+    receptionist.destroyById(data.receptionId, function (err, info) {
+      console.log('err', err);
+      console.log('info', info);
+      if (err) {
+        let response = {
+          error: true,
+          message: 'Error in removing Receptionist'
+        }
+        cb(null, response)
+      }
+      else {
+        let response = {
+          error: false,
+          message: 'Receptionist removed successfully!'
+        }
+        cb(null, response)
+      }
+    })
+
+  }
+
+  /********************************************************* ENDS ************************************************************* */
   /********************************************************* UPDATE CLINIC BY RECEPTIONIST NAME *********************************** */
   // receptionist.remoteMethod('updateclinic', {
   //   http: { path: '/updateclinic', verb: 'put' },
