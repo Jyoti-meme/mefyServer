@@ -1,81 +1,86 @@
 {
-    "name": "receptionist",
-    "description": "A participant named receptionist",
-    "plural": "receptionist",
-    "base": "PersistedModel",
-    "idInjection": false,
-    "options": {
-      "validateUpsert": true,
-      "composer": {
-        "type": "participant",
-        "namespace": "io.mefy.receptionist",
-        "name": "receptionist",
-        "fqn": "io.mefy.receptionist.receptionist",
-        "abstract": false
-      }
+  "name": "receptionist",
+  "description": "A participant named receptionist",
+  "plural": "receptionist",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "composer": {
+      "type": "participant",
+      "namespace": "io.mefy.receptionist",
+      "name": "receptionist",
+      "fqn": "io.mefy.receptionist.receptionist",
+      "abstract": false
+    }
+  },
+  "properties": {
+    "$class": {
+      "type": "string",
+      "default": "io.mefy.receptionist.receptionist",
+      "required": false,
+      "description": "The class identifier for this type"
     },
-    "properties": {
-      "$class": {
-        "type": "string",
-        "default": "io.mefy.receptionist.receptionist",
-        "required": false,
-        "description": "The class identifier for this type"
-      },
-      "receptionId": {
-        "type": "string",
-        "id": true,
-        "description": "The instance identifier for this type",
-        "required": true,
-        "defaultFn": "uuidv4"
-      },
-      "name": {
-        "type": "string",
-        "required": true
-      },
-      "phoneNumber": {
-        "type": "string",
-        "description": "The instance identifier for this type",
-        "required": true
-      },
-      "doctorId": {
-        "type": "string",
-        "required": true,
-        "description": "The identifier of an instance of doctorId"
-      },
-      "clinicId": {
-        "type": "string",
-        "required": true,
-        "description": "The identifier of an instance of clinicId"
-      },
-      "createdDate": {
-        "type": "date",
-        "required": false,
-        "defaultFn": "now"
-      },
-      "updatedDate": {
-        "type": "date",
-        "required": false,
-        "defaultFn": "now"
-      },
-      "enabled": {
-        "type": "number",
-        "default": "1",
-        "required": true
-      }
+    "receptionId": {
+      "type": "string",
+      "id": true,
+      "description": "The instance identifier for this type",
+      "required": true,
+      "defaultFn": "uuidv4"
     },
-    "validations": [],
-    "relations": {
-      "doctor": {
-        "type": "belongsTo",
-        "model": "doctor",
-        "foreignKey": "doctorId"
-      },
-      "clinic": {
-        "type": "belongsTo",
-        "model": "clinic",
-        "foreignKey": "clinicId"
-      }
+    "role": {
+      "type": "string",
+      "required": true,
+      "default": "receptionist"
     },
-    "acls": [],
-    "methods": []
-  }
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "phoneNumber": {
+      "type": "string",
+      "description": "The instance identifier for this type",
+      "required": true
+    },
+    "doctorId": {
+      "type": "string",
+      "required": true,
+      "description": "The identifier of an instance of doctorId"
+    },
+    "clinicId": {
+      "type": "string",
+      "required": true,
+      "description": "The identifier of an instance of clinicId"
+    },
+    "createdDate": {
+      "type": "date",
+      "required": false,
+      "defaultFn": "now"
+    },
+    "updatedDate": {
+      "type": "date",
+      "required": false,
+      "defaultFn": "now"
+    },
+    "enabled": {
+      "type": "number",
+      "default": "1",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "doctor": {
+      "type": "belongsTo",
+      "model": "doctor",
+      "foreignKey": "doctorId"
+    },
+    "clinic": {
+      "type": "belongsTo",
+      "model": "clinic",
+      "foreignKey": "clinicId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}
