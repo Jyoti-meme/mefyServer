@@ -54,7 +54,7 @@ module.exports = function (receptionist) {
   receptionist.remoteMethod('removereceptionist', {
     http: { path: '/removereceptionist/:receptionId', verb: 'delete' },
     description: "remove receptionist from clinic",
-    accepts: { arg: 'data', type: 'string' ,required:true,http: { source: 'path' }},     //reception id
+    accepts: { arg: 'receptionId', type: 'string' ,required:true,http: { source: 'path' }},     //reception id
     returns: { arg: 'result', type: 'any', root: true }
   });
   receptionist.removereceptionist = function (receptionId, cb) {
