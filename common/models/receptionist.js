@@ -7,7 +7,7 @@ module.exports = function (receptionist) {
 
 
   // HIDE UNUSED REMORE METHODS
-  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist", "removereceptionist", "numberChecking", "sendOtp", "login"];
+  const enabledRemoteMethods = ["findById", "deleteById", "find", "createreceptionist", "removereceptionist", "numberChecking", "sendOtp", "login","receptionistDashboard"];
   receptionist.sharedClass.methods().forEach(method => {
     const methodName = method.stringName.replace(/.*?(?=\.)/, '').substr(1);
     if (enabledRemoteMethods.indexOf(methodName) === -1) {
@@ -52,13 +52,14 @@ module.exports = function (receptionist) {
 
   /*********************************************** DOCTOR REMOVE RECEPTIONIST FROM CLINIC ************************************* */
   receptionist.remoteMethod('removereceptionist', {
-    http: { path: '/removereceptionist', verb: 'delete' },
+    http: { path: '/removereceptionist/:receptionId', verb: 'delete' },
     description: "remove receptionist from clinic",
-    accepts: { arg: 'data', type: 'object', http: { source: 'body' } },     //reception id
+    accepts: { arg: 'data', type: 'string' ,required:true,http: { source: 'path' }},     //reception id
     returns: { arg: 'result', type: 'any', root: true }
   });
-  receptionist.removereceptionist = function (data, cb) {
-    receptionist.destroyById(data.receptionId, function (err, info) {
+  receptionist.removereceptionist = function (receptionId, cb) {
+    console.log(receptionId)
+    receptionist.destroyById(receptionId, function (err, info) {
       console.log('err', err);
       console.log('info', info);
       if (err) {
@@ -261,7 +262,75 @@ module.exports = function (receptionist) {
 
   /********************************************* ENDS ******************************************** */
 
+  /*********************************** RECEPTIONIST DASHBOARD DATA *********************************/
+  receptionist.remoteMethod('receptionistDashboard', {
+    http: { path: '/receptionistDashboard', verb: 'get' },
+    description: "Doctor's dashboard data",
+    accepts: [{ arg: 'doctorId', type: 'string', required: true },
+    { arg: 'receptionistId', type: 'string', required: true },
+    { arg: 'clinicId', type: 'string', required: true }],
+    returns: { arg: 'result', type: 'any',root:true }
+  })
+  receptionist.doctorDashboard = function (doctorId, receptionistId,clinicId, cb) {
+    const Clinic = app.models.clinic;
+    const Appointment = app.models.appointment;
+    var now = moment().format('YYYY-MM-DD');
+    console.log('currentDate', now) //Current date
+    Clinic.find({ where: { and: [{ doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId }, { receptioinist: 'resource:io.mefy.receptionist.receptionist#' + receptionistId }] } }, function (err, exists) {
+      console.log('err'+err,'receptionist'+exists)
+      if (exists != null && Object.keys(exists).length != 0) {
+        // console.log('number', exists.length)
+        var eConsultData = [];
+        var clinicVisitData = [];
+        Appointment.find({ where:{and:[{ doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId },{clinicId:'resource:io.mefy.clinic.clinic#'+clinicId}]}  }, function (err, appointment) {
+          console.log('err'+err,'appointment'+appointment)
+          if (appointment != null && Object.keys(appointment).length != 0) {
+            for (let i = 0; i < appointment.length; i++) {
+              if (appointment[i].appointmentType == 'eConsult' && appointment[i].status == 'Active' && moment(appointment[i].appointmentDate).isSame(now)) {
+                eConsultData.push(appointment[i]);
+                console.log('appppointment', eConsultData.length);
+              }
+              else if (appointment[i].appointmentType == 'clinicVisit' && appointment[i].status == 'Active' && moment(appointment[i].appointmentDate).isSame(now)) {
+                clinicVisitData.push(appointment[i]);
+                console.log('clinicVisitData', clinicVisitData.length);
+              }
+            }
+            let dashboardData = {
+              error: false,
+              message: "Doctor's Dashboard Detail",
+              clinic: exists.length,
+              clincVistPatient: clinicVisitData.length,
+              eConsultPatient: eConsultData.length,
+              credit: 0
+            }
+            cb(null, dashboardData);
+          } else {
+            let Appointmentmsg = {
+              error: false,
+              message: "Doctor's Dashboard Detail",
+              clinic: exists.length,
+              credit: 0,
+              clincVistPatient: 0,
+              eConsultPatient: 0,
+            }
+            cb(null, Appointmentmsg);
+          }
+        })
 
+      } else {
+        let clinicmsg = {
+          error: false,
+          message: "Doctor's Dashboard Detail",
+          clinic: 0,
+          credit: 0,
+          clincVistPatient: 0,
+          eConsultPatient: 0,
+        }
+        cb(null, clinicmsg);
+      }
+    })
+  }
+  /************************************************* END *************************************************** */
   /********************************************************* UPDATE CLINIC BY RECEPTIONIST NAME *********************************** */
   // receptionist.remoteMethod('updateclinic', {
   //   http: { path: '/updateclinic', verb: 'put' },

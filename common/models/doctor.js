@@ -303,18 +303,18 @@ module.exports = function (doctor) {
     Clinic.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, exists) {
       if (exists != null && Object.keys(exists).length != 0) {
         // console.log('number', exists.length)
-        var eConsultData = []
-        var clinicVisitData = []
-        Appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (er, appointment) {
+        var eConsultData = [];
+        var clinicVisitData = [];
+        Appointment.find({ where: { doctorId: 'resource:io.mefy.doctor.doctor#' + doctorId } }, function (err, appointment) {
           if (appointment != null && Object.keys(appointment).length != 0) {
             for (let i = 0; i < appointment.length; i++) {
               if (appointment[i].appointmentType == 'eConsult' && appointment[i].status == 'Active' && moment(appointment[i].appointmentDate).isSame(now)) {
-                eConsultData.push(appointment[i])
-                console.log('appppointment', eConsultData.length)
+                eConsultData.push(appointment[i]);
+                console.log('appppointment', eConsultData.length);
               }
               else if (appointment[i].appointmentType == 'clinicVisit' && appointment[i].status == 'Active' && moment(appointment[i].appointmentDate).isSame(now)) {
-                clinicVisitData.push(appointment[i])
-                console.log('clinicVisitData', clinicVisitData.length)
+                clinicVisitData.push(appointment[i]);
+                console.log('clinicVisitData', clinicVisitData.length);
               }
             }
             let dashboardData = {
@@ -325,7 +325,7 @@ module.exports = function (doctor) {
               eConsultPatient: eConsultData.length,
               credit: 0
             }
-            cb(null, dashboardData)
+            cb(null, dashboardData);
           } else {
             let Appointmentmsg = {
               error: false,
@@ -335,7 +335,7 @@ module.exports = function (doctor) {
               clincVistPatient: 0,
               eConsultPatient: 0,
             }
-            cb(null, Appointmentmsg)
+            cb(null, Appointmentmsg);
           }
         })
 
@@ -348,7 +348,7 @@ module.exports = function (doctor) {
           clincVistPatient: 0,
           eConsultPatient: 0,
         }
-        cb(null, clinicmsg)
+        cb(null, clinicmsg);
       }
     })
   }
